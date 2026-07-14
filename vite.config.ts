@@ -5,7 +5,7 @@ import { defineConfig } from 'vite';
 
 export default defineConfig(() => {
     return {
-        base: '/', // <-- Add this line
+        base: '/of.owncircles.com/',
 
         plugins: [react(), tailwindcss()],
 
