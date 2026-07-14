@@ -1,0 +1,6 @@
+{
+  "name": "OwnFormatters",
+  "description": "A modern, premium developer utilities suite including JSON Formatter & Validator, API Request Tester, XML Formatter, Base64 Encoder, URL Encoder, JWT Decoder, Timestamp Converter, and SQL Beautifier.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
