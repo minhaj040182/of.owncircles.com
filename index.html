@@ -1,24 +1,24 @@
 <!doctype html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    
+
     <!-- SPA Redirect Handling for Static Hosting Fallbacks -->
     <script type="text/javascript">
-      (function(l) {
-        if (l.search[1] === '/' ) {
-          var decoded = l.search.slice(1).split('&').map(function(s) { 
-            return s.replace(/~and~/g, '&') 
-          }).join('?');
-          var cleanPath = l.pathname.replace(/\/$/, '');
-          window.history.replaceState(null, null,
-              cleanPath + decoded + l.hash
-          );
-        }
-      }(window.location));
+        (function (l) {
+            if (l.search[1] === '/') {
+                var decoded = l.search.slice(1).split('&').map(function (s) {
+                    return s.replace(/~and~/g, '&')
+                }).join('?');
+                var cleanPath = l.pathname.replace(/\/$/, '');
+                window.history.replaceState(null, null,
+                    cleanPath + decoded + l.hash
+                );
+            }
+        }(window.location));
     </script>
-    
+
     <!-- Primary SEO -->
     <meta name="title" content="OwnFormatter - Free Online Developer Tools">
     <meta name="description" content="Free online JSON Formatter, YAML Formatter, XML Formatter, JWT Decoder, Base64 Encoder, UUID Generator, Regex Tester, Epoch Converter and more.">
@@ -92,76 +92,79 @@
 
     <!-- JSON-LD Structured Data -->
     <script type="application/ld+json">
-    {
-     "@context":"https://schema.org",
-     "@type":"Organization",
-     "name":"OwnFormatters",
-     "url":"https://ownformatters.com",
-     "logo":"https://ownformatters.com/images/icon.png"
-    }
+        {
+         "@context":"https://schema.org",
+         "@type":"Organization",
+         "name":"OwnFormatters",
+         "url":"https://ownformatters.com",
+         "logo":"https://ownformatters.com/images/icon.png"
+        }
     </script>
     <script type="application/ld+json">
-    {
-      "@context":"https://schema.org",
-      "@type":"WebApplication",
-      "name":"JSON Formatter",
-      "applicationCategory":"DeveloperApplication",
-      "operatingSystem":"Any",
-      "url":"https://ownformatters.com/json-formatter",
-      "description":"Format and validate JSON instantly in your browser."
-    }
+        {
+          "@context":"https://schema.org",
+          "@type":"WebApplication",
+          "name":"JSON Formatter",
+          "applicationCategory":"DeveloperApplication",
+          "operatingSystem":"Any",
+          "url":"https://ownformatters.com/json-formatter",
+          "description":"Format and validate JSON instantly in your browser."
+        }
     </script>
     <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "WebApplication",
-      "name": "OwnFormatter",
-      "url": "https://ownformatters.com/",
-      "description": "Free browser-based developer toolkit: JSON/YAML/XML/CSV formatting, Base64/URL/HTML encoding, JWT decoding, UUID & hash generation, regex testing, text diff, cron parsing, epoch conversion and more.",
-      "applicationCategory": "DeveloperApplication",
-      "operatingSystem": "Any",
-      "offers": {
-        "@type": "Offer",
-        "price": "0",
-        "priceCurrency": "USD"
-      },
-      "featureList": [
-        "JSON Formatter & Validator",
-        "YAML to JSON Converter",
-        "XML Formatter",
-        "JSON to XML Converter",
-        "CSV to JSON Converter",
-        "Markdown Preview",
-        "Base64 Encoder / Decoder",
-        "URL Encoder / Decoder",
-        "HTML Encoder / Decoder",
-        "JWT Decoder",
-        "UUID Generator",
-        "Hash Generator (MD5, SHA-1, SHA-256)",
-        "Color Converter",
-        "Number Base Converter",
-        "Cron Expression Parser",
-        "Epoch Time Studio",
-        "Regex Tester",
-        "Text Diff Tool"
-      ],
-      "creator": {
-        "@type": "Organization",
-        "name": "OwnFormatter"
-      }
-    }
+        {
+          "@context": "https://schema.org",
+          "@type": "WebApplication",
+          "name": "OwnFormatter",
+          "url": "https://ownformatters.com/",
+          "description": "Free browser-based developer toolkit: JSON/YAML/XML/CSV formatting, Base64/URL/HTML encoding, JWT decoding, UUID & hash generation, regex testing, text diff, cron parsing, epoch conversion and more.",
+          "applicationCategory": "DeveloperApplication",
+          "operatingSystem": "Any",
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+          },
+          "featureList": [
+            "JSON Formatter & Validator",
+            "YAML to JSON Converter",
+            "XML Formatter",
+            "JSON to XML Converter",
+            "CSV to JSON Converter",
+            "Markdown Preview",
+            "Base64 Encoder / Decoder",
+            "URL Encoder / Decoder",
+            "HTML Encoder / Decoder",
+            "JWT Decoder",
+            "UUID Generator",
+            "Hash Generator (MD5, SHA-1, SHA-256)",
+            "Color Converter",
+            "Number Base Converter",
+            "Cron Expression Parser",
+            "Epoch Time Studio",
+            "Regex Tester",
+            "Text Diff Tool"
+          ],
+          "creator": {
+            "@type": "Organization",
+            "name": "OwnFormatter"
+          }
+        }
     </script>
 
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-VZPKBC605D"></script>
     <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
 
-      gtag('config', 'G-VZPKBC605D');
+        gtag('config', 'G-VZPKBC605D');
     </script>
-  </head>
+
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4969321741365615"
+            crossorigin="anonymous"></script>
+</head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
