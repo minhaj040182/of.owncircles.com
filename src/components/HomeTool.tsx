@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { 
   Braces, FileText, FileCode, Database, Minimize2, Network, Terminal, Key, Clock, 
   AlignLeft, Hash, QrCode, BookOpen, Sparkles, Search, FileSpreadsheet, Palette, 
-  Binary, Compass, AlertCircle, RefreshCw, Columns
+  Binary, Compass, AlertCircle, RefreshCw, Columns, Star, History
 } from 'lucide-react';
 import { ToolId, ToolDefinition } from '../types';
 
@@ -22,10 +22,13 @@ interface HomeToolProps {
     isDark: boolean;
   };
   tools: ToolDefinition[];
-  onSelectTool: (id: ToolId) => void;
+  favorites?: ToolId[];
+  toggleFavorite?: (id: ToolId) => void;
+  recents?: ToolId[];
+  onSelectTool: (id: ToolId, source?: 'normal' | 'favorite' | 'recent') => void;
 }
 
-export default function HomeTool({ theme, tools, onSelectTool }: HomeToolProps) {
+export default function HomeTool({ theme, tools, favorites = [], toggleFavorite, recents = [], onSelectTool }: HomeToolProps) {
   const [localQuery, setLocalQuery] = useState<string>('');
 
   const isLight = theme?.isDark === false;
@@ -118,6 +121,105 @@ export default function HomeTool({ theme, tools, onSelectTool }: HomeToolProps) 
         </div>
       </div>
 
+      {/* FAVORITE & LAST VISITED TOOLS GRID */}
+      {localQuery.trim() === '' && (favorites.length > 0 || recents.length > 0) && (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* Favorite Tools Section */}
+          {favorites.length > 0 && (
+            <div className={`p-6 border rounded-2xl ${cardClass} ${borderClass} space-y-4 bg-gradient-to-br from-amber-500/5 via-transparent to-transparent`}>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <span className="p-1.5 rounded-lg bg-amber-500/10 text-amber-500">
+                    <Star className="w-4 h-4 fill-amber-500 text-amber-500" />
+                  </span>
+                  <h4 className={`text-xs font-bold font-mono uppercase tracking-wider ${isLight ? 'text-slate-800' : 'text-white'}`}>
+                    Favorite Tools
+                  </h4>
+                </div>
+                <span className={`text-[10px] font-mono ${textMutedClass}`}>
+                  {favorites.length} Favorites
+                </span>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {tools.filter(t => favorites.includes(t.id)).map(tool => (
+                  <div
+                    key={`pin-card-${tool.id}`}
+                    onClick={() => onSelectTool(tool.id, 'favorite')}
+                    className={`p-3.5 border rounded-xl cursor-pointer hover:-translate-y-0.5 hover:shadow-sm transition-all flex items-center justify-between group bg-slate-900/10 hover:bg-slate-900/30 dark:bg-slate-950/20 dark:hover:bg-indigo-950/20 ${borderClass}`}
+                  >
+                    <div className="flex items-center gap-2.5 min-w-0">
+                      <span className="shrink-0">
+                        {getToolIcon(tool.id)}
+                      </span>
+                      <span className={`text-xs font-bold font-sans truncate ${isLight ? 'text-slate-800' : 'text-slate-200'}`}>
+                        {tool.name.replace(/Formatter|Validator|Generator|Tester|Converter|Debugger/gi, '').trim()}
+                      </span>
+                    </div>
+                    {toggleFavorite && (
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          toggleFavorite(tool.id);
+                        }}
+                        className="text-amber-500 hover:text-slate-500 p-1 shrink-0 cursor-pointer"
+                        title="Remove from Favorites"
+                      >
+                        <Star className="w-3.5 h-3.5 fill-amber-500 text-amber-500" />
+                      </button>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Last Visited Tools Section */}
+          {recents.length > 0 && (
+            <div className={`p-6 border rounded-2xl ${cardClass} ${borderClass} space-y-4 bg-gradient-to-br from-indigo-500/5 via-transparent to-transparent`}>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <span className="p-1.5 rounded-lg bg-indigo-500/10 text-indigo-400">
+                    <History className="w-4 h-4" />
+                  </span>
+                  <h4 className={`text-xs font-bold font-mono uppercase tracking-wider ${isLight ? 'text-slate-800' : 'text-white'}`}>
+                    Last Visited Tools
+                  </h4>
+                </div>
+                <span className={`text-[10px] font-mono ${textMutedClass}`}>
+                  Last Visited
+                </span>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {tools.filter(t => recents.includes(t.id))
+                  .sort((a, b) => recents.indexOf(a.id) - recents.indexOf(b.id))
+                  .slice(0, 4)
+                  .map(tool => (
+                    <div
+                      key={`recent-card-${tool.id}`}
+                      onClick={() => onSelectTool(tool.id, 'recent')}
+                      className={`p-3.5 border rounded-xl cursor-pointer hover:-translate-y-0.5 hover:shadow-sm transition-all flex items-center justify-between group bg-slate-900/10 hover:bg-slate-900/30 dark:bg-slate-950/20 dark:hover:bg-indigo-950/20 ${borderClass}`}
+                    >
+                      <div className="flex items-center gap-2.5 min-w-0">
+                        <span className="shrink-0">
+                          {getToolIcon(tool.id)}
+                        </span>
+                        <span className={`text-xs font-bold font-sans truncate ${isLight ? 'text-slate-800' : 'text-slate-200'}`}>
+                          {tool.name.replace(/Formatter|Validator|Generator|Tester|Converter|Debugger/gi, '').trim()}
+                        </span>
+                      </div>
+                      <span className="text-[9px] font-mono opacity-50 group-hover:opacity-100 transition-opacity text-indigo-400 shrink-0">
+                        Go →
+                      </span>
+                    </div>
+                  ))}
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+
       {/* Categories block */}
       {categories.map((category) => {
         const categoryTools = filtered.filter(t => t.category === category);
@@ -138,19 +240,31 @@ export default function HomeTool({ theme, tools, onSelectTool }: HomeToolProps) 
               {categoryTools.map((tool) => (
                 <div
                   key={tool.id}
-                  onClick={() => onSelectTool(tool.id)}
+                  onClick={() => onSelectTool(tool.id, 'normal')}
                   className={`border rounded-xl p-5 cursor-pointer bg-gradient-to-br hover:scale-[1.01] hover:-translate-y-0.5 shadow-sm hover:shadow-md transition-all group flex flex-col justify-between h-36 ${cardClass} ${borderClass} ${getCategoryTheme(category)}`}
                 >
                   <div className="space-y-2">
                     <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2.5">
+                      <div className="flex items-center gap-2.5 min-w-0">
                         <span className="shrink-0 p-1.5 rounded-lg bg-slate-900/40 border border-slate-800/40">
                           {getToolIcon(tool.id)}
                         </span>
-                        <h5 className={`text-xs font-bold font-sans transition-colors group-hover:text-indigo-450 ${isLight ? 'text-slate-900' : 'text-white'}`}>
+                        <h5 className={`text-xs font-bold font-sans transition-colors group-hover:text-indigo-450 truncate ${isLight ? 'text-slate-900' : 'text-white'}`}>
                           {tool.name}
                         </h5>
                       </div>
+                      {toggleFavorite && (
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            toggleFavorite(tool.id);
+                          }}
+                          className="p-1 rounded-lg hover:bg-slate-800/20 text-slate-500 hover:text-amber-500 transition-colors shrink-0 cursor-pointer"
+                          title={favorites.includes(tool.id) ? "Remove from Favorites" : "Add to Favorites"}
+                        >
+                          <Star className={`w-3.5 h-3.5 ${favorites.includes(tool.id) ? 'fill-amber-400 text-amber-400' : ''}`} />
+                        </button>
+                      )}
                     </div>
                     <p className={`text-[11px] leading-relaxed line-clamp-2 ${textMutedClass}`}>
                       {tool.description}

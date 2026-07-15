@@ -4,6 +4,21 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     
+    <!-- SPA Redirect Handling for Static Hosting Fallbacks -->
+    <script type="text/javascript">
+      (function(l) {
+        if (l.search[1] === '/' ) {
+          var decoded = l.search.slice(1).split('&').map(function(s) { 
+            return s.replace(/~and~/g, '&') 
+          }).join('?');
+          var cleanPath = l.pathname.replace(/\/$/, '');
+          window.history.replaceState(null, null,
+              cleanPath + decoded + l.hash
+          );
+        }
+      }(window.location));
+    </script>
+    
     <!-- Primary SEO -->
     <meta name="title" content="OwnFormatter - Free Online Developer Tools">
     <meta name="description" content="Free online JSON Formatter, YAML Formatter, XML Formatter, JWT Decoder, Base64 Encoder, UUID Generator, Regex Tester, Epoch Converter and more.">

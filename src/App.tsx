@@ -31,7 +31,12 @@ import {
   Layers,
   Cpu,
   Server,
-  Type
+  Type,
+  Star,
+  History,
+  Command,
+  Keyboard,
+  Check
 } from 'lucide-react';
 
 import JsonTool from './components/JsonTool';
@@ -507,9 +512,55 @@ const THEMES = {
   }
 };
 
+// Detect GitHub Pages subpath (repository name) dynamically
+const BASE_PATH = (() => {
+  if (typeof window === 'undefined') return '';
+  const path = window.location.pathname;
+  const mappedPath = Object.keys(PATH_TO_TOOL_MAP).find(p => path === p || path.endsWith(p));
+  if (mappedPath) {
+    return path.substring(0, path.length - mappedPath.length);
+  }
+  const cleanPath = path.replace(/\/$/, '');
+  if (cleanPath && !Object.keys(PATH_TO_TOOL_MAP).some(p => p === cleanPath)) {
+    return cleanPath;
+  }
+  return '';
+})();
+
 export default function App() {
   const [activeTool, setActiveTool] = useState<ToolId>('json');
+  const [activeSelectionSource, setActiveSelectionSource] = useState<'normal' | 'favorite' | 'recent'>('normal');
+
+  const navigateToTool = (id: ToolId, source: 'normal' | 'favorite' | 'recent' = 'normal') => {
+    setActiveTool(id);
+    setActiveSelectionSource(source);
+  };
+
   const [searchQuery, setSearchQuery] = useState<string>('');
+
+  // Favorites state with localStorage hydration
+  const [favorites, setFavorites] = useState<ToolId[]>(() => {
+    const saved = localStorage.getItem('ownformatters-favorites');
+    try {
+      return saved ? JSON.parse(saved) : ['json', 'jwt', 'hash'];
+    } catch {
+      return ['json', 'jwt', 'hash'];
+    }
+  });
+
+  // Recent tools state with localStorage hydration
+  const [recents, setRecents] = useState<ToolId[]>(() => {
+    const saved = localStorage.getItem('ownformatters-recents');
+    try {
+      return saved ? JSON.parse(saved) : [];
+    } catch {
+      return [];
+    }
+  });
+
+  // Command Palette Open state
+  const [isPaletteOpen, setIsPaletteOpen] = useState(false);
+  const [paletteSelectedIndex, setPaletteSelectedIndex] = useState(0);
 
   // Theme selection state with localStorage caching
   const [themeKey, setThemeKey] = useState<keyof typeof THEMES>(() => {
@@ -535,11 +586,37 @@ export default function App() {
     localStorage.setItem('ownformatters-font-size', fontSize);
   }, [fontSize]);
 
+  const toggleFavorite = (id: ToolId) => {
+    setFavorites(prev => {
+      const updated = prev.includes(id) ? prev.filter(f => f !== id) : [...prev, id];
+      localStorage.setItem('ownformatters-favorites', JSON.stringify(updated));
+      return updated;
+    });
+  };
+
+  const addRecent = (id: ToolId) => {
+    if (['home', 'privacy', 'terms', 'about'].includes(id)) return;
+    setRecents(prev => {
+      const filtered = prev.filter(r => r !== id);
+      const updated = [id, ...filtered].slice(0, 5);
+      localStorage.setItem('ownformatters-recents', JSON.stringify(updated));
+      return updated;
+    });
+  };
+
   // 1. DYNAMIC URL ROUTER (SEO-Friendly Clean Path URLs)
   useEffect(() => {
     const handleLocationChange = () => {
       const path = window.location.pathname;
-      let validTool = PATH_TO_TOOL_MAP[path];
+      let relativePath = path;
+      if (BASE_PATH && path.startsWith(BASE_PATH)) {
+        relativePath = path.substring(BASE_PATH.length);
+      }
+      if (relativePath === '' || relativePath === '/') {
+        relativePath = '/home';
+      }
+
+      let validTool = PATH_TO_TOOL_MAP[relativePath];
 
       if (!validTool && window.location.hash) {
         const hash = window.location.hash.replace(/^#\//, '');
@@ -548,9 +625,11 @@ export default function App() {
 
       if (validTool) {
         setActiveTool(validTool);
+        setActiveSelectionSource('normal');
       } else {
-        window.history.replaceState(null, '', '/home');
+        window.history.replaceState(null, '', BASE_PATH + '/home');
         setActiveTool('home');
+        setActiveSelectionSource('normal');
       }
     };
 
@@ -567,8 +646,11 @@ export default function App() {
   // 2. DYNAMIC CRAWLER SEO & METADATA UPDATE
   useEffect(() => {
     const targetPath = TOOL_TO_PATH_MAP[activeTool];
-    if (targetPath && window.location.pathname !== targetPath) {
-      window.history.pushState(null, '', targetPath);
+    if (targetPath) {
+      const fullTargetPath = BASE_PATH + targetPath;
+      if (window.location.pathname !== fullTargetPath) {
+        window.history.pushState(null, '', fullTargetPath);
+      }
     }
 
     if (activeTool === 'home') {
@@ -598,7 +680,20 @@ export default function App() {
       document.head.appendChild(metaDesc);
     }
     metaDesc.setAttribute('content', `${activeToolInfo.description} Full-stack secure sandboxed developer utility by OwnCircles. 100% offline compliant, no user logs recorded.`);
+    addRecent(activeTool);
   }, [activeTool]);
+
+  // 3. GLOBAL KEYBOARD SHORTCUTS ENGINE
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        setIsPaletteOpen(prev => !prev);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
 
   const filteredTools = TOOLS_LIST.filter(tool => 
     tool.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -795,17 +890,25 @@ export default function App() {
         <div className={`w-full lg:w-72 ${theme.card} border ${theme.border} rounded-2xl p-6 flex-shrink-0 space-y-6 lg:sticky lg:top-20 h-fit max-h-[calc(100vh-6rem)] overflow-y-auto shadow-xl`}>
           
           {/* Search Input Filter */}
-          <div className="relative">
+          <div className="relative flex items-center">
             <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
               <Search className="h-4 w-4 text-slate-500" />
             </span>
             <input
               type="text"
-              placeholder="Search tools, checksums..."
-              className={`w-full ${theme.inputBg} border ${theme.border} hover:border-slate-800/40 text-xs ${theme.text} rounded-xl pl-10 pr-4 py-3 focus:outline-none focus:border-indigo-500 font-sans transition-colors placeholder:text-slate-500`}
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search tools... (⌘K)"
+              className={`w-full ${theme.inputBg} border ${theme.border} hover:border-slate-800/40 text-xs ${theme.text} rounded-xl pl-10 pr-12 py-3 focus:outline-none focus:border-indigo-500 font-sans transition-colors placeholder:text-slate-500 cursor-pointer`}
+              onClick={() => setIsPaletteOpen(true)}
+              readOnly
             />
+            <button 
+              onClick={() => setIsPaletteOpen(true)}
+              className="absolute right-2 px-1.5 py-1 text-[9px] font-mono font-bold bg-slate-800 text-slate-400 rounded-lg border border-slate-700/60 shadow-inner flex items-center gap-0.5 hover:bg-slate-750 transition-colors cursor-pointer"
+              title="Open Command Palette (Ctrl+K)"
+            >
+              <Command className="w-2.5 h-2.5" />
+              <span>K</span>
+            </button>
           </div>
 
           {/* Navigational Category Groups */}
@@ -825,6 +928,73 @@ export default function App() {
               </span>
               <span className="font-bold">Home / All Tools</span>
             </button>
+
+            {/* CATEGORY: FAVORITE TOOLS */}
+            {favorites.length > 0 && (
+              <div className={`p-3.5 rounded-2xl border ${themeKey === 'light' ? 'border-amber-300 bg-amber-500/5' : 'border-amber-500/35 bg-amber-500/5'} space-y-2.5 shadow-md`}>
+                <span className="text-[11px] uppercase font-extrabold text-amber-500 font-mono tracking-wider block px-1 flex items-center gap-1.5">
+                  <Star className="w-3.5 h-3.5 fill-amber-500 text-amber-500 animate-pulse" />
+                  <span>Favorite Tools</span>
+                </span>
+                <div className="space-y-1.5">
+                  {TOOLS_LIST.filter(t => favorites.includes(t.id)).map(tool => (
+                    <button
+                      key={`sidebar-star-${tool.id}`}
+                      onClick={() => navigateToTool(tool.id, 'favorite')}
+                      className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-left text-xs transition-all border group cursor-pointer ${
+                        activeTool === tool.id && activeSelectionSource === 'favorite'
+                          ? `bg-amber-500 text-slate-950 font-bold border-amber-400 shadow-md`
+                          : `${theme.inactiveNav} hover:border-amber-550/30`
+                      }`}
+                    >
+                      <div className="flex items-center gap-2.5 truncate min-w-0">
+                        <span className={activeTool === tool.id && activeSelectionSource === 'favorite' ? 'text-slate-950' : `${themeKey === 'light' ? 'text-indigo-600' : 'text-indigo-400'} group-hover:text-indigo-500`}>
+                          {getToolIcon(tool.icon)}
+                        </span>
+                        <span className="truncate">{tool.name.replace(/Formatter|Validator|Generator|Tester|Converter|Debugger/gi, '').trim()}</span>
+                      </div>
+                      <span className={`shrink-0 p-0.5 opacity-60 group-hover:opacity-100 transition-opacity ${activeTool === tool.id && activeSelectionSource === 'favorite' ? 'text-slate-950' : 'text-amber-500'}`}>
+                        <Star className={`w-3 h-3 ${activeTool === tool.id && activeSelectionSource === 'favorite' ? 'fill-slate-950 text-slate-950' : 'fill-amber-500 text-amber-500'}`} />
+                      </span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* CATEGORY: LAST VISITED TOOL */}
+            {recents.length > 0 && (() => {
+              const lastVisitedId = recents[0];
+              const lastVisitedTool = TOOLS_LIST.find(t => t.id === lastVisitedId);
+              if (!lastVisitedTool) return null;
+              return (
+                <div className={`p-3.5 rounded-2xl border ${themeKey === 'light' ? 'border-indigo-300 bg-indigo-500/5' : 'border-indigo-500/35 bg-indigo-500/5'} space-y-2.5 shadow-md`}>
+                  <span className="text-[11px] uppercase font-extrabold text-indigo-400 font-mono tracking-wider block px-1 flex items-center gap-1.5">
+                    <History className="w-3.5 h-3.5 text-indigo-400" />
+                    <span>Last Visited Tool</span>
+                  </span>
+                  <button
+                    key={`sidebar-recent-${lastVisitedTool.id}`}
+                    onClick={() => navigateToTool(lastVisitedTool.id, 'recent')}
+                    className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-left text-xs transition-all border group cursor-pointer ${
+                      activeTool === lastVisitedTool.id && activeSelectionSource === 'recent'
+                        ? `bg-indigo-600 text-white font-bold border-indigo-550 shadow-md`
+                        : `${theme.inactiveNav} hover:border-indigo-550/30`
+                    }`}
+                  >
+                    <div className="flex items-center gap-2.5 truncate min-w-0">
+                      <span className={activeTool === lastVisitedTool.id && activeSelectionSource === 'recent' ? 'text-white' : `${themeKey === 'light' ? 'text-indigo-600' : 'text-indigo-400'} group-hover:text-indigo-500`}>
+                        {getToolIcon(lastVisitedTool.icon)}
+                      </span>
+                      <span className="truncate">{lastVisitedTool.name.replace(/Formatter|Validator|Generator|Tester|Converter|Debugger/gi, '').trim()}</span>
+                    </div>
+                    <span className={`shrink-0 text-[10px] font-mono opacity-65 group-hover:opacity-100 transition-opacity ${activeTool === lastVisitedTool.id && activeSelectionSource === 'recent' ? 'text-white' : 'text-indigo-400'}`}>
+                      Go →
+                    </span>
+                  </button>
+                </div>
+              );
+            })()}
             
             {/* CATEGORY: FORMATTERS */}
             <div className="space-y-2">
@@ -837,14 +1007,14 @@ export default function App() {
                   .map(tool => (
                     <button
                       key={tool.id}
-                      onClick={() => setActiveTool(tool.id)}
-                      className={`w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-left text-xs transition-all border group ${
-                        activeTool === tool.id
+                      onClick={() => navigateToTool(tool.id, 'normal')}
+                      className={`w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-left text-xs transition-all border group cursor-pointer ${
+                        activeTool === tool.id && activeSelectionSource === 'normal'
                           ? `${theme.activeNav} font-bold shadow-md`
                           : `${theme.inactiveNav}`
                       }`}
                     >
-                      <span className={activeTool === tool.id ? 'text-white' : `${themeKey === 'light' ? 'text-indigo-600' : 'text-indigo-400'} group-hover:text-indigo-500`}>
+                      <span className={activeTool === tool.id && activeSelectionSource === 'normal' ? 'text-white' : `${themeKey === 'light' ? 'text-indigo-600' : 'text-indigo-400'} group-hover:text-indigo-500`}>
                         {getToolIcon(tool.icon)}
                       </span>
                       <span className="truncate">{tool.name}</span>
@@ -864,14 +1034,14 @@ export default function App() {
                   .map(tool => (
                     <button
                       key={tool.id}
-                      onClick={() => setActiveTool(tool.id)}
-                      className={`w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-left text-xs transition-all border group ${
-                        activeTool === tool.id
+                      onClick={() => navigateToTool(tool.id, 'normal')}
+                      className={`w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-left text-xs transition-all border group cursor-pointer ${
+                        activeTool === tool.id && activeSelectionSource === 'normal'
                           ? `${theme.activeNav} font-bold shadow-md`
                           : `${theme.inactiveNav}`
                       }`}
                     >
-                      <span className={activeTool === tool.id ? 'text-white' : `${themeKey === 'light' ? 'text-emerald-700' : 'text-emerald-400'} group-hover:text-emerald-500`}>
+                      <span className={activeTool === tool.id && activeSelectionSource === 'normal' ? 'text-white' : `${themeKey === 'light' ? 'text-emerald-700' : 'text-emerald-400'} group-hover:text-emerald-500`}>
                         {getToolIcon(tool.icon)}
                       </span>
                       <span className="truncate">{tool.name}</span>
@@ -891,14 +1061,14 @@ export default function App() {
                   .map(tool => (
                     <button
                       key={tool.id}
-                      onClick={() => setActiveTool(tool.id)}
-                      className={`w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-left text-xs transition-all border group ${
-                        activeTool === tool.id
+                      onClick={() => navigateToTool(tool.id, 'normal')}
+                      className={`w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-left text-xs transition-all border group cursor-pointer ${
+                        activeTool === tool.id && activeSelectionSource === 'normal'
                           ? `${theme.activeNav} font-bold shadow-md`
                           : `${theme.inactiveNav}`
                       }`}
                     >
-                      <span className={activeTool === tool.id ? 'text-white' : `${themeKey === 'light' ? 'text-rose-700' : 'text-rose-400'} group-hover:text-rose-500`}>
+                      <span className={activeTool === tool.id && activeSelectionSource === 'normal' ? 'text-white' : `${themeKey === 'light' ? 'text-rose-700' : 'text-rose-400'} group-hover:text-rose-500`}>
                         {getToolIcon(tool.icon)}
                       </span>
                       <span className="truncate">{tool.name}</span>
@@ -918,14 +1088,14 @@ export default function App() {
                   .map(tool => (
                     <button
                       key={tool.id}
-                      onClick={() => setActiveTool(tool.id)}
-                      className={`w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-left text-xs transition-all border group ${
-                        activeTool === tool.id
+                      onClick={() => navigateToTool(tool.id, 'normal')}
+                      className={`w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-left text-xs transition-all border group cursor-pointer ${
+                        activeTool === tool.id && activeSelectionSource === 'normal'
                           ? `${theme.activeNav} font-bold shadow-md`
                           : `${theme.inactiveNav}`
                       }`}
                     >
-                      <span className={activeTool === tool.id ? 'text-white' : `${themeKey === 'light' ? 'text-cyan-700' : 'text-cyan-400'} group-hover:text-cyan-500`}>
+                      <span className={activeTool === tool.id && activeSelectionSource === 'normal' ? 'text-white' : `${themeKey === 'light' ? 'text-cyan-700' : 'text-cyan-400'} group-hover:text-cyan-500`}>
                         {getToolIcon(tool.icon)}
                       </span>
                       <span className="truncate">{tool.name}</span>
@@ -945,14 +1115,14 @@ export default function App() {
                   .map(tool => (
                     <button
                       key={tool.id}
-                      onClick={() => setActiveTool(tool.id)}
-                      className={`w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-left text-xs transition-all border group ${
-                        activeTool === tool.id
+                      onClick={() => navigateToTool(tool.id, 'normal')}
+                      className={`w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-left text-xs transition-all border group cursor-pointer ${
+                        activeTool === tool.id && activeSelectionSource === 'normal'
                           ? `${theme.activeNav} font-bold shadow-md`
                           : `${theme.inactiveNav}`
                       }`}
                     >
-                      <span className={activeTool === tool.id ? 'text-white' : `${themeKey === 'light' ? 'text-amber-700' : 'text-amber-400'} group-hover:text-amber-500`}>
+                      <span className={activeTool === tool.id && activeSelectionSource === 'normal' ? 'text-white' : `${themeKey === 'light' ? 'text-amber-700' : 'text-amber-400'} group-hover:text-amber-500`}>
                         {getToolIcon(tool.icon)}
                       </span>
                       <span className="truncate">{tool.name}</span>
@@ -969,12 +1139,19 @@ export default function App() {
         <div className="flex-1 space-y-6 min-w-0">
           
           {/* Tool Identity Header */}
-          {activeTool !== 'home' && (
+          {activeTool !== 'home' && !['privacy', 'terms', 'about'].includes(activeTool) && (
             <div className={`pb-3 border-b ${theme.border} flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3`}>
               <div>
                 <h2 className={`text-xl font-extrabold tracking-tight flex items-center gap-2 ${themeKey === 'light' ? 'text-slate-800' : 'text-white'}`}>
                   {getToolIcon(TOOLS_LIST.find(t => t.id === activeTool)?.icon || 'Code')}
-                  {TOOLS_LIST.find(t => t.id === activeTool)?.name}
+                  <span>{TOOLS_LIST.find(t => t.id === activeTool)?.name}</span>
+                  <button
+                    onClick={() => toggleFavorite(activeTool)}
+                    className="p-1 rounded-lg hover:bg-slate-800/40 text-slate-500 hover:text-amber-500 transition-colors cursor-pointer"
+                    title={favorites.includes(activeTool) ? "Remove from Favorite Tools" : "Add to Favorite Tools"}
+                  >
+                    <Star className={`w-4 h-4 ${favorites.includes(activeTool) ? 'fill-amber-400 text-amber-400' : ''}`} />
+                  </button>
                 </h2>
                 <p className={`text-xs mt-1 max-w-lg leading-relaxed ${theme.textMuted}`}>
                   {TOOLS_LIST.find(t => t.id === activeTool)?.description}
@@ -994,7 +1171,19 @@ export default function App() {
           <div className="flex flex-col lg:flex-row gap-6 items-start">
             
             <div className="flex-1 min-w-0 w-full transition-all duration-350">
-              {activeTool === 'home' && <HomeTool theme={theme} tools={TOOLS_LIST} onSelectTool={(id) => setActiveTool(id)} />}
+              {activeTool === 'home' && (
+                <HomeTool 
+                  theme={theme} 
+                  tools={TOOLS_LIST} 
+                  favorites={favorites}
+                  toggleFavorite={toggleFavorite}
+                  recents={recents}
+                  onSelectTool={(id, source) => {
+                    setActiveTool(id);
+                    setActiveSelectionSource(source || 'normal');
+                  }} 
+                />
+              )}
               {activeTool === 'json' && <JsonTool theme={theme} />}
               {activeTool === 'jsonschema' && <JsonSchemaTool theme={theme} />}
               {activeTool === 'jsonpath' && <JsonPathTool theme={theme} />}
@@ -1172,6 +1361,116 @@ export default function App() {
           </div>
         </div>
       </footer>
+
+      {/* 4. INTERACTIVE COMMAND PALETTE (MODAL OVERLAY) */}
+      {isPaletteOpen && (() => {
+        const matches = TOOLS_LIST.filter(t => 
+          t.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          t.description.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+        return (
+          <div className="fixed inset-0 z-[100] flex items-start justify-center pt-[12vh] px-4">
+            {/* Backdrop */}
+            <div 
+              className="fixed inset-0 bg-slate-950/60 backdrop-blur-sm cursor-pointer"
+              onClick={() => setIsPaletteOpen(false)}
+            />
+            
+            {/* Palette Box */}
+            <div className={`relative w-full max-w-lg rounded-2xl border ${theme.card} ${theme.border} bg-slate-900/95 dark:bg-slate-950/95 shadow-2xl overflow-hidden flex flex-col max-h-[50vh] transition-all`}>
+              {/* Search Header */}
+              <div className={`p-4 border-b ${theme.border} flex items-center gap-3 bg-slate-950/30`}>
+                <Command className="w-4 h-4 text-indigo-400 shrink-0" />
+                <input
+                  type="text"
+                  autoFocus
+                  placeholder="Type to search utility tools... (e.g. JSON, JWT, Hash)"
+                  className={`w-full bg-transparent border-0 text-xs ${themeKey === 'light' ? 'text-slate-800' : 'text-white'} focus:ring-0 focus:outline-none placeholder:text-slate-500 font-sans`}
+                  value={searchQuery}
+                  onChange={(e) => {
+                    setSearchQuery(e.target.value);
+                    setPaletteSelectedIndex(0);
+                  }}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Escape') {
+                      setIsPaletteOpen(false);
+                    } else if (e.key === 'ArrowDown') {
+                      e.preventDefault();
+                      setPaletteSelectedIndex(prev => (prev + 1) % (matches.length || 1));
+                    } else if (e.key === 'ArrowUp') {
+                      e.preventDefault();
+                      setPaletteSelectedIndex(prev => (prev - 1 + (matches.length || 1)) % (matches.length || 1));
+                    } else if (e.key === 'Enter') {
+                      e.preventDefault();
+                      if (matches[paletteSelectedIndex]) {
+                        navigateToTool(matches[paletteSelectedIndex].id, 'normal');
+                        setIsPaletteOpen(false);
+                      }
+                    }
+                  }}
+                />
+                <span className="text-[10px] bg-slate-800 text-slate-400 px-1.5 py-0.5 rounded border border-slate-700 font-mono shrink-0">
+                  ESC
+                </span>
+              </div>
+
+              {/* Results */}
+              <div className="flex-1 overflow-y-auto p-2 space-y-0.5">
+                {matches.map((tool, idx) => {
+                  const isSelected = idx === paletteSelectedIndex;
+                  return (
+                    <button
+                      key={`palette-item-${tool.id}`}
+                      onClick={() => {
+                        navigateToTool(tool.id, 'normal');
+                        setIsPaletteOpen(false);
+                      }}
+                      onMouseEnter={() => setPaletteSelectedIndex(idx)}
+                      className={`w-full text-left px-3.5 py-2.5 rounded-xl flex items-center justify-between group transition-all ${
+                        isSelected 
+                          ? 'bg-indigo-600 text-white shadow-md' 
+                          : 'hover:bg-slate-800/20 text-slate-350'
+                      }`}
+                    >
+                      <div className="flex items-center gap-3 min-w-0">
+                        <span className={`${isSelected ? 'text-white' : 'text-indigo-400'} shrink-0`}>
+                          {getToolIcon(tool.icon)}
+                        </span>
+                        <div className="min-w-0 text-left">
+                          <p className={`text-xs font-bold truncate ${isSelected ? 'text-white' : (themeKey === 'light' ? 'text-slate-800' : 'text-slate-100')}`}>
+                            {tool.name}
+                          </p>
+                          <p className={`text-[10px] truncate ${isSelected ? 'text-indigo-200' : 'text-slate-400'}`}>
+                            {tool.description}
+                          </p>
+                        </div>
+                      </div>
+                      <span className={`text-[9px] font-mono font-bold uppercase shrink-0 transition-opacity flex items-center gap-1 ${isSelected ? 'opacity-100 text-white' : 'opacity-0 group-hover:opacity-100 text-indigo-400'}`}>
+                        Launch <ChevronRight className="w-3 h-3" />
+                      </span>
+                    </button>
+                  );
+                })}
+
+                {matches.length === 0 && (
+                  <div className="p-8 text-center text-slate-500 text-xs font-mono">
+                    No matching utilities found. Try searching for JSON, Base64, SQL, Webhook, color, or Docker.
+                  </div>
+                )}
+              </div>
+
+              {/* Footer */}
+              <div className={`p-3 border-t ${theme.border} bg-slate-950/20 text-[9px] text-slate-500 font-mono flex items-center justify-between`}>
+                <span className="flex items-center gap-1">
+                  <Keyboard className="w-3.5 h-3.5" />
+                  <span>Navigate with <kbd className="bg-slate-800 text-slate-400 px-1 rounded border border-slate-700/60 font-bold">↑↓</kbd> arrows</span>
+                </span>
+                <span>Press <kbd className="bg-slate-800 text-slate-400 px-1 rounded border border-slate-700/60 font-bold font-mono">Enter</kbd> to launch</span>
+              </div>
+            </div>
+          </div>
+        );
+      })()}
 
     </div>
   );
