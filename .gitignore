@@ -6,11 +6,8 @@ coverage/
 *.log
 .env*
 !.env.example
-/.vs/of.owncircles.com/CopilotIndices/17.14.1530.14912
-/.vs/of.owncircles.com/FileContentIndex
-/.vs/of.owncircles.com/v17/.wsuo
-/.vs/of.owncircles.com/v17/DocumentLayout.backup.json
-/.vs/of.owncircles.com/v17/DocumentLayout.json
-*.json
-*.sqlite
+/.vs/of.owncircles.com
+/.vs/ProjectSettings.json
+/.vs/slnx.sqlite
+/.vs/slnx.sqlite-journal
 /.vs/VSWorkspaceState.json
