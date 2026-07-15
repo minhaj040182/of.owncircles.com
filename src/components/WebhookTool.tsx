@@ -37,12 +37,12 @@ const GITHUB_TEMPLATE = `{
     "private": false,
     "owner": {
       "name": "developer",
-      "email": "dev@owncircles.com"
+      "email": "dev@ownformatters.com"
     }
   },
   "pusher": {
     "name": "developer",
-    "email": "dev@owncircles.com"
+    "email": "dev@ownformatters.com"
   },
   "commits": [
     {
@@ -91,7 +91,7 @@ export default function WebhookTool({ theme }: { theme?: any }) {
   const [selectedTemplate, setSelectedTemplate] = useState<'stripe' | 'github' | 'shopify' | 'custom'>('stripe');
   const [payload, setPayload] = useState<string>(STRIPE_TEMPLATE);
   const [targetUrl, setTargetUrl] = useState<string>('http://localhost:8080/webhooks');
-  const [secret, setSecret] = useState<string>('whsec_owncircles_secret_key_2026');
+  const [secret, setSecret] = useState<string>('whsec_ownformatters_secret_key_2026');
   const [signatureHeaderName, setSignatureHeaderName] = useState<string>('Stripe-Signature');
   const [generatedSignature, setGeneratedSignature] = useState<string>('');
   const [dispatchStatus, setDispatchStatus] = useState<{ type: 'idle' | 'success' | 'error'; message: string }>({ type: 'idle', message: '' });

@@ -33,8 +33,8 @@ export default function AboutTool({ theme }: AboutToolProps) {
 
     setIsSubmitting(true);
 
-    // Obfuscated recipient email address: minhaj@owncircles.com
-    const recipient = atob('bWluaGFqQG93bmNpcmNsZXMuY29t');
+    // Obfuscated recipient email address: minhaj@ownformatters.com
+    const recipient = atob('bWluaGFqQG93bmZvcm1hdHRlcnMuY29t');
     const mailtoUrl = `mailto:${recipient}?subject=${encodeURIComponent(subject + ' - ' + name)}&body=${encodeURIComponent(
       `Developer Inquiry from OwnFormatters\n` +
       `====================================\n\n` +

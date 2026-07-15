@@ -77,7 +77,7 @@ This client-side utility translates **Markdown** structures into clean compiled 
 - Unordered bullets lists:
   - Standard indentation
   - Clean margins
-- Interactive hyperlink anchor connections: [Visit OwnCircles](https://owncircles.com)
+- Interactive hyperlink anchor connections: [Visit OwnFormatter](https://ownformatters.com)
 
 > "Markdown is an exceptionally powerful, lightweight markup language that guarantees formatting uniformity across the web."
 

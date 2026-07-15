@@ -1,205 +1,205 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://of.owncircles.com/</loc>
+    <loc>https://ownformatters.com/</loc>
     <lastmod>2026-07-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://of.owncircles.com/json-formatter</loc>
+    <loc>https://ownformatters.com/json-formatter</loc>
     <lastmod>2026-07-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://of.owncircles.com/json-schema-generator</loc>
+    <loc>https://ownformatters.com/json-schema-generator</loc>
     <lastmod>2026-07-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://of.owncircles.com/jsonpath-tester</loc>
+    <loc>https://ownformatters.com/jsonpath-tester</loc>
     <lastmod>2026-07-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://of.owncircles.com/yaml-converter</loc>
+    <loc>https://ownformatters.com/yaml-converter</loc>
     <lastmod>2026-07-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://of.owncircles.com/xml-formatter</loc>
+    <loc>https://ownformatters.com/xml-formatter</loc>
     <lastmod>2026-07-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://of.owncircles.com/sql-formatter</loc>
+    <loc>https://ownformatters.com/sql-formatter</loc>
     <lastmod>2026-07-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://of.owncircles.com/code-minifier</loc>
+    <loc>https://ownformatters.com/code-minifier</loc>
     <lastmod>2026-07-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://of.owncircles.com/api-tester</loc>
+    <loc>https://ownformatters.com/api-tester</loc>
     <lastmod>2026-07-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://of.owncircles.com/graphql-tester</loc>
+    <loc>https://ownformatters.com/graphql-tester</loc>
     <lastmod>2026-07-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://of.owncircles.com/openapi-viewer</loc>
+    <loc>https://ownformatters.com/openapi-viewer</loc>
     <lastmod>2026-07-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://of.owncircles.com/webhook-tester</loc>
+    <loc>https://ownformatters.com/webhook-tester</loc>
     <lastmod>2026-07-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://of.owncircles.com/mock-api-server</loc>
+    <loc>https://ownformatters.com/mock-api-server</loc>
     <lastmod>2026-07-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://of.owncircles.com/docker-compose-validator</loc>
+    <loc>https://ownformatters.com/docker-compose-validator</loc>
     <lastmod>2026-07-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://of.owncircles.com/k8s-yaml-validator</loc>
+    <loc>https://ownformatters.com/k8s-yaml-validator</loc>
     <lastmod>2026-07-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://of.owncircles.com/nginx-config-formatter</loc>
+    <loc>https://ownformatters.com/nginx-config-formatter</loc>
     <lastmod>2026-07-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://of.owncircles.com/base64-encoder</loc>
+    <loc>https://ownformatters.com/base64-encoder</loc>
     <lastmod>2026-07-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://of.owncircles.com/url-encoder</loc>
+    <loc>https://ownformatters.com/url-encoder</loc>
     <lastmod>2026-07-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://of.owncircles.com/jwt-debugger</loc>
+    <loc>https://ownformatters.com/jwt-debugger</loc>
     <lastmod>2026-07-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://of.owncircles.com/timestamp-converter</loc>
+    <loc>https://ownformatters.com/timestamp-converter</loc>
     <lastmod>2026-07-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://of.owncircles.com/text-utility</loc>
+    <loc>https://ownformatters.com/text-utility</loc>
     <lastmod>2026-07-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://of.owncircles.com/hash-generator</loc>
+    <loc>https://ownformatters.com/hash-generator</loc>
     <lastmod>2026-07-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://of.owncircles.com/uuid-generator</loc>
+    <loc>https://ownformatters.com/uuid-generator</loc>
     <lastmod>2026-07-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://of.owncircles.com/qrcode-generator</loc>
+    <loc>https://ownformatters.com/qrcode-generator</loc>
     <lastmod>2026-07-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://of.owncircles.com/markdown-editor</loc>
+    <loc>https://ownformatters.com/markdown-editor</loc>
     <lastmod>2026-07-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://of.owncircles.com/csv-converter</loc>
+    <loc>https://ownformatters.com/csv-converter</loc>
     <lastmod>2026-07-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://of.owncircles.com/color-converter</loc>
+    <loc>https://ownformatters.com/color-converter</loc>
     <lastmod>2026-07-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://of.owncircles.com/number-base-converter</loc>
+    <loc>https://ownformatters.com/number-base-converter</loc>
     <lastmod>2026-07-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://of.owncircles.com/cron-parser</loc>
+    <loc>https://ownformatters.com/cron-parser</loc>
     <lastmod>2026-07-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://of.owncircles.com/regex-tester</loc>
+    <loc>https://ownformatters.com/regex-tester</loc>
     <lastmod>2026-07-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://of.owncircles.com/text-diff</loc>
+    <loc>https://ownformatters.com/text-diff</loc>
     <lastmod>2026-07-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://of.owncircles.com/privacy-policy</loc>
+    <loc>https://ownformatters.com/privacy-policy</loc>
     <lastmod>2026-07-14</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://of.owncircles.com/terms-of-service</loc>
+    <loc>https://ownformatters.com/terms-of-service</loc>
     <lastmod>2026-07-14</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://of.owncircles.com/about-us</loc>
+    <loc>https://ownformatters.com/about-us</loc>
     <lastmod>2026-07-14</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>

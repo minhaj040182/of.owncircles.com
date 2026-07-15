@@ -2,16 +2,16 @@ import React, { useState } from 'react';
 import { Copy, Check, Trash2, FileSpreadsheet, Sparkles, CheckCircle, AlertCircle, ArrowLeftRight, Download } from 'lucide-react';
 
 const SAMPLE_CSV = `id,name,email,role,active,salary
-101,John Doe,john@owncircles.com,Engineer,true,95000
-102,Jane Smith,jane@owncircles.com,Manager,true,115000
-103,Mark Wilson,mark@owncircles.com,Designer,false,80000
-104,Amy Adams,amy@owncircles.com,Director,true,145000`;
+101,John Doe,john@ownformatters.com,Engineer,true,95000
+102,Jane Smith,jane@ownformatters.com,Manager,true,115000
+103,Mark Wilson,mark@ownformatters.com,Designer,false,80000
+104,Amy Adams,amy@ownformatters.com,Director,true,145000`;
 
 const SAMPLE_JSON = `[
   {
     "id": 101,
     "name": "John Doe",
-    "email": "john@owncircles.com",
+    "email": "john@ownformatters.com",
     "role": "Engineer",
     "active": true,
     "salary": 95000
@@ -19,7 +19,7 @@ const SAMPLE_JSON = `[
   {
     "id": 102,
     "name": "Jane Smith",
-    "email": "jane@owncircles.com",
+    "email": "jane@ownformatters.com",
     "role": "Manager",
     "active": true,
     "salary": 115000
@@ -27,7 +27,7 @@ const SAMPLE_JSON = `[
   {
     "id": 103,
     "name": "Mark Wilson",
-    "email": "mark@owncircles.com",
+    "email": "mark@ownformatters.com",
     "role": "Designer",
     "active": false,
     "salary": 80000

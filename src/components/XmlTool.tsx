@@ -6,8 +6,8 @@ const SAMPLE_XML = `<?xml version="1.0" encoding="UTF-8"?>
 <ownformatters>
   <app name="OwnFormatters" version="2.4.0">
     <author>
-      <name>OwnCircles Tech</name>
-      <email>contact@owncircles.com</email>
+      <name>OwnFormatters Tech</name>
+      <email>contact@ownformatters.com</email>
     </author>
     <modules>
       <module id="json" active="true"/>
@@ -25,8 +25,8 @@ const SAMPLE_JSON = `{
         "version": "2.4.0"
       },
       "author": {
-        "name": "OwnCircles Tech",
-        "email": "contact@owncircles.com"
+        "name": "OwnFormatters Tech",
+        "email": "contact@ownformatters.com"
       },
       "modules": {
         "module": [

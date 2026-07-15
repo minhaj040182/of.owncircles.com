@@ -23,7 +23,7 @@ const PRESETS = [
     name: 'Email Address',
     pattern: '[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}',
     flags: 'g',
-    text: 'Please reach out to support@owncircles.com or contact our administration at admin-group@owncircles.org.'
+    text: 'Please reach out to support@ownformatters.com or contact our administration at admin-group@ownformatters.org.'
   },
   {
     name: 'Phone Number (US)',
@@ -48,7 +48,7 @@ const PRESETS = [
 export default function RegexTool({ theme }: RegexToolProps) {
   const [pattern, setPattern] = useState<string>('[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}');
   const [flags, setFlags] = useState<string>('g');
-  const [testText, setTestText] = useState<string>('Please reach out to support@owncircles.com or contact our administration at admin-group@owncircles.org.');
+  const [testText, setTestText] = useState<string>('Please reach out to support@ownformatters.com or contact our administration at admin-group@ownformatters.org.');
   
   const [matches, setMatches] = useState<any[]>([]);
   const [regexError, setRegexError] = useState<string>('');

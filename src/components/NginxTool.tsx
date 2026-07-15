@@ -32,7 +32,7 @@ const TEMPLATES = [
     name: 'Secure SSL Reverse Proxy',
     code: `server {
     listen 80;
-    server_name app.owncircles.com;
+    server_name app.ownformatters.com;
     
     # Force HTTP to HTTPS redirection
     return 301 https://$host$request_uri;
@@ -40,10 +40,10 @@ const TEMPLATES = [
 
 server {
     listen 443 ssl http2;
-    server_name app.owncircles.com;
+    server_name app.ownformatters.com;
 
-    ssl_certificate /etc/letsencrypt/live/app.owncircles.com/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/app.owncircles.com/privkey.pem;
+    ssl_certificate /etc/letsencrypt/live/app.ownformatters.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/app.ownformatters.com/privkey.pem;
     
     # Modern secure SSL protocols
     ssl_protocols TLSv1.2 TLSv1.3;
@@ -73,7 +73,7 @@ server {
     name: 'Static HTML Web Server with Gzip',
     code: `server {
     listen 80;
-    server_name of.owncircles.com;
+    server_name of.ownformatters.com;
 
     root /var/www/ownformatters/dist;
     index index.html index.htm;
@@ -108,7 +108,7 @@ server {
     name: 'PHP-FPM FastCGI Configuration',
     code: `server {
     listen 80;
-    server_name blog.owncircles.com;
+    server_name blog.ownformatters.com;
     root /var/www/wordpress;
     index index.php index.html;
 

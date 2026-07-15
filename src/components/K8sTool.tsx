@@ -92,7 +92,7 @@ metadata:
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
 spec:
   rules:
-  - host: app.owncircles.com
+  - host: app.ownformatters.com
     http:
       paths:
       - path: /api

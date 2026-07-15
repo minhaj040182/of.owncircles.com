@@ -19,7 +19,7 @@ interface QrcodeToolProps {
 }
 
 export default function QrcodeTool({ theme }: QrcodeToolProps) {
-  const [text, setText] = useState<string>('https://of.owncircles.com');
+  const [text, setText] = useState<string>('https://ownformatters.com');
   const [size, setSize] = useState<number>(250);
   const [fgColor, setFgColor] = useState<string>('000000'); // Hex without '#' for api.qrserver.com
   const [bgColor, setBgColor] = useState<string>('ffffff'); // Hex without '#'
@@ -89,7 +89,7 @@ export default function QrcodeTool({ theme }: QrcodeToolProps) {
                   ? 'bg-white border-slate-250 text-slate-800' 
                   : 'bg-slate-950 border-slate-800 text-slate-200'
               }`}
-              placeholder="e.g. https://of.owncircles.com"
+              placeholder="e.g. https://ownformatters.com"
               value={text}
               onChange={(e) => setText(e.target.value)}
             />
