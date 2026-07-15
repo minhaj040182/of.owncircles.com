@@ -358,6 +358,9 @@ const TOOL_TO_PATH_MAP: Record<ToolId, string> = {
   privacy: '/privacy-policy',
   terms: '/terms-of-service',
   about: '/about-us',
+  ads_txt: '/Ads.txt',
+  robots_txt: '/robots.txt',
+  sitemap_xml: '/sitemap.xml',
 };
 
 // Global ads feature flag for AdSense sandboxing and SEO reviews
@@ -517,7 +520,7 @@ const BASE_PATH = (() => {
   if (typeof window === 'undefined') return '';
   const path = window.location.pathname;
   // If the path looks like a static file (ends with .txt, .xml, etc.), do not treat as BASE_PATH
-  if (/\.[a-zA-Z0-9]+$/.test(path)) {
+  if (/\.[a-zA-Z0-9]+(\/)?$/.test(path)) {
     return '';
   }
   const mappedPath = Object.keys(PATH_TO_TOOL_MAP).find(p => path === p || path.endsWith(p));
@@ -526,6 +529,9 @@ const BASE_PATH = (() => {
   }
   const cleanPath = path.replace(/\/$/, '');
   if (cleanPath && !Object.keys(PATH_TO_TOOL_MAP).some(p => p === cleanPath)) {
+    if (/\.[a-zA-Z0-9]+$/.test(cleanPath)) {
+      return '';
+    }
     return cleanPath;
   }
   return '';
@@ -582,6 +588,32 @@ export default function App() {
 
   const theme = THEMES[themeKey];
 
+  const [staticFileContent, setStaticFileContent] = useState<string>('');
+
+  useEffect(() => {
+    if (['ads_txt', 'robots_txt', 'sitemap_xml'].includes(activeTool)) {
+      let fileName = '';
+      if (activeTool === 'ads_txt') {
+        fileName = '/Ads.txt';
+      } else if (activeTool === 'robots_txt') {
+        fileName = '/robots.txt';
+      } else if (activeTool === 'sitemap_xml') {
+        fileName = '/sitemap.xml';
+      }
+
+      fetch(BASE_PATH + fileName)
+        .then(res => {
+          if (!res.ok && activeTool === 'ads_txt') {
+            return fetch(BASE_PATH + '/ads.txt');
+          }
+          return res;
+        })
+        .then(res => res.text())
+        .then(text => setStaticFileContent(text))
+        .catch(err => setStaticFileContent('Error loading file: ' + err.message));
+    }
+  }, [activeTool]);
+
   useEffect(() => {
     localStorage.setItem('ownformatters-theme', themeKey);
   }, [themeKey]);
@@ -618,6 +650,22 @@ export default function App() {
       }
       if (relativePath === '' || relativePath === '/') {
         relativePath = '/home';
+      }
+
+      // Intercept and route static file requests before tool mapping redirects them to /home
+      const normPath = relativePath.toLowerCase().replace(/\/$/, '');
+      if (normPath === '/ads.txt') {
+        setActiveTool('ads_txt');
+        setActiveSelectionSource('normal');
+        return;
+      } else if (normPath === '/robots.txt') {
+        setActiveTool('robots_txt');
+        setActiveSelectionSource('normal');
+        return;
+      } else if (normPath === '/sitemap.xml') {
+        setActiveTool('sitemap_xml');
+        setActiveSelectionSource('normal');
+        return;
       }
 
       let validTool = PATH_TO_TOOL_MAP[relativePath];
@@ -745,6 +793,14 @@ export default function App() {
       default: return 'from-slate-500/20 to-slate-500/10 border-slate-500/30 text-slate-400';
     }
   };
+
+  if (['ads_txt', 'robots_txt', 'sitemap_xml'].includes(activeTool)) {
+    return (
+      <pre style={{ wordWrap: 'break-word', whiteSpace: 'pre-wrap', padding: '16px', fontFamily: 'monospace' }}>
+        {staticFileContent || 'Loading...'}
+      </pre>
+    );
+  }
 
   return (
     <div className={`min-h-screen ${theme.bg} ${theme.text} ${themeKey === 'light' ? 'theme-light' : 'theme-dark'} font-scale-${fontSize} font-sans selection:bg-indigo-600/30 selection:text-indigo-200 flex flex-col relative transition-colors duration-250`}>

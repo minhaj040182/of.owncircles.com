@@ -38,7 +38,10 @@ export type ToolId =
   | 'diff'
   | 'privacy'
   | 'terms'
-  | 'about';
+  | 'about'
+  | 'ads_txt'
+  | 'robots_txt'
+  | 'sitemap_xml';
 
 export interface ToolDefinition {
   id: ToolId;
