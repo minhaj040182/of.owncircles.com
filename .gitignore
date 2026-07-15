@@ -7,7 +7,4 @@ coverage/
 .env*
 !.env.example
 /.vs/of.owncircles.com
-/.vs/ProjectSettings.json
-/.vs/slnx.sqlite
-/.vs/slnx.sqlite-journal
-/.vs/VSWorkspaceState.json
+/.vs
