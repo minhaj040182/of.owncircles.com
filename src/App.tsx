@@ -516,6 +516,10 @@ const THEMES = {
 const BASE_PATH = (() => {
   if (typeof window === 'undefined') return '';
   const path = window.location.pathname;
+  // If the path looks like a static file (ends with .txt, .xml, etc.), do not treat as BASE_PATH
+  if (/\.[a-zA-Z0-9]+$/.test(path)) {
+    return '';
+  }
   const mappedPath = Object.keys(PATH_TO_TOOL_MAP).find(p => path === p || path.endsWith(p));
   if (mappedPath) {
     return path.substring(0, path.length - mappedPath.length);
@@ -856,7 +860,11 @@ export default function App() {
       {/* PREMIUM HERO BANNER */}
       <section className={`relative pt-10 pb-8 px-4 lg:px-6 overflow-hidden border-b ${theme.border} w-full ${theme.heroBg || ''}`}>
         <div className="w-full flex flex-col md:flex-row md:items-center md:justify-between gap-6">
-          <div className="space-y-3 max-w-3xl">            
+          <div className="space-y-3 max-w-3xl">
+            <div className={`inline-flex items-center gap-1.5 px-3 py-1 text-xs font-bold rounded-full shadow-sm ${theme.badgeBg}`}>
+              <ShieldCheck className="w-3.5 h-3.5" />
+              <span>Active Encryption Sandboxed</span>
+            </div>
             <h1 className={`text-2xl md:text-4xl font-black tracking-tight leading-tight ${themeKey === 'light' ? 'text-slate-800' : 'text-white'}`}>
               OwnFormatters <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 via-violet-500 to-indigo-600 dark:from-indigo-400 dark:via-violet-300 dark:to-indigo-400">Developer Utility Suite</span>
             </h1>
