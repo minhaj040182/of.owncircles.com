@@ -93,3 +93,103 @@
   color: #4f46e5 !important;
   border-color: #e0e4fd !important;
 }
+
+/* ACCESSIBILITY FONT SIZE SCALING ENGINE */
+/* 1. Large Scale (A+) */
+.font-scale-large .text-xs,
+.font-scale-large textarea.text-xs,
+.font-scale-large input.text-xs,
+.font-scale-large pre.text-xs,
+.font-scale-large code.text-xs,
+.font-scale-large .font-mono.text-xs {
+  font-size: 0.875rem !important; /* text-sm equivalent */
+}
+.font-scale-large .text-sm,
+.font-scale-large textarea.text-sm,
+.font-scale-large input.text-sm,
+.font-scale-large pre.text-sm,
+.font-scale-large code.text-sm,
+.font-scale-large .font-mono.text-sm {
+  font-size: 1rem !important; /* text-base equivalent */
+}
+.font-scale-large .text-base,
+.font-scale-large textarea.text-base,
+.font-scale-large input.text-base,
+.font-scale-large select.text-base {
+  font-size: 1.125rem !important; /* text-lg equivalent */
+}
+.font-scale-large textarea,
+.font-scale-large input,
+.font-scale-large select {
+  font-size: 14px !important;
+}
+.font-scale-large pre,
+.font-scale-large code {
+  font-size: 13px !important;
+}
+
+/* 2. Larger Scale (A++) */
+.font-scale-larger .text-xs,
+.font-scale-larger textarea.text-xs,
+.font-scale-larger input.text-xs,
+.font-scale-larger pre.text-xs,
+.font-scale-larger code.text-xs,
+.font-scale-larger .font-mono.text-xs {
+  font-size: 1rem !important; /* text-base equivalent */
+}
+.font-scale-larger .text-sm,
+.font-scale-larger textarea.text-sm,
+.font-scale-larger input.text-sm,
+.font-scale-larger pre.text-sm,
+.font-scale-larger code.text-sm,
+.font-scale-larger .font-mono.text-sm {
+  font-size: 1.125rem !important; /* text-lg equivalent */
+}
+.font-scale-larger .text-base,
+.font-scale-larger textarea.text-base,
+.font-scale-larger input.text-base,
+.font-scale-larger select.text-base {
+  font-size: 1.25rem !important; /* text-xl equivalent */
+}
+.font-scale-larger textarea,
+.font-scale-larger input,
+.font-scale-larger select {
+  font-size: 16px !important;
+}
+.font-scale-larger pre,
+.font-scale-larger code {
+  font-size: 15px !important;
+}
+
+/* 3. Largest Scale (A+++) */
+.font-scale-largest .text-xs,
+.font-scale-largest textarea.text-xs,
+.font-scale-largest input.text-xs,
+.font-scale-largest pre.text-xs,
+.font-scale-largest code.text-xs,
+.font-scale-largest .font-mono.text-xs {
+  font-size: 1.125rem !important; /* text-lg equivalent */
+}
+.font-scale-largest .text-sm,
+.font-scale-largest textarea.text-sm,
+.font-scale-largest input.text-sm,
+.font-scale-largest pre.text-sm,
+.font-scale-largest code.text-sm,
+.font-scale-largest .font-mono.text-sm {
+  font-size: 1.25rem !important; /* text-xl equivalent */
+}
+.font-scale-largest .text-base,
+.font-scale-largest textarea.text-base,
+.font-scale-largest input.text-base,
+.font-scale-largest select.text-base {
+  font-size: 1.5rem !important; /* text-2xl equivalent */
+}
+.font-scale-largest textarea,
+.font-scale-largest input,
+.font-scale-largest select {
+  font-size: 18px !important;
+}
+.font-scale-largest pre,
+.font-scale-largest code {
+  font-size: 17px !important;
+}

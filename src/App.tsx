@@ -30,7 +30,8 @@ import {
   Home,
   Layers,
   Cpu,
-  Server
+  Server,
+  Type
 } from 'lucide-react';
 
 import JsonTool from './components/JsonTool';
@@ -516,11 +517,23 @@ export default function App() {
     return (saved && THEMES[saved as keyof typeof THEMES]) ? (saved as keyof typeof THEMES) : 'obsidian';
   });
 
+  // Dynamic Font Size state
+  const [fontSize, setFontSize] = useState<'normal' | 'large' | 'larger' | 'largest'>(() => {
+    const saved = localStorage.getItem('ownformatters-font-size');
+    return (saved && ['normal', 'large', 'larger', 'largest'].includes(saved)) 
+      ? (saved as 'normal' | 'large' | 'larger' | 'largest') 
+      : 'normal';
+  });
+
   const theme = THEMES[themeKey];
 
   useEffect(() => {
     localStorage.setItem('ownformatters-theme', themeKey);
   }, [themeKey]);
+
+  useEffect(() => {
+    localStorage.setItem('ownformatters-font-size', fontSize);
+  }, [fontSize]);
 
   // 1. DYNAMIC URL ROUTER (SEO-Friendly Clean Path URLs)
   useEffect(() => {
@@ -635,7 +648,7 @@ export default function App() {
   };
 
   return (
-    <div className={`min-h-screen ${theme.bg} ${theme.text} ${themeKey === 'light' ? 'theme-light' : 'theme-dark'} font-sans selection:bg-indigo-600/30 selection:text-indigo-200 flex flex-col relative transition-colors duration-250`}>
+    <div className={`min-h-screen ${theme.bg} ${theme.text} ${themeKey === 'light' ? 'theme-light' : 'theme-dark'} font-scale-${fontSize} font-sans selection:bg-indigo-600/30 selection:text-indigo-200 flex flex-col relative transition-colors duration-250`}>
       
       {/* GRID PATTERN BACKDROP (Conditional on theme dark) */}
       {theme.isDark && (
@@ -665,31 +678,68 @@ export default function App() {
             </div>
           </div>
 
-          {/* Dynamic Template Selection Presets */}
-          <div className={`flex items-center gap-2 p-1 rounded-xl border ${theme.card} ${theme.border}`}>
-            <span className={`text-[10px] font-bold uppercase font-mono px-2 ${theme.textMuted}`}>Theme:</span>
-            <div className="flex items-center gap-1">
-              {(Object.keys(THEMES) as Array<keyof typeof THEMES>).map((key) => {
-                const tInfo = THEMES[key];
-                const isActive = themeKey === key;
-                return (
-                  <button
-                    key={key}
-                    onClick={() => setThemeKey(key)}
-                    className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all duration-150 flex items-center gap-1.5 ${
-                      isActive 
-                        ? '!bg-indigo-600 !text-white shadow-sm border border-indigo-500' 
-                        : `${theme.inactiveNav} border`
-                    }`}
-                    title={tInfo.name}
-                  >
-                    <span className={`w-2 h-2 rounded-full ${
-                      key === 'obsidian' ? 'bg-indigo-400' : 'bg-slate-400 border border-slate-300'
-                    }`} />
-                    <span>{tInfo.name}</span>
-                  </button>
-                );
-              })}
+          {/* Controls Hub: Theme & Font Switchers */}
+          <div className="flex flex-col sm:flex-row items-center gap-3">
+            {/* Dynamic Template Selection Presets */}
+            <div className={`flex items-center gap-2 p-1 rounded-xl border ${theme.card} ${theme.border}`}>
+              <span className={`text-[10px] font-bold uppercase font-mono px-2 ${theme.textMuted}`}>Theme:</span>
+              <div className="flex items-center gap-1">
+                {(Object.keys(THEMES) as Array<keyof typeof THEMES>).map((key) => {
+                  const tInfo = THEMES[key];
+                  const isActive = themeKey === key;
+                  return (
+                    <button
+                      key={key}
+                      onClick={() => setThemeKey(key)}
+                      className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all duration-150 flex items-center gap-1.5 ${
+                        isActive 
+                          ? '!bg-indigo-600 !text-white shadow-sm border border-indigo-500' 
+                          : `${theme.inactiveNav} border`
+                      }`}
+                      title={tInfo.name}
+                    >
+                      <span className={`w-2 h-2 rounded-full ${
+                        key === 'obsidian' ? 'bg-indigo-400' : 'bg-slate-400 border border-slate-300'
+                      }`} />
+                      <span>{tInfo.name}</span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Accessibility Font Size Selector */}
+            <div className={`flex items-center gap-2 p-1 rounded-xl border ${theme.card} ${theme.border}`}>
+              <span className={`text-[10px] font-bold uppercase font-mono px-2 ${theme.textMuted} flex items-center gap-1`}>
+                <Type className="w-3.5 h-3.5" />
+                <span>Font:</span>
+              </span>
+              <div className="flex items-center gap-0.5">
+                {(['normal', 'large', 'larger', 'largest'] as const).map((size) => {
+                  const labels = { normal: 'A', large: 'A+', larger: 'A++', largest: 'A+++' };
+                  const titles = {
+                    normal: 'Standard Font Size (A)',
+                    large: 'Medium Font Size (A+)',
+                    larger: 'Large Font Size (A++)',
+                    largest: 'Extra Large Font Size (A+++)'
+                  };
+                  const isActive = fontSize === size;
+                  return (
+                    <button
+                      key={size}
+                      onClick={() => setFontSize(size)}
+                      className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all duration-150 ${
+                        isActive 
+                          ? '!bg-indigo-600 !text-white shadow-sm border border-indigo-550' 
+                          : `${theme.inactiveNav} border`
+                      }`}
+                      title={titles[size]}
+                    >
+                      {labels[size]}
+                    </button>
+                  );
+                })}
+              </div>
             </div>
           </div>
 
