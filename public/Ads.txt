@@ -1,1 +1,2 @@
-google.com, pub-4969321741365615, DIRECT, f08c47fec0942fa0
+# OwnFormatters ads.txt
+# Insert your ad network authorized seller records here
