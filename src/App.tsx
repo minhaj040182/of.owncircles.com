@@ -76,6 +76,7 @@ import HomeTool from './components/HomeTool';
 import PrivacyTool from './components/PrivacyTool';
 import TermsTool from './components/TermsTool';
 import AboutTool from './components/AboutTool';
+import IndexNowTool from './components/IndexNowTool';
 
 import { ToolId, ToolDefinition } from './types';
 
@@ -163,6 +164,13 @@ const TOOLS_LIST: ToolDefinition[] = [
     description: 'Build REST endpoints, simulate response latencies, and capture client transaction logs.',
     category: 'network',
     icon: 'Server'
+  },
+  {
+    id: 'indexnow',
+    name: 'IndexNow URL Submitter',
+    description: 'Submit bulk URLs instantly to search engines like Bing, Yandex, and Seznam via the IndexNow API protocol.',
+    category: 'network',
+    icon: 'Globe'
   },
   {
     id: 'docker',
@@ -320,6 +328,7 @@ const PATH_TO_TOOL_MAP: Record<string, ToolId> = {
   '/privacy-policy': 'privacy',
   '/terms-of-service': 'terms',
   '/about-us': 'about',
+  '/indexnow-submitter': 'indexnow',
 };
 
 const TOOL_TO_PATH_MAP: Record<ToolId, string> = {
@@ -361,6 +370,8 @@ const TOOL_TO_PATH_MAP: Record<ToolId, string> = {
   ads_txt: '/Ads.txt',
   robots_txt: '/robots.txt',
   sitemap_xml: '/sitemap.xml',
+  indexnow: '/indexnow-submitter',
+  indexnow_key: '/4b1050e9944447399a9f01ecb66e24fc.txt',
 };
 
 // Global ads feature flag for AdSense sandboxing and SEO reviews
@@ -591,7 +602,7 @@ export default function App() {
   const [staticFileContent, setStaticFileContent] = useState<string>('');
 
   useEffect(() => {
-    if (['ads_txt', 'robots_txt', 'sitemap_xml'].includes(activeTool)) {
+    if (['ads_txt', 'robots_txt', 'sitemap_xml', 'indexnow_key'].includes(activeTool)) {
       let fileName = '';
       if (activeTool === 'ads_txt') {
         fileName = '/Ads.txt';
@@ -599,6 +610,8 @@ export default function App() {
         fileName = '/robots.txt';
       } else if (activeTool === 'sitemap_xml') {
         fileName = '/sitemap.xml';
+      } else if (activeTool === 'indexnow_key') {
+        fileName = '/4b1050e9944447399a9f01ecb66e24fc.txt';
       }
 
       fetch(BASE_PATH + fileName)
@@ -664,6 +677,10 @@ export default function App() {
         return;
       } else if (normPath === '/sitemap.xml') {
         setActiveTool('sitemap_xml');
+        setActiveSelectionSource('normal');
+        return;
+      } else if (normPath === '/4b1050e9944447399a9f01ecb66e24fc.txt') {
+        setActiveTool('indexnow_key');
         setActiveSelectionSource('normal');
         return;
       }
@@ -794,7 +811,7 @@ export default function App() {
     }
   };
 
-  if (['ads_txt', 'robots_txt', 'sitemap_xml'].includes(activeTool)) {
+  if (['ads_txt', 'robots_txt', 'sitemap_xml', 'indexnow_key'].includes(activeTool)) {
     return (
       <pre style={{ wordWrap: 'break-word', whiteSpace: 'pre-wrap', padding: '16px', fontFamily: 'monospace' }}>
         {staticFileContent || 'Loading...'}
@@ -1256,6 +1273,7 @@ export default function App() {
               {activeTool === 'openapi' && <OpenApiTool theme={theme} />}
               {activeTool === 'webhook' && <WebhookTool theme={theme} />}
               {activeTool === 'mockapi' && <MockApiTool theme={theme} />}
+              {activeTool === 'indexnow' && <IndexNowTool theme={theme} />}
               {activeTool === 'docker' && <DockerTool theme={theme} />}
               {activeTool === 'k8s' && <K8sTool theme={theme} />}
               {activeTool === 'nginx' && <NginxTool theme={theme} />}

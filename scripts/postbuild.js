@@ -39,7 +39,8 @@ const routes = [
   'text-diff',
   'privacy-policy',
   'terms-of-service',
-  'about-us'
+  'about-us',
+  'indexnow-submitter'
 ];
 
 const distDir = path.resolve(__dirname, '../dist');

@@ -41,7 +41,9 @@ export type ToolId =
   | 'about'
   | 'ads_txt'
   | 'robots_txt'
-  | 'sitemap_xml';
+  | 'sitemap_xml'
+  | 'indexnow'
+  | 'indexnow_key';
 
 export interface ToolDefinition {
   id: ToolId;
