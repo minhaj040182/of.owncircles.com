@@ -40,7 +40,8 @@ const routes = [
   'privacy-policy',
   'terms-of-service',
   'about-us',
-  'indexnow-submitter'
+  'indexnow-submitter',
+  'json-to-code'
 ];
 
 const distDir = path.resolve(__dirname, '../dist');

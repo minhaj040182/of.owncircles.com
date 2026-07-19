@@ -77,6 +77,9 @@ import PrivacyTool from './components/PrivacyTool';
 import TermsTool from './components/TermsTool';
 import AboutTool from './components/AboutTool';
 import IndexNowTool from './components/IndexNowTool';
+import BookmarkBanner from './components/BookmarkBanner';
+import CookieBanner from './components/CookieBanner';
+import JsonToCodeTool from './components/JsonToCodeTool';
 
 import { ToolId, ToolDefinition } from './types';
 
@@ -101,6 +104,13 @@ const TOOLS_LIST: ToolDefinition[] = [
     description: 'Execute query expressions and extract matching element nodes from nested objects.',
     category: 'formatter',
     icon: 'Search'
+  },
+  {
+    id: 'jsontocode',
+    name: 'JSON to Code / Type Struct Generator',
+    description: 'Paste any JSON payload to instantly generate nested models and interfaces in TypeScript, Go, Rust, Python, or Dart.',
+    category: 'formatter',
+    icon: 'Code2'
   },
   {
     id: 'yaml',
@@ -329,6 +339,7 @@ const PATH_TO_TOOL_MAP: Record<string, ToolId> = {
   '/terms-of-service': 'terms',
   '/about-us': 'about',
   '/indexnow-submitter': 'indexnow',
+  '/json-to-code': 'jsontocode',
 };
 
 const TOOL_TO_PATH_MAP: Record<ToolId, string> = {
@@ -336,6 +347,7 @@ const TOOL_TO_PATH_MAP: Record<ToolId, string> = {
   json: '/json-formatter',
   jsonschema: '/json-schema-generator',
   jsonpath: '/jsonpath-tester',
+  jsontocode: '/json-to-code',
   yaml: '/yaml-converter',
   xml: '/xml-formatter',
   sql: '/sql-formatter',
@@ -930,6 +942,9 @@ export default function App() {
         </div>
       </header>
 
+      <BookmarkBanner theme={theme} />
+      <CookieBanner theme={theme} onOpenPrivacy={() => { setActiveTool('privacy'); window.scrollTo({ top: 0, behavior: 'smooth' }); }} />
+
       {/* PREMIUM HERO BANNER */}
       <section className={`relative pt-10 pb-8 px-4 lg:px-6 overflow-hidden border-b ${theme.border} w-full ${theme.heroBg || ''}`}>
         <div className="w-full flex flex-col md:flex-row md:items-center md:justify-between gap-6">
@@ -1264,6 +1279,7 @@ export default function App() {
               {activeTool === 'json' && <JsonTool theme={theme} />}
               {activeTool === 'jsonschema' && <JsonSchemaTool theme={theme} />}
               {activeTool === 'jsonpath' && <JsonPathTool theme={theme} />}
+              {activeTool === 'jsontocode' && <JsonToCodeTool theme={theme} />}
               {activeTool === 'yaml' && <YamlTool theme={theme} />}
               {activeTool === 'xml' && <XmlTool theme={theme} />}
               {activeTool === 'sql' && <SqlTool theme={theme} />}
@@ -1421,6 +1437,13 @@ export default function App() {
               className="hover:text-indigo-400 hover:underline cursor-pointer transition-colors"
             >
               Privacy Policy
+            </button>
+            <span>•</span>
+            <button 
+              onClick={() => { window.dispatchEvent(new CustomEvent('reopen-cookie-policy')); }}
+              className="hover:text-indigo-400 hover:underline cursor-pointer transition-colors"
+            >
+              Cookie Policy
             </button>
             <span>•</span>
             <button 

@@ -43,7 +43,8 @@ export type ToolId =
   | 'robots_txt'
   | 'sitemap_xml'
   | 'indexnow'
-  | 'indexnow_key';
+  | 'indexnow_key'
+  | 'jsontocode';
 
 export interface ToolDefinition {
   id: ToolId;

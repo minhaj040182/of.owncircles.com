@@ -39,6 +39,7 @@ const BUILT_IN_PAGES = [
   { path: '/json-formatter', label: 'JSON Formatter & Validator' },
   { path: '/json-schema-generator', label: 'JSON Schema Generator & Validator' },
   { path: '/jsonpath-tester', label: 'JSONPath Tester' },
+  { path: '/json-to-code', label: 'JSON to Code / Type Struct Generator' },
   { path: '/yaml-converter', label: 'YAML <-> JSON Converter' },
   { path: '/xml-formatter', label: 'XML Formatter & Beautifier' },
   { path: '/sql-formatter', label: 'SQL Formatter & Beautifier' },
