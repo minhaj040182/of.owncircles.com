@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import { 
   Braces, FileText, FileCode, Database, Minimize2, Network, Terminal, Key, Clock, 
   AlignLeft, Hash, QrCode, BookOpen, Sparkles, Search, FileSpreadsheet, Palette, 
-  Binary, Compass, AlertCircle, RefreshCw, Columns, Star, History
+  Binary, Compass, AlertCircle, RefreshCw, Columns, Star, History, Share2
 } from 'lucide-react';
 import { ToolId, ToolDefinition } from '../types';
+import ShareWidget from './ShareWidget';
 
 interface HomeToolProps {
   theme?: {
@@ -21,6 +22,8 @@ interface HomeToolProps {
     canvasBg: string;
     isDark: boolean;
   };
+  themeKey: string;
+  shareUrl: string;
   tools: ToolDefinition[];
   favorites?: ToolId[];
   toggleFavorite?: (id: ToolId) => void;
@@ -28,7 +31,7 @@ interface HomeToolProps {
   onSelectTool: (id: ToolId, source?: 'normal' | 'favorite' | 'recent') => void;
 }
 
-export default function HomeTool({ theme, tools, favorites = [], toggleFavorite, recents = [], onSelectTool }: HomeToolProps) {
+export default function HomeTool({ theme, themeKey, shareUrl, tools, favorites = [], toggleFavorite, recents = [], onSelectTool }: HomeToolProps) {
   const [localQuery, setLocalQuery] = useState<string>('');
 
   const isLight = theme?.isDark === false;
@@ -97,6 +100,43 @@ export default function HomeTool({ theme, tools, favorites = [], toggleFavorite,
   return (
     <div className="space-y-8" id="ownformatters-home-panel">
       
+      {/* Dynamic Social Sharing Outreach Banner */}
+      <div className={`p-6 border rounded-2xl ${cardClass} ${borderClass} bg-gradient-to-r ${
+        isLight 
+          ? 'from-indigo-50/50 via-violet-50/30 to-transparent text-slate-800' 
+          : 'from-indigo-950/20 via-violet-950/10 to-transparent text-white'
+      } flex flex-col md:flex-row items-start md:items-center justify-between gap-4`} id="outreach-sharing-banner">
+        <div className="space-y-1.5 max-w-xl">
+          <div className="flex items-center gap-2">
+            <span className="p-1 rounded-md bg-indigo-500/10 text-indigo-400">
+              <Share2 className="w-4 h-4 animate-bounce" />
+            </span>
+            <span className="text-[10px] font-bold font-mono uppercase tracking-widest text-indigo-500">Support & Outreach</span>
+          </div>
+          <h4 className={`text-sm font-bold ${isLight ? 'text-slate-800' : 'text-slate-100'}`}>Help Us Grow - Share with Your Network!</h4>
+          <p className={`text-[11px] ${textMutedClass} leading-relaxed`}>
+            OwnFormatters is 100% client-side, free, and secure. If this developer suite saves you time, please share it on social media so more developers can benefit!
+          </p>
+        </div>
+        <div className="shrink-0 self-end md:self-auto">
+          <ShareWidget 
+            title="OwnFormatters Developer Suite"
+            url={shareUrl}
+            themeKey={themeKey}
+            theme={{
+              card: cardClass,
+              border: borderClass,
+              text: theme?.text || (isLight ? 'text-slate-800' : 'text-white'),
+              textMuted: textMutedClass,
+              inputBg: inputBgClass,
+              badgeBg: 'bg-indigo-500/10'
+            }}
+            align="right"
+            label="Share Dashboard"
+          />
+        </div>
+      </div>
+
       {/* Inline Search Dashboard Header */}
       <div className={`p-6 md:p-8 border rounded-2xl bg-gradient-to-br ${isLight ? 'from-slate-50 to-indigo-50/30 border-slate-200' : 'from-slate-900/40 to-indigo-950/20 border-slate-800'} space-y-4`}>
         <div className="space-y-1.5">

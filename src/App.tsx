@@ -80,6 +80,8 @@ import IndexNowTool from './components/IndexNowTool';
 import BookmarkBanner from './components/BookmarkBanner';
 import CookieBanner from './components/CookieBanner';
 import JsonToCodeTool from './components/JsonToCodeTool';
+import EducationTool from './components/EducationTool';
+import ShareWidget from './components/ShareWidget';
 
 import { ToolId, ToolDefinition } from './types';
 
@@ -348,6 +350,7 @@ const TOOL_TO_PATH_MAP: Record<ToolId, string> = {
   jsonschema: '/json-schema-generator',
   jsonpath: '/jsonpath-tester',
   jsontocode: '/json-to-code',
+  education: '/learn-json',
   yaml: '/yaml-converter',
   xml: '/xml-formatter',
   sql: '/sql-formatter',
@@ -562,6 +565,7 @@ const BASE_PATH = (() => {
 
 export default function App() {
   const [activeTool, setActiveTool] = useState<ToolId>('json');
+  const [educationTopic, setEducationTopic] = useState<string>('json');
   const [activeSelectionSource, setActiveSelectionSource] = useState<'normal' | 'favorite' | 'recent'>('normal');
 
   const navigateToTool = (id: ToolId, source: 'normal' | 'favorite' | 'recent' = 'normal') => {
@@ -679,6 +683,13 @@ export default function App() {
 
       // Intercept and route static file requests before tool mapping redirects them to /home
       const normPath = relativePath.toLowerCase().replace(/\/$/, '');
+      if (normPath.startsWith('/learn-')) {
+        const topic = normPath.replace('/learn-', '');
+        setActiveTool('education');
+        setEducationTopic(topic);
+        setActiveSelectionSource('normal');
+        return;
+      }
       if (normPath === '/ads.txt') {
         setActiveTool('ads_txt');
         setActiveSelectionSource('normal');
@@ -726,7 +737,10 @@ export default function App() {
 
   // 2. DYNAMIC CRAWLER SEO & METADATA UPDATE
   useEffect(() => {
-    const targetPath = TOOL_TO_PATH_MAP[activeTool];
+    let targetPath = TOOL_TO_PATH_MAP[activeTool];
+    if (activeTool === 'education') {
+      targetPath = '/learn-' + educationTopic;
+    }
     if (targetPath) {
       const fullTargetPath = BASE_PATH + targetPath;
       if (window.location.pathname !== fullTargetPath) {
@@ -746,6 +760,19 @@ export default function App() {
       return;
     }
 
+    if (activeTool === 'education') {
+      const topicName = educationTopic.toUpperCase();
+      document.title = `Mastering ${topicName} - Complete Developer Handbook & FAQs | OwnFormatters`;
+      let metaDesc = document.querySelector('meta[name="description"]');
+      if (!metaDesc) {
+        metaDesc = document.createElement('meta');
+        metaDesc.setAttribute('name', 'description');
+        document.head.appendChild(metaDesc);
+      }
+      metaDesc.setAttribute('content', `Learn about ${topicName} specifications, best practices, implementation snippets, and frequently asked questions in our comprehensive developer guide.`);
+      return;
+    }
+
     const activeToolInfo = TOOLS_LIST.find(t => t.id === activeTool);
     if (!activeToolInfo) return;
 
@@ -762,10 +789,22 @@ export default function App() {
     }
     metaDesc.setAttribute('content', `${activeToolInfo.description} Full-stack secure sandboxed developer utility by OwnCircles. 100% offline compliant, no user logs recorded.`);
     addRecent(activeTool);
-  }, [activeTool]);
+  }, [activeTool, educationTopic]);
 
   // 3. GLOBAL KEYBOARD SHORTCUTS ENGINE
   useEffect(() => {
+    const handleNavigateEvent = (e: Event) => {
+      const customEvent = e as CustomEvent<{ id: ToolId; topic?: string }>;
+      if (customEvent.detail) {
+        setActiveTool(customEvent.detail.id);
+        if (customEvent.detail.topic) {
+          setEducationTopic(customEvent.detail.topic);
+        }
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    };
+    window.addEventListener('navigate-to-tool', handleNavigateEvent);
+    
     const handleKeyDown = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
         e.preventDefault();
@@ -773,7 +812,10 @@ export default function App() {
       }
     };
     window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('navigate-to-tool', handleNavigateEvent);
+      window.removeEventListener('keydown', handleKeyDown);
+    };
   }, []);
 
   const filteredTools = TOOLS_LIST.filter(tool => 
@@ -927,8 +969,16 @@ export default function App() {
             </div>
           </div>
 
-          {/* Secure status bar */}
-          <div className="flex items-center gap-3 text-xs font-mono self-end md:self-auto">
+          {/* Secure status bar & Global Share */}
+          <div className="flex items-center gap-3 text-xs font-mono self-end md:self-auto" id="header-status-share-controls">
+            <ShareWidget 
+              title="OwnFormatters Developer Suite"
+              url={typeof window !== 'undefined' ? (window.location.origin + BASE_PATH + '/home') : ''}
+              themeKey={themeKey}
+              theme={theme}
+              align="right"
+              label="Share Suite"
+            />
             <span className={`hidden sm:flex items-center gap-2 px-3 py-1 border font-semibold rounded-full text-[11px] shadow-sm ${
               themeKey === 'light'
                 ? 'bg-slate-100 border-slate-200 text-slate-950 font-bold'
@@ -1231,7 +1281,7 @@ export default function App() {
         <div className="flex-1 space-y-6 min-w-0">
           
           {/* Tool Identity Header */}
-          {activeTool !== 'home' && !['privacy', 'terms', 'about'].includes(activeTool) && (
+          {activeTool !== 'home' && !['privacy', 'terms', 'about', 'education'].includes(activeTool) && (
             <div className={`pb-3 border-b ${theme.border} flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3`}>
               <div>
                 <h2 className={`text-xl font-extrabold tracking-tight flex items-center gap-2 ${themeKey === 'light' ? 'text-slate-800' : 'text-white'}`}>
@@ -1250,9 +1300,19 @@ export default function App() {
                 </p>
               </div>
 
-              <span className={`self-start sm:self-center px-3 py-1 rounded-lg text-[9px] font-mono font-bold border ${theme.badgeBg}`}>
-                MODULE: {activeTool.toUpperCase()}
-              </span>
+              <div className="flex items-center gap-2 self-start sm:self-center" id="active-tool-share-badge-group">
+                <ShareWidget 
+                  title={TOOLS_LIST.find(t => t.id === activeTool)?.name || 'Developer Tool'}
+                  url={typeof window !== 'undefined' ? window.location.href : ''}
+                  themeKey={themeKey}
+                  theme={theme}
+                  align="right"
+                  label="Share Tool"
+                />
+                <span className={`px-3 py-1.5 rounded-lg text-[9px] font-mono font-bold border h-fit ${theme.badgeBg}`}>
+                  MODULE: {activeTool.toUpperCase()}
+                </span>
+              </div>
             </div>
           )}
 
@@ -1262,10 +1322,42 @@ export default function App() {
           {/* Interactive Workspace Components and Right Ad Panel side-by-side with exact same starting height */}
           <div className="flex flex-col lg:flex-row gap-6 items-start">
             
-            <div className="flex-1 min-w-0 w-full transition-all duration-350">
+            <div className="flex-1 min-w-0 w-full transition-all duration-350 space-y-6">
+              
+              {/* Dynamic Educational SEO Handbook Link Banner - Renders for each and every tool automatically */}
+              {activeTool !== 'home' && !['privacy', 'terms', 'about', 'education'].includes(activeTool) && (
+                <div className={`p-4 rounded-xl border flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 transition-all duration-300 ${
+                  themeKey === 'light' 
+                    ? 'bg-indigo-50/50 border-indigo-100 text-slate-800 shadow-sm' 
+                    : 'bg-indigo-950/10 border-indigo-900/30 text-white'
+                }`}>
+                  <div className="flex items-center gap-2.5">
+                    <div className="p-1.5 rounded-lg bg-indigo-500/10 text-indigo-400">
+                      <HelpCircle className="w-4 h-4 animate-pulse" />
+                    </div>
+                    <span className={`text-xs font-semibold ${themeKey === 'light' ? 'text-slate-700' : 'text-slate-300'}`}>
+                      Do you want to know more about {TOOLS_LIST.find(t => t.id === activeTool)?.name || 'this developer standard'}? Read our comprehensive specifications, handbook guides, & FAQs.
+                    </span>
+                  </div>
+                  <button
+                    onClick={() => {
+                      setEducationTopic(activeTool);
+                      setActiveTool('education');
+                      window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }}
+                    className="text-xs font-bold text-indigo-600 hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300 hover:underline flex items-center gap-1 cursor-pointer transition-all hover:translate-x-0.5 whitespace-nowrap self-end sm:self-auto"
+                  >
+                    <span>Open Handbook Guide</span>
+                    <ChevronRight className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+              )}
+
               {activeTool === 'home' && (
                 <HomeTool 
                   theme={theme} 
+                  themeKey={themeKey}
+                  shareUrl={typeof window !== 'undefined' ? (window.location.origin + BASE_PATH + '/home') : ''}
                   tools={TOOLS_LIST} 
                   favorites={favorites}
                   toggleFavorite={toggleFavorite}
@@ -1315,6 +1407,20 @@ export default function App() {
               {activeTool === 'privacy' && <PrivacyTool theme={theme} />}
               {activeTool === 'terms' && <TermsTool theme={theme} />}
               {activeTool === 'about' && <AboutTool theme={theme} />}
+
+              {activeTool === 'education' && (
+                <EducationTool 
+                  theme={theme} 
+                  activeTopicId={educationTopic} 
+                  onSelectTopic={(topicId) => {
+                    setEducationTopic(topicId);
+                  }}
+                  onLaunchTool={(toolId) => {
+                    setActiveTool(toolId);
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                  }}
+                />
+              )}
             </div>
 
             {/* COLUMN 3: RIGHT AD PANEL (EXACTLY 160PX WIDTH, MATCHING WORKSPACE HEIGHT LEVEL) */}

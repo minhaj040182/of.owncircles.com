@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Copy, Check, Trash2, Key, Info, HelpCircle, CheckCircle, AlertCircle, Eye } from 'lucide-react';
+import { Copy, Check, Trash2, Key, Info, HelpCircle, CheckCircle, AlertCircle, Eye, ArrowLeftRight } from 'lucide-react';
 import { decodeJwt, JwtPayload } from '../utils';
 
 const SAMPLE_JWT = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyLCJleHAiOjE4MDExOTI4MDAsImFkbWluIjp0cnVlLCJyb2xlcyI6WyJkZXZlbG9wZXIiLCJhbmFseXN0Il19.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c";

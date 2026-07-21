@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Copy, Check, Trash2, Database, Sparkles, CheckCircle, AlertCircle } from 'lucide-react';
+import { Copy, Check, Trash2, Database, Sparkles, CheckCircle, AlertCircle, HelpCircle, ArrowLeftRight } from 'lucide-react';
 import { formatSql } from '../utils';
 
 const SAMPLE_SQL = "SELECT u.id, u.username, p.title, p.body FROM users u LEFT JOIN posts p ON u.id = p.user_id WHERE u.active = 1 AND p.created_at > '2026-01-01' ORDER BY p.created_at DESC LIMIT 50 OFFSET 0;";

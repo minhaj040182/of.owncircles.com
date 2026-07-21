@@ -44,7 +44,8 @@ export type ToolId =
   | 'sitemap_xml'
   | 'indexnow'
   | 'indexnow_key'
-  | 'jsontocode';
+  | 'jsontocode'
+  | 'education';
 
 export interface ToolDefinition {
   id: ToolId;
