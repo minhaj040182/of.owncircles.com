@@ -545,20 +545,13 @@ const THEMES = {
 const BASE_PATH = (() => {
   if (typeof window === 'undefined') return '';
   const path = window.location.pathname;
-  // If the path looks like a static file (ends with .txt, .xml, etc.), do not treat as BASE_PATH
-  if (/\.[a-zA-Z0-9]+(\/)?$/.test(path)) {
+  // If the path looks like a static file (ends with .txt, .xml, etc.) or educational guide (/learn-*), do not treat as BASE_PATH
+  if (/\.[a-zA-Z0-9]+(\/)?$/.test(path) || path.includes('/learn-')) {
     return '';
   }
   const mappedPath = Object.keys(PATH_TO_TOOL_MAP).find(p => path === p || path.endsWith(p));
   if (mappedPath) {
     return path.substring(0, path.length - mappedPath.length);
-  }
-  const cleanPath = path.replace(/\/$/, '');
-  if (cleanPath && !Object.keys(PATH_TO_TOOL_MAP).some(p => p === cleanPath)) {
-    if (/\.[a-zA-Z0-9]+$/.test(cleanPath)) {
-      return '';
-    }
-    return cleanPath;
   }
   return '';
 })();
@@ -683,8 +676,9 @@ export default function App() {
 
       // Intercept and route static file requests before tool mapping redirects them to /home
       const normPath = relativePath.toLowerCase().replace(/\/$/, '');
-      if (normPath.startsWith('/learn-')) {
-        const topic = normPath.replace('/learn-', '');
+      if (normPath.includes('/learn-')) {
+        const learnPart = normPath.substring(normPath.indexOf('/learn-') + 7);
+        const topic = learnPart.split('/')[0] || 'json';
         setActiveTool('education');
         setEducationTopic(topic);
         setActiveSelectionSource('normal');
