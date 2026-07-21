@@ -999,10 +999,6 @@ export default function App() {
       <section className={`relative pt-10 pb-8 px-4 lg:px-6 overflow-hidden border-b ${theme.border} w-full ${theme.heroBg || ''}`}>
         <div className="w-full flex flex-col md:flex-row md:items-center md:justify-between gap-6">
           <div className="space-y-3 max-w-3xl">
-            <div className={`inline-flex items-center gap-1.5 px-3 py-1 text-xs font-bold rounded-full shadow-sm ${theme.badgeBg}`}>
-              <ShieldCheck className="w-3.5 h-3.5" />
-              <span>Active Encryption Sandboxed</span>
-            </div>
             <h1 className={`text-2xl md:text-4xl font-black tracking-tight leading-tight ${themeKey === 'light' ? 'text-slate-800' : 'text-white'}`}>
               OwnFormatters <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 via-violet-500 to-indigo-600 dark:from-indigo-400 dark:via-violet-300 dark:to-indigo-400">Developer Utility Suite</span>
             </h1>
