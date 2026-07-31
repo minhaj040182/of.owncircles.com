@@ -6,6 +6,7 @@ import {
 } from 'lucide-react';
 import { ToolId, ToolDefinition } from '../types';
 import ShareWidget from './ShareWidget';
+import { EDUCATION_DATA } from '../data/educationContent';
 
 interface HomeToolProps {
   theme?: {
@@ -327,6 +328,53 @@ export default function HomeTool({ theme, themeKey, shareUrl, tools, favorites =
           <p className={`text-xs font-mono ${textMutedClass}`}>No matching utilities found for "{localQuery}"</p>
         </div>
       )}
+
+      {/* Developer Handbooks & Technical Specification Guides Section (Crawlable SEO & AdSense Section) */}
+      <div className="space-y-4 pt-6 border-t border-slate-800/40">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <span className="p-1.5 rounded-lg bg-teal-500/10 text-teal-400">
+              <BookOpen className="w-4 h-4" />
+            </span>
+            <h4 className={`text-xs font-bold font-mono uppercase tracking-wider ${isLight ? 'text-teal-800' : 'text-teal-400'}`}>
+              Developer Handbooks & Technical Specifications
+            </h4>
+          </div>
+          <span className={`text-[10px] font-mono ${textMutedClass}`}>
+            30+ Educational Guides
+          </span>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3.5">
+          {Object.entries(EDUCATION_DATA).map(([key, topic]) => (
+            <a
+              key={`handbook-${key}`}
+              href={`/learn-${key}`}
+              onClick={(e) => {
+                if (!e.ctrlKey && !e.metaKey) {
+                  e.preventDefault();
+                  window.history.pushState(null, '', `/learn-${key}`);
+                  window.dispatchEvent(new PopStateEvent('popstate'));
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+              }}
+              className={`p-4 rounded-xl border transition-all duration-200 block hover:-translate-y-0.5 shadow-sm group ${cardClass} ${borderClass} hover:border-teal-500/40`}
+            >
+              <div className="flex items-center justify-between mb-1.5">
+                <span className={`text-xs font-bold font-sans group-hover:text-teal-400 transition-colors ${isLight ? 'text-slate-900' : 'text-white'}`}>
+                  {topic.title}
+                </span>
+                <span className="text-[10px] font-mono text-teal-400 opacity-60 group-hover:opacity-100 transition-opacity">
+                  Read Guide →
+                </span>
+              </div>
+              <p className={`text-[11px] leading-relaxed line-clamp-2 ${textMutedClass}`}>
+                {topic.shortDesc}
+              </p>
+            </a>
+          ))}
+        </div>
+      </div>
 
     </div>
   );

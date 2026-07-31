@@ -82,6 +82,7 @@ import CookieBanner from './components/CookieBanner';
 import JsonToCodeTool from './components/JsonToCodeTool';
 import EducationTool from './components/EducationTool';
 import ShareWidget from './components/ShareWidget';
+import { ITServicesBanner } from './components/ITServicesBanner';
 
 import { ToolId, ToolDefinition } from './types';
 
@@ -306,6 +307,7 @@ const TOOLS_LIST: ToolDefinition[] = [
 ];
 
 const PATH_TO_TOOL_MAP: Record<string, ToolId> = {
+  '/': 'home',
   '/home': 'home',
   '/json-formatter': 'json',
   '/json-schema-generator': 'jsonschema',
@@ -345,7 +347,7 @@ const PATH_TO_TOOL_MAP: Record<string, ToolId> = {
 };
 
 const TOOL_TO_PATH_MAP: Record<ToolId, string> = {
-  home: '/home',
+  home: '/',
   json: '/json-formatter',
   jsonschema: '/json-schema-generator',
   jsonpath: '/jsonpath-tester',
@@ -390,11 +392,20 @@ const TOOL_TO_PATH_MAP: Record<ToolId, string> = {
 };
 
 // Global ads feature flag for AdSense sandboxing and SEO reviews
-const SHOW_ADS = false;
+const SHOW_ADS = true;
 
 // Real active ad scripts for high-converting premium ad inventory
-function RealAdSlot({ position, activeTool }: { position: 'top' | 'right'; activeTool?: string }) {
+function RealAdSlot({ position, activeTool, themeKey }: { position: 'top' | 'right'; activeTool?: string; themeKey?: string }) {
   const containerRef = React.useRef<HTMLDivElement>(null);
+  const [reloadKey, setReloadKey] = React.useState(0);
+
+  useEffect(() => {
+    if (!SHOW_ADS) return;
+    const interval = setInterval(() => {
+      setReloadKey(prev => prev + 1);
+    }, 70000); // Auto reload after 70 seconds
+    return () => clearInterval(interval);
+  }, []);
 
   useEffect(() => {
     if (!SHOW_ADS) return;
@@ -414,6 +425,9 @@ function RealAdSlot({ position, activeTool }: { position: 'top' | 'right'; activ
         <!DOCTYPE html>
         <html>
           <head>
+            <meta charset="UTF-8">
+            <meta name="keywords" content="software, programming, education, apps, coding, developer tools, web development">
+            <meta name="category" content="Software Development">
             <style>
               body { margin: 0; padding: 0; display: flex; justify-content: center; align-items: center; background: transparent; overflow: hidden; }
             </style>
@@ -442,6 +456,9 @@ function RealAdSlot({ position, activeTool }: { position: 'top' | 'right'; activ
         <!DOCTYPE html>
         <html>
           <head>
+            <meta charset="UTF-8">
+            <meta name="keywords" content="software, programming, education, apps, coding, developer tools, web development">
+            <meta name="category" content="Software Development">
             <style>
               body { margin: 0; padding: 0; display: flex; justify-content: center; align-items: center; background: transparent; overflow: hidden; }
             </style>
@@ -464,7 +481,7 @@ function RealAdSlot({ position, activeTool }: { position: 'top' | 'right'; activ
     }
 
     containerRef.current.appendChild(iframe);
-  }, [position, activeTool]);
+  }, [position, activeTool, reloadKey]);
 
   if (!SHOW_ADS) {
     return null;
@@ -472,8 +489,11 @@ function RealAdSlot({ position, activeTool }: { position: 'top' | 'right'; activ
 
   if (position === 'top') {
     return (
-      <div className="flex flex-col items-center justify-center my-4 w-full px-4 overflow-x-auto">
-        <span className="text-[10px] tracking-wider uppercase font-bold text-slate-500 font-mono mb-2">Advertisement</span>
+      <div className={`sticky top-[58px] md:top-[61px] z-30 flex flex-col items-center justify-center my-0 py-2 w-full px-0 overflow-x-auto backdrop-blur-md transition-all shadow-md ${
+        themeKey === 'light' 
+          ? 'bg-slate-100/90 border-y border-slate-200/80' 
+          : 'bg-slate-950/90 border-y border-slate-900/80'
+      }`}>
         <div className="p-1 bg-slate-950/60 border border-slate-900 rounded-xl overflow-hidden shadow-xl max-w-full">
           <div ref={containerRef} className="w-[728px] h-[90px] flex items-center justify-center bg-[#02050b]" />
         </div>
@@ -481,15 +501,7 @@ function RealAdSlot({ position, activeTool }: { position: 'top' | 'right'; activ
     );
   }
 
-  // Right vertical panel (exactly 160px width, height 100%)
-  return (
-    <div className="flex flex-col items-center h-full w-full relative">
-      <span className="text-[9px] tracking-wider uppercase font-bold text-slate-500 font-mono py-2 block text-center border-b border-slate-900 w-full mb-4">AD</span>
-      <div className="relative w-[160px] h-[600px] flex justify-center items-start">
-        <div ref={containerRef} className="w-[160px] h-[600px]" />
-      </div>
-    </div>
-  );
+  return null;
 }
 
 const THEMES = {
@@ -670,39 +682,38 @@ export default function App() {
       if (BASE_PATH && path.startsWith(BASE_PATH)) {
         relativePath = path.substring(BASE_PATH.length);
       }
-      if (relativePath === '' || relativePath === '/') {
-        relativePath = '/home';
-      }
-
-      // Intercept and route static file requests before tool mapping redirects them to /home
+      
       const normPath = relativePath.toLowerCase().replace(/\/$/, '');
-      if (normPath.includes('/learn-')) {
-        const learnPart = normPath.substring(normPath.indexOf('/learn-') + 7);
+      const searchPath = normPath === '' ? '/' : normPath;
+
+      // Intercept and route static file requests before tool mapping
+      if (searchPath.includes('/learn-')) {
+        const learnPart = searchPath.substring(searchPath.indexOf('/learn-') + 7);
         const topic = learnPart.split('/')[0] || 'json';
         setActiveTool('education');
         setEducationTopic(topic);
         setActiveSelectionSource('normal');
         return;
       }
-      if (normPath === '/ads.txt') {
+      if (searchPath === '/ads.txt') {
         setActiveTool('ads_txt');
         setActiveSelectionSource('normal');
         return;
-      } else if (normPath === '/robots.txt') {
+      } else if (searchPath === '/robots.txt') {
         setActiveTool('robots_txt');
         setActiveSelectionSource('normal');
         return;
-      } else if (normPath === '/sitemap.xml') {
+      } else if (searchPath === '/sitemap.xml') {
         setActiveTool('sitemap_xml');
         setActiveSelectionSource('normal');
         return;
-      } else if (normPath === '/4b1050e9944447399a9f01ecb66e24fc.txt') {
+      } else if (searchPath === '/4b1050e9944447399a9f01ecb66e24fc.txt') {
         setActiveTool('indexnow_key');
         setActiveSelectionSource('normal');
         return;
       }
 
-      let validTool = PATH_TO_TOOL_MAP[relativePath];
+      let validTool = PATH_TO_TOOL_MAP[searchPath] || PATH_TO_TOOL_MAP[relativePath];
 
       if (!validTool && window.location.hash) {
         const hash = window.location.hash.replace(/^#\//, '');
@@ -713,7 +724,7 @@ export default function App() {
         setActiveTool(validTool);
         setActiveSelectionSource('normal');
       } else {
-        window.history.replaceState(null, '', BASE_PATH + '/home');
+        window.history.replaceState(null, '', BASE_PATH + '/');
         setActiveTool('home');
         setActiveSelectionSource('normal');
       }
@@ -729,7 +740,7 @@ export default function App() {
     };
   }, []);
 
-  // 2. DYNAMIC CRAWLER SEO & METADATA UPDATE
+  // 2. DYNAMIC CRAWLER SEO, CANONICAL & METADATA UPDATE
   useEffect(() => {
     let targetPath = TOOL_TO_PATH_MAP[activeTool];
     if (activeTool === 'education') {
@@ -737,52 +748,80 @@ export default function App() {
     }
     if (targetPath) {
       const fullTargetPath = BASE_PATH + targetPath;
-      if (window.location.pathname !== fullTargetPath) {
+      const isHome = (window.location.pathname === '/' || window.location.pathname === '/home') && targetPath === '/';
+      if (!isHome && window.location.pathname !== fullTargetPath) {
         window.history.pushState(null, '', fullTargetPath);
       }
     }
 
-    if (activeTool === 'home') {
-      document.title = "OwnFormatters - Free Online Developer Tools Suite | Home Dashboard";
-      let metaDesc = document.querySelector('meta[name="description"]');
-      if (!metaDesc) {
-        metaDesc = document.createElement('meta');
-        metaDesc.setAttribute('name', 'description');
-        document.head.appendChild(metaDesc);
-      }
-      metaDesc.setAttribute('content', 'All-in-one free offline developer utilities dashboard. Formatters, encoders, network testers, security checksums, custom converters.');
-      return;
+    // Dynamic Canonical URL Tag
+    let canonicalPath = targetPath || '/';
+    if (canonicalPath === '/home') canonicalPath = '/';
+    const canonicalUrl = `https://ownformatters.com${canonicalPath}`;
+
+    let canonicalLink = document.querySelector('link[rel="canonical"]');
+    if (!canonicalLink) {
+      canonicalLink = document.createElement('link');
+      canonicalLink.setAttribute('rel', 'canonical');
+      document.head.appendChild(canonicalLink);
     }
+    canonicalLink.setAttribute('href', canonicalUrl);
+
+    // Dynamic SEO Titles & Descriptions
+    let title = "OwnFormatters - Free Online Developer Tools Suite | Home Dashboard";
+    let description = "All-in-one free offline developer utilities dashboard. Formatters, encoders, network testers, security checksums, custom converters.";
 
     if (activeTool === 'education') {
       const topicName = educationTopic.toUpperCase();
-      document.title = `Mastering ${topicName} - Complete Developer Handbook & FAQs | OwnFormatters`;
-      let metaDesc = document.querySelector('meta[name="description"]');
-      if (!metaDesc) {
-        metaDesc = document.createElement('meta');
-        metaDesc.setAttribute('name', 'description');
-        document.head.appendChild(metaDesc);
+      title = `Mastering ${topicName} - Complete Developer Handbook & FAQs | OwnFormatters`;
+      description = `Learn about ${topicName} specifications, best practices, implementation snippets, and frequently asked questions in our comprehensive developer guide.`;
+    } else if (activeTool !== 'home') {
+      const activeToolInfo = TOOLS_LIST.find(t => t.id === activeTool);
+      if (activeToolInfo) {
+        title = `${activeToolInfo.name} - Free Online Developer Tools Suite | OwnFormatters`;
+        description = `${activeToolInfo.description} Full-stack secure sandboxed developer utility by OwnCircles. 100% offline compliant, no user logs recorded.`;
       }
-      metaDesc.setAttribute('content', `Learn about ${topicName} specifications, best practices, implementation snippets, and frequently asked questions in our comprehensive developer guide.`);
-      return;
     }
 
-    const activeToolInfo = TOOLS_LIST.find(t => t.id === activeTool);
-    if (!activeToolInfo) return;
+    document.title = title;
 
-    // High Keyword Density Titles
-    const formattedTitle = `${activeToolInfo.name} - Free Online Developer Tools Suite | OwnFormatters`;
-    document.title = formattedTitle;
-
-    // Crawler meta description updating
     let metaDesc = document.querySelector('meta[name="description"]');
     if (!metaDesc) {
       metaDesc = document.createElement('meta');
       metaDesc.setAttribute('name', 'description');
       document.head.appendChild(metaDesc);
     }
-    metaDesc.setAttribute('content', `${activeToolInfo.description} Full-stack secure sandboxed developer utility by OwnCircles. 100% offline compliant, no user logs recorded.`);
-    addRecent(activeTool);
+    metaDesc.setAttribute('content', description);
+
+    // OpenGraph dynamic tags
+    let ogUrl = document.querySelector('meta[property="og:url"]');
+    if (ogUrl) ogUrl.setAttribute('content', canonicalUrl);
+    let ogTitle = document.querySelector('meta[property="og:title"]');
+    if (ogTitle) ogTitle.setAttribute('content', title);
+    let ogDesc = document.querySelector('meta[property="og:description"]');
+    if (ogDesc) ogDesc.setAttribute('content', description);
+
+    // JSON-LD Structured Data Schema for Search Crawlers
+    let jsonLdScript = document.querySelector('script[type="application/ld+json"]');
+    if (!jsonLdScript) {
+      jsonLdScript = document.createElement('script');
+      jsonLdScript.setAttribute('type', 'application/ld+json');
+      document.head.appendChild(jsonLdScript);
+    }
+    jsonLdScript.textContent = JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": title,
+      "url": canonicalUrl,
+      "description": description,
+      "applicationCategory": "DeveloperApplication",
+      "operatingSystem": "All",
+      "browserRequirements": "Requires JavaScript"
+    });
+
+    if (activeTool !== 'home') {
+      addRecent(activeTool);
+    }
   }, [activeTool, educationTopic]);
 
   // 3. GLOBAL KEYBOARD SHORTCUTS ENGINE
@@ -882,6 +921,9 @@ export default function App() {
           <div className="absolute top-1/4 right-1/4 w-[500px] h-[500px] bg-violet-500/5 rounded-full blur-[120px] pointer-events-none" />
         </>
       )}
+
+      {/* SLIDING IT SERVICES BANNER */}
+      <ITServicesBanner themeKey={themeKey} theme={theme} />
 
       {/* HEADER BAR */}
       <header className={`sticky top-0 z-50 ${theme.headerBg} backdrop-blur-lg border-b ${theme.border} py-3 shadow-sm shadow-slate-950/25 w-full px-4 lg:px-6 transition-all`}>
@@ -1263,6 +1305,37 @@ export default function App() {
               </div>
             </div>
 
+            {/* CATEGORY: EDUCATIONAL HANDBOOKS & GUIDES */}
+            <div className="space-y-2 pt-2 border-t border-slate-800/50">
+              <span className={`text-[10px] uppercase font-bold ${themeKey === 'light' ? 'text-teal-700' : 'text-teal-400'} font-mono tracking-wider block px-1`}>
+                Handbooks & Documentation
+              </span>
+              <div className="space-y-1.5">
+                <a
+                  href="/learn-json"
+                  onClick={(e) => {
+                    if (!e.ctrlKey && !e.metaKey) {
+                      e.preventDefault();
+                      setEducationTopic('json');
+                      setActiveTool('education');
+                      setActiveSelectionSource('normal');
+                      window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }
+                  }}
+                  className={`w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-left text-xs transition-all border group cursor-pointer ${
+                    activeTool === 'education'
+                      ? `${theme.activeNav} font-bold shadow-md`
+                      : `${theme.inactiveNav}`
+                  }`}
+                >
+                  <span className={activeTool === 'education' ? 'text-white' : `${themeKey === 'light' ? 'text-teal-700' : 'text-teal-400'} group-hover:text-teal-500`}>
+                    <BookOpen className="w-4 h-4" />
+                  </span>
+                  <span className="truncate">Developer Guides & Specs</span>
+                </a>
+              </div>
+            </div>
+
           </div>
 
         </div>
@@ -1307,7 +1380,7 @@ export default function App() {
           )}
 
           {/* DYNAMIC TOP ADVERTISEMENT DISPLAYED AFTER THE ACTIVE TOOL'S TITLE */}
-          {SHOW_ADS && <RealAdSlot position="top" activeTool={activeTool} />}
+          {SHOW_ADS && <RealAdSlot position="top" activeTool={activeTool} themeKey={themeKey} />}
 
           {/* Interactive Workspace Components and Right Ad Panel side-by-side with exact same starting height */}
           <div className="flex flex-col lg:flex-row gap-6 items-start">
@@ -1412,13 +1485,6 @@ export default function App() {
                 />
               )}
             </div>
-
-            {/* COLUMN 3: RIGHT AD PANEL (EXACTLY 160PX WIDTH, MATCHING WORKSPACE HEIGHT LEVEL) */}
-            {SHOW_ADS && (
-              <div className={`w-full lg:w-[160px] ${theme.card} border ${theme.border} rounded-2xl p-4 flex-shrink-0 flex flex-col items-center shadow-xl`}>
-                <RealAdSlot position="right" activeTool={activeTool} />
-              </div>
-            )}
 
           </div>
 
