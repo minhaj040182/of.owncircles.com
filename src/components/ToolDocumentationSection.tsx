@@ -15,7 +15,7 @@ import {
   Check
 } from 'lucide-react';
 import { getEducationTopic } from '../data/educationContent';
-import { ToolId, TOOLS_LIST } from '../types';
+import { ToolId } from '../types';
 
 interface ToolDocumentationSectionProps {
   toolId: ToolId;
@@ -31,12 +31,12 @@ export const ToolDocumentationSection: React.FC<ToolDocumentationSectionProps> =
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
   const [copiedCode, setCopiedCode] = useState<boolean>(false);
 
-  const toolInfo = TOOLS_LIST.find(t => t.id === toolId);
-  if (!toolInfo || toolId === 'home' || ['privacy', 'terms', 'about', 'education'].includes(toolId)) {
+  if (toolId === 'home' || ['privacy', 'terms', 'about', 'education'].includes(toolId)) {
     return null;
   }
 
-  const topicData = getEducationTopic(toolId, toolInfo.name, toolInfo.category);
+  const topicData = getEducationTopic(toolId, toolId.toUpperCase(), 'utility');
+  if (!topicData) return null;
   const isLight = themeKey === 'light';
 
   // Inject dynamic JSON-LD FAQPage & WebApplication Schema markup for search engines and AdSense review crawlers
@@ -86,7 +86,7 @@ export const ToolDocumentationSection: React.FC<ToolDocumentationSectionProps> =
   return (
     <section 
       className={`mt-10 border rounded-2xl p-6 sm:p-8 space-y-8 shadow-xl transition-all duration-300 ${cardBg} ${borderClass}`}
-      aria-label={`${toolInfo.name} Technical Specifications and Guide`}
+      aria-label={`${topicData.title} Technical Specifications and Guide`}
     >
       {/* Header Badge & Section Title */}
       <div className={`border-b ${isLight ? 'border-slate-200' : 'border-slate-800'} pb-5 space-y-2`}>
@@ -102,10 +102,10 @@ export const ToolDocumentationSection: React.FC<ToolDocumentationSectionProps> =
         </div>
 
         <h3 className={`text-xl sm:text-2xl font-black tracking-tight ${isLight ? 'text-slate-900' : 'text-white'}`}>
-          Understanding {toolInfo.name}
+          Understanding {topicData.title}
         </h3>
         <p className={`text-xs leading-relaxed ${textMutedClass}`}>
-          Comprehensive developer manual, technical specifications, best practices, and troubleshooting guidelines for {toolInfo.name}.
+          Comprehensive developer manual, technical specifications, best practices, and troubleshooting guidelines for {topicData.title}.
         </p>
       </div>
 

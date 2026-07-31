@@ -100,6 +100,20 @@ export default function AboutTool({ theme }: AboutToolProps) {
           <p className={theme.textMuted}>
             OwnFormatters completely reverses this architecture. <strong>All calculation engines run 100% locally in your browser thread.</strong> Your sensitive data is kept inside your client sandbox and never transmitted over the network. It represents a fully reliable offline utility workbook that meets modern enterprise security and auditing benchmarks.
           </p>
+
+          <h3 className={`text-sm font-bold ${isLight ? 'text-slate-900' : 'text-white'} mt-6 flex items-center gap-2`}>
+            <FileText className="w-4 h-4 text-indigo-400" />
+            AdSense Content Quality & Publisher Compliance Standards
+          </h3>
+          <p className={theme.textMuted}>
+            OwnFormatters is committed to delivering high-value, original developer content in full alignment with Google AdSense Publisher Policies and Webmaster Quality Guidelines:
+          </p>
+          <ul className={`list-disc list-inside space-y-1.5 pl-2 ${isLight ? 'text-slate-700' : 'text-slate-300'}`}>
+            <li><strong>Original Educational Handbooks:</strong> Every utility suite page features an in-depth, original technical handbook, RFC specification review, implementation guide, and interactive FAQ.</li>
+            <li><strong>Non-Intrusive Ad Placement:</strong> Advertisements are clearly labeled as "Advertisement", positioned cleanly away from functional call-to-action buttons to avoid accidental clicks or layout shifts (CLS).</li>
+            <li><strong>Zero Sensitive Data Logging:</strong> Advertisements served on this site do not read, process, or inspect any code, keys, or text pasted by developers into tool input canvases.</li>
+            <li><strong>Transparent Ownership:</strong> Maintained and updated regularly by the engineering team at <strong>OwnCircles</strong> (<a href="mailto:info@owncircles.com" className="text-indigo-400 underline">info@owncircles.com</a>).</li>
+          </ul>
         </div>
 
         {/* Feature Grid */}

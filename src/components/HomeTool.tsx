@@ -376,6 +376,39 @@ export default function HomeTool({ theme, themeKey, shareUrl, tools, favorites =
         </div>
       </div>
 
+      {/* Value Proposition & Quality Standards Section */}
+      <div className={`p-6 rounded-2xl border ${cardClass} ${borderClass} space-y-4`}>
+        <div className="flex items-center gap-2 border-b border-slate-800/60 pb-3">
+          <Sparkles className="w-4 h-4 text-indigo-400" />
+          <h3 className={`text-sm font-bold uppercase font-mono tracking-wider ${isLight ? 'text-slate-900' : 'text-white'}`}>
+            Why Developers Choose OwnFormatters
+          </h3>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs leading-relaxed">
+          <div className="space-y-1.5">
+            <h4 className={`font-bold ${isLight ? 'text-slate-900' : 'text-indigo-300'}`}>100% Client-Side Sandbox</h4>
+            <p className={textMutedClass}>
+              All calculation engines (JSON formatting, JWT decoding, SQL formatting, Regex testing) execute strictly inside your local browser memory thread. Zero code or secret keys are transmitted to remote servers.
+            </p>
+          </div>
+
+          <div className="space-y-1.5">
+            <h4 className={`font-bold ${isLight ? 'text-slate-900' : 'text-emerald-300'}`}>Sub-Millisecond Processing</h4>
+            <p className={textMutedClass}>
+              Engineered with V8-optimized JavaScript parsing algorithms, handling megabyte-scale files instantly without lagging your browser tab or causing network latency.
+            </p>
+          </div>
+
+          <div className="space-y-1.5">
+            <h4 className={`font-bold ${isLight ? 'text-slate-900' : 'text-cyan-300'}`}>Original Technical Documentation</h4>
+            <p className={textMutedClass}>
+              Every utility suite includes exhaustive RFC specifications, implementation best practices, real-world code snippets, and interactive FAQs designed for professional engineers.
+            </p>
+          </div>
+        </div>
+      </div>
+
     </div>
   );
 }

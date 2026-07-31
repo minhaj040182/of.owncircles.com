@@ -83,6 +83,7 @@ import JsonToCodeTool from './components/JsonToCodeTool';
 import EducationTool from './components/EducationTool';
 import ShareWidget from './components/ShareWidget';
 import { ITServicesBanner } from './components/ITServicesBanner';
+import { ToolDocumentationSection } from './components/ToolDocumentationSection';
 
 import { ToolId, ToolDefinition } from './types';
 
@@ -561,9 +562,13 @@ const BASE_PATH = (() => {
   if (/\.[a-zA-Z0-9]+(\/)?$/.test(path) || path.includes('/learn-')) {
     return '';
   }
-  const mappedPath = Object.keys(PATH_TO_TOOL_MAP).find(p => path === p || path.endsWith(p));
+  // Strip legacy /home prefix if present in the URL path
+  const pathWithoutHome = path.replace(/^\/home(?=\/|$)/, '') || '/';
+
+  const mappedPath = Object.keys(PATH_TO_TOOL_MAP).find(p => p !== '/' && p !== '/home' && (pathWithoutHome === p || pathWithoutHome.endsWith(p)));
   if (mappedPath) {
-    return path.substring(0, path.length - mappedPath.length);
+    const base = pathWithoutHome.substring(0, pathWithoutHome.length - mappedPath.length);
+    return (base === '/home' || base === '/') ? '' : base;
   }
   return '';
 })();
@@ -677,14 +682,20 @@ export default function App() {
   // 1. DYNAMIC URL ROUTER (SEO-Friendly Clean Path URLs)
   useEffect(() => {
     const handleLocationChange = () => {
-      const path = window.location.pathname;
+      let path = window.location.pathname;
+      
+      // Normalize any URL with legacy /home prefix (e.g., /home/json-to-code -> /json-to-code)
+      if (path.startsWith('/home/') && path.length > 6) {
+        path = path.substring(5);
+      }
+
       let relativePath = path;
       if (BASE_PATH && path.startsWith(BASE_PATH)) {
         relativePath = path.substring(BASE_PATH.length);
       }
       
       const normPath = relativePath.toLowerCase().replace(/\/$/, '');
-      const searchPath = normPath === '' ? '/' : normPath;
+      const searchPath = (normPath === '' || normPath === '/home') ? '/' : normPath;
 
       // Intercept and route static file requests before tool mapping
       if (searchPath.includes('/learn-')) {
@@ -747,10 +758,14 @@ export default function App() {
       targetPath = '/learn-' + educationTopic;
     }
     if (targetPath) {
-      const fullTargetPath = BASE_PATH + targetPath;
-      const isHome = (window.location.pathname === '/' || window.location.pathname === '/home') && targetPath === '/';
-      if (!isHome && window.location.pathname !== fullTargetPath) {
-        window.history.pushState(null, '', fullTargetPath);
+      const fullTargetPath = BASE_PATH + (targetPath === '/home' ? '/' : targetPath);
+      if (window.location.pathname !== fullTargetPath) {
+        // If current path contains /home, replace state to clean URL cleanly
+        if (window.location.pathname.includes('/home')) {
+          window.history.replaceState(null, '', fullTargetPath);
+        } else {
+          window.history.pushState(null, '', fullTargetPath);
+        }
       }
     }
 
@@ -1009,7 +1024,7 @@ export default function App() {
           <div className="flex items-center gap-3 text-xs font-mono self-end md:self-auto" id="header-status-share-controls">
             <ShareWidget 
               title="OwnFormatters Developer Suite"
-              url={typeof window !== 'undefined' ? (window.location.origin + BASE_PATH + '/home') : ''}
+              url={typeof window !== 'undefined' ? (window.location.origin + BASE_PATH + (TOOL_TO_PATH_MAP[activeTool] === '/home' ? '/' : (TOOL_TO_PATH_MAP[activeTool] || '/'))) : ''}
               themeKey={themeKey}
               theme={theme}
               align="right"
@@ -1420,7 +1435,7 @@ export default function App() {
                 <HomeTool 
                   theme={theme} 
                   themeKey={themeKey}
-                  shareUrl={typeof window !== 'undefined' ? (window.location.origin + BASE_PATH + '/home') : ''}
+                  shareUrl={typeof window !== 'undefined' ? (window.location.origin + BASE_PATH + '/') : ''}
                   tools={TOOLS_LIST} 
                   favorites={favorites}
                   toggleFavorite={toggleFavorite}
@@ -1484,6 +1499,9 @@ export default function App() {
                   }}
                 />
               )}
+
+              {/* Dynamic Rich Developer Guide, Technical Specifications & FAQs for Google AdSense & Crawlers */}
+              <ToolDocumentationSection toolId={activeTool} theme={theme} themeKey={themeKey} />
             </div>
 
           </div>

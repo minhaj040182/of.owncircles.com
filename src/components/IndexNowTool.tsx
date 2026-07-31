@@ -35,7 +35,7 @@ const DEFAULT_KEY = '4b1050e9944447399a9f01ecb66e24fc';
 const DEFAULT_HOST = 'ownformatters.com';
 
 const BUILT_IN_PAGES = [
-  { path: '/home', label: 'Home Dashboard' },
+  { path: '/', label: 'Home Dashboard' },
   { path: '/json-formatter', label: 'JSON Formatter & Validator' },
   { path: '/json-schema-generator', label: 'JSON Schema Generator & Validator' },
   { path: '/jsonpath-tester', label: 'JSONPath Tester' },
