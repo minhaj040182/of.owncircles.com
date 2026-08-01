@@ -192,7 +192,7 @@ export const ITServicesBanner: React.FC<ITServicesBannerProps> = ({ themeKey = '
               href="mailto:info@owncircles.com?subject=IT%20Services%20Inquiry%20-%20Free%20Quote"
               className="px-3 sm:px-4 py-2 rounded-xl text-xs font-bold bg-gradient-to-r from-indigo-500 to-violet-600 hover:from-indigo-400 hover:to-violet-500 text-white shadow-md shadow-indigo-500/25 flex items-center gap-1.5 transition-all hover:scale-[1.02] active:scale-95 shrink-0"
             >
-              <span>Send Idea to get Free Quote</span>
+              <span>Get a Free Quote</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </a>
 

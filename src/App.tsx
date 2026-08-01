@@ -945,7 +945,15 @@ export default function App() {
         <div className="w-full flex flex-col md:flex-row items-center justify-between gap-4">
           
           {/* Brand Logo Identity */}
-          <div className="flex items-center gap-3 self-start md:self-auto">
+          <button 
+            onClick={() => {
+              setActiveTool('json');
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            className="flex items-center gap-3 self-start md:self-auto cursor-pointer hover:opacity-85 transition-opacity text-left focus:outline-none focus:ring-2 focus:ring-indigo-500 rounded-xl"
+            title="Go to JSON Formatter & Validator"
+            aria-label="OwnFormatters - JSON Formatter"
+          >
             <div className="w-9 h-9 rounded-xl bg-[#eef2f6] dark:bg-[#1e293b] flex items-center justify-center shadow-md border border-indigo-100/50 dark:border-slate-800 transition-colors">
               <Code className="w-5 h-5 text-[#2563eb] dark:text-[#3b82f6]" strokeWidth={3.2} />
             </div>
@@ -953,7 +961,7 @@ export default function App() {
               <span className={`text-sm font-black tracking-tight block ${themeKey === 'light' ? 'text-slate-800' : 'text-white'}`}>OwnFormatters</span>
               <span className={`text-[10px] block font-mono ${theme.textMuted}`}>by OwnCircles</span>
             </div>
-          </div>
+          </button>
 
           {/* Controls Hub: Theme & Font Switchers */}
           <div className="flex flex-col sm:flex-row items-center gap-3">
@@ -1051,7 +1059,17 @@ export default function App() {
         <div className="w-full flex flex-col md:flex-row md:items-center md:justify-between gap-6">
           <div className="space-y-3 max-w-3xl">
             <h1 className={`text-2xl md:text-4xl font-black tracking-tight leading-tight ${themeKey === 'light' ? 'text-slate-800' : 'text-white'}`}>
-              OwnFormatters <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 via-violet-500 to-indigo-600 dark:from-indigo-400 dark:via-violet-300 dark:to-indigo-400">Developer Utility Suite</span>
+              <button 
+                onClick={() => {
+                  setActiveTool('json');
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
+                className="hover:underline cursor-pointer text-left inline-block focus:outline-none"
+                title="Go to JSON Formatter & Validator"
+              >
+                OwnFormatters
+              </button>{' '}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 via-violet-500 to-indigo-600 dark:from-indigo-400 dark:via-violet-300 dark:to-indigo-400">Developer Utility Suite</span>
             </h1>
             <p className={`text-xs md:text-sm leading-relaxed max-w-2xl ${theme.textMuted}`}>
               A comprehensive offline development workbench providing secure formatters, syntax validators, cryptographic hash generators, custom token decoders, and network testbeds. Zero cloud footprints.
@@ -1606,6 +1624,13 @@ export default function App() {
         <div className="w-full space-y-3">
           <p className="font-semibold">© 2026 OwnFormatters Suite. Designed for high performance security, speed, and privacy compliance.</p>
           <div className="flex flex-wrap justify-center gap-x-4 gap-y-2 text-[10px] text-slate-500 dark:text-slate-650 font-mono">
+            <button 
+              onClick={() => { setActiveTool('home'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+              className="hover:text-indigo-400 hover:underline cursor-pointer transition-colors"
+            >
+              Home Dashboard
+            </button>
+            <span>•</span>
             <span>Secure SSL Encryption</span>
             <span>•</span>
             <span>Local Browser Processing</span>
