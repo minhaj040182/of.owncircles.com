@@ -308,8 +308,8 @@ const TOOLS_LIST: ToolDefinition[] = [
 ];
 
 const PATH_TO_TOOL_MAP: Record<string, ToolId> = {
-  '/': 'home',
-  '/home': 'home',
+  '/': 'json',
+  '/home': 'json',
   '/json-formatter': 'json',
   '/json-schema-generator': 'jsonschema',
   '/jsonpath-tester': 'jsonpath',
@@ -735,8 +735,8 @@ export default function App() {
         setActiveTool(validTool);
         setActiveSelectionSource('normal');
       } else {
-        window.history.replaceState(null, '', BASE_PATH + '/');
-        setActiveTool('home');
+        window.history.replaceState(null, '', BASE_PATH + '/json-formatter');
+        setActiveTool('json');
         setActiveSelectionSource('normal');
       }
     };
@@ -759,7 +759,8 @@ export default function App() {
     }
     if (targetPath) {
       const fullTargetPath = BASE_PATH + (targetPath === '/home' ? '/' : targetPath);
-      if (window.location.pathname !== fullTargetPath) {
+      const currentPathTool = PATH_TO_TOOL_MAP[window.location.pathname.toLowerCase().replace(/\/$/, '') || '/'];
+      if (currentPathTool !== activeTool && window.location.pathname !== fullTargetPath) {
         // If current path contains /home, replace state to clean URL cleanly
         if (window.location.pathname.includes('/home')) {
           window.history.replaceState(null, '', fullTargetPath);
@@ -948,6 +949,7 @@ export default function App() {
           <button 
             onClick={() => {
               setActiveTool('json');
+              window.history.pushState(null, '', BASE_PATH + '/json-formatter');
               window.scrollTo({ top: 0, behavior: 'smooth' });
             }}
             className="flex items-center gap-3 self-start md:self-auto cursor-pointer hover:opacity-85 transition-opacity text-left focus:outline-none focus:ring-2 focus:ring-indigo-500 rounded-xl"
@@ -1062,6 +1064,7 @@ export default function App() {
               <button 
                 onClick={() => {
                   setActiveTool('json');
+                  window.history.pushState(null, '', BASE_PATH + '/json-formatter');
                   window.scrollTo({ top: 0, behavior: 'smooth' });
                 }}
                 className="hover:underline cursor-pointer text-left inline-block focus:outline-none"
@@ -1625,10 +1628,14 @@ export default function App() {
           <p className="font-semibold">© 2026 OwnFormatters Suite. Designed for high performance security, speed, and privacy compliance.</p>
           <div className="flex flex-wrap justify-center gap-x-4 gap-y-2 text-[10px] text-slate-500 dark:text-slate-650 font-mono">
             <button 
-              onClick={() => { setActiveTool('home'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+              onClick={() => { 
+                setActiveTool('json'); 
+                window.history.pushState(null, '', BASE_PATH + '/json-formatter');
+                window.scrollTo({ top: 0, behavior: 'smooth' }); 
+              }}
               className="hover:text-indigo-400 hover:underline cursor-pointer transition-colors"
             >
-              Home Dashboard
+              JSON Formatter
             </button>
             <span>•</span>
             <span>Secure SSL Encryption</span>
