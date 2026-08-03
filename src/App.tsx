@@ -389,7 +389,7 @@ const TOOL_TO_PATH_MAP: Record<ToolId, string> = {
   robots_txt: '/robots.txt',
   sitemap_xml: '/sitemap.xml',
   indexnow: '/indexnow-submitter',
-  indexnow_key: '/4b1050e9944447399a9f01ecb66e24fc.txt',
+  indexnow_key: '/613e87bbb04e45cfa9f488bc6056e990.txt',
 };
 
 // Global ads feature flag for AdSense sandboxing and SEO reviews
@@ -637,7 +637,7 @@ export default function App() {
       } else if (activeTool === 'sitemap_xml') {
         fileName = '/sitemap.xml';
       } else if (activeTool === 'indexnow_key') {
-        fileName = '/4b1050e9944447399a9f01ecb66e24fc.txt';
+        fileName = '/613e87bbb04e45cfa9f488bc6056e990.txt';
       }
 
       fetch(BASE_PATH + fileName)
@@ -718,7 +718,7 @@ export default function App() {
         setActiveTool('sitemap_xml');
         setActiveSelectionSource('normal');
         return;
-      } else if (searchPath === '/4b1050e9944447399a9f01ecb66e24fc.txt') {
+      } else if (searchPath === '/613e87bbb04e45cfa9f488bc6056e990.txt' || searchPath === '/613e87bbb04e45cfa9f488bc6056e990') {
         setActiveTool('indexnow_key');
         setActiveSelectionSource('normal');
         return;

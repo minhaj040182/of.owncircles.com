@@ -165,27 +165,75 @@
   </head>
   <body style="margin:0; background-color:#020617; color:#f8fafc; font-family:'Inter',sans-serif;">
     <div id="root">
-      <!-- Pre-rendered Crawlable Semantic Content for Search Engines (Bingbot / Googlebot) -->
+      <!-- Pre-rendered Crawlable Semantic Content for Search Engines (Bingbot / Googlebot / DuckDuckBot) -->
       <main style="max-width:1200px; margin:0 auto; padding:32px 16px; font-size:14px; line-height:1.6;">
         <header style="margin-bottom:32px; border-bottom:1px solid #1e293b; padding-bottom:24px;">
           <h1 style="font-size:28px; font-weight:800; color:#ffffff; margin-bottom:12px;">
-            OwnFormatters - Free Online Developer Tools & Utility Suite
+            OwnFormatters - Free Online Developer Tools, JSON Formatter & Code Generator
           </h1>
           <p style="color:#94a3b8; font-size:16px; margin:0;">
-            100% Browser-Based, Private, and Client-Side Processing for Software Engineers, DevOps Professionals, and Web Developers.
+            100% Browser-Based, Private, Offline-Capable Client-Side Developer Suite for Software Engineers, System Architects, and DevOps Professionals.
           </p>
         </header>
 
         <section style="margin-bottom:40px;">
           <h2 style="font-size:20px; font-weight:700; color:#818cf8; margin-bottom:16px;">
-            Zero Server Uploads: Maximum Security & Privacy Guarantee
+            Zero Server Uploads: Maximum Security & Enterprise Privacy Guarantee
           </h2>
           <p style="color:#cbd5e1; margin-bottom:12px;">
-            OwnFormatters is an offline-capable developer workbook engineered to perform formatting, validation, encoding, decoding, conversion, and generation operations entirely within your local browser memory thread. Traditional online converters transmit your raw payloads, secret keys, API tokens, and database query strings across remote networks where they are frequently recorded in server access logs.
+            OwnFormatters is a privacy-first, offline-capable developer utility platform engineered to perform JSON formatting, JSON-to-Code generation, JWT decoding, Base64 conversion, YAML formatting, SQL query beautification, UUID generation, RegEx testing, and text diffing entirely within your local browser memory thread. Traditional online converters transmit your raw payloads, secret keys, API access tokens, connection strings, and database queries across public networks where they are subject to server access logging and third-party recording.
           </p>
           <p style="color:#cbd5e1; margin-bottom:12px;">
-            With OwnFormatters, 0 bytes of your input data ever leave your computer. All parsing algorithms execute via V8 JavaScript WebWorkers locally, providing instant sub-millisecond execution without network latency or privacy risks.
+            With OwnFormatters, 0 bytes of your input data ever leave your computer. All parsing algorithms execute via V8 JavaScript WebWorkers locally, providing instant sub-millisecond execution without network latency, server downtime, or privacy risks.
           </p>
+        </section>
+
+        <section style="margin-bottom:40px;">
+          <h2 style="font-size:22px; font-weight:800; color:#ffffff; margin-bottom:16px; border-bottom:1px solid #334155; padding-bottom:8px;">
+            Developer Technical Standards & Utilities Specification Handbook
+          </h2>
+
+          <article style="margin-bottom:24px; background:#0f172a; padding:20px; border-radius:12px; border:1px solid #1e293b;">
+            <h3 style="font-size:18px; font-weight:700; color:#38bdf8; margin-bottom:8px;">1. JSON Formatter, Validator & RFC 8259 Specification</h3>
+            <p style="color:#cbd5e1; margin-bottom:8px;">
+              JSON (JavaScript Object Notation) is a lightweight, text-based, language-independent data interchange format defined by RFC 8259 and ECMA-404 standards. Our client-side JSON Formatter formats, minifies, validates, and repairs raw JSON payloads. It highlights line-by-line syntax errors, trailing commas, unquoted keys, and string escape issues instantly without sending data to a remote server.
+            </p>
+          </article>
+
+          <article style="margin-bottom:24px; background:#0f172a; padding:20px; border-radius:12px; border:1px solid #1e293b;">
+            <h3 style="font-size:18px; font-weight:700; color:#38bdf8; margin-bottom:8px;">2. JSON to Code Generator (TypeScript, Go, Rust, Java, C#, Python, Swift)</h3>
+            <p style="color:#cbd5e1; margin-bottom:8px;">
+              Convert raw JSON API response payloads into strongly-typed data models, interfaces, structs, and classes. Automatically infers field data types, handles optional/nullable attributes, generates Go struct tags, Jackson annotations in Java, Serde derives in Rust, Pydantic models in Python, and TypeScript interfaces.
+            </p>
+          </article>
+
+          <article style="margin-bottom:24px; background:#0f172a; padding:20px; border-radius:12px; border:1px solid #1e293b;">
+            <h3 style="font-size:18px; font-weight:700; color:#38bdf8; margin-bottom:8px;">3. JWT (JSON Web Token) Decoder & Inspector (RFC 7519)</h3>
+            <p style="color:#cbd5e1; margin-bottom:8px;">
+              Decode Base64Url-encoded JSON Web Tokens safely. Inspect token headers, signature algorithms (`alg`), token issuance timestamps (`iat`), expiration dates (`exp`), subject (`sub`), issuer (`iss`), and custom authorization role claims. Operates 100% in browser memory so session tokens are never leaked to server logs.
+            </p>
+          </article>
+
+          <article style="margin-bottom:24px; background:#0f172a; padding:20px; border-radius:12px; border:1px solid #1e293b;">
+            <h3 style="font-size:18px; font-weight:700; color:#38bdf8; margin-bottom:8px;">4. YAML Formatter & Kubernetes / Docker Compose Manifest Validator</h3>
+            <p style="color:#cbd5e1; margin-bottom:8px;">
+              Validate YAML indentation hierarchy and convert seamlessly between YAML and JSON formats. Ideal for verifying Kubernetes deployment manifests, Helm charts, Docker Compose files, Ansible playbooks, and GitHub Actions CI/CD workflow configurations.
+            </p>
+          </article>
+
+          <article style="margin-bottom:24px; background:#0f172a; padding:20px; border-radius:12px; border:1px solid #1e293b;">
+            <h3 style="font-size:18px; font-weight:700; color:#38bdf8; margin-bottom:8px;">5. SQL Query Beautifier & RDBMS Dialect Formatter</h3>
+            <p style="color:#cbd5e1; margin-bottom:8px;">
+              Beautify PostgreSQL, MySQL, SQLite, Oracle, and T-SQL database query strings. Capitalizes SQL keywords (`SELECT`, `FROM`, `JOIN`, `WHERE`), indents subqueries, and aligns clauses for transparent code reviews and query optimization.
+            </p>
+          </article>
+
+          <article style="margin-bottom:24px; background:#0f172a; padding:20px; border-radius:12px; border:1px solid #1e293b;">
+            <h3 style="font-size:18px; font-weight:700; color:#38bdf8; margin-bottom:8px;">6. UUID v4 & v7 Generator (RFC 4122 & RFC 9562)</h3>
+            <p style="color:#cbd5e1; margin-bottom:8px;">
+              Generate cryptographically secure random UUID v4 and time-ordered UUID v7 identifiers. UUID v7 embeds millisecond Unix epoch timestamps to preserve database B-tree index locality and write performance while guaranteeing global uniqueness.
+            </p>
+          </article>
         </section>
 
         <section style="margin-bottom:40px;">

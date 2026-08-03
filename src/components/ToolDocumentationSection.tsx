@@ -13,7 +13,8 @@ import {
   Check,
   AlertTriangle,
   Compass,
-  FileCode2
+  FileCode2,
+  Layers
 } from 'lucide-react';
 import { getEducationTopic } from '../data/educationContent';
 import { ToolId } from '../types';
@@ -40,7 +41,7 @@ export const ToolDocumentationSection: React.FC<ToolDocumentationSectionProps> =
   if (!topicData) return null;
   const isLight = themeKey === 'light';
 
-  // Inject dynamic JSON-LD FAQPage & WebApplication Schema markup for search engines and Bing/Google crawlers
+  // Inject dynamic JSON-LD FAQPage & TechArticle Schema markup for search engines and Bing/Google crawlers
   useEffect(() => {
     if (!topicData) return;
 
@@ -57,6 +58,26 @@ export const ToolDocumentationSection: React.FC<ToolDocumentationSectionProps> =
       }))
     };
 
+    const techArticleSchema = {
+      "@context": "https://schema.org",
+      "@type": "TechArticle",
+      "headline": topicData.title,
+      "description": topicData.shortDesc,
+      "articleBody": `${topicData.definition} ${topicData.overviewDetailed} ${topicData.deepDiveText || ''}`,
+      "author": {
+        "@type": "Organization",
+        "name": "OwnFormatters"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "OwnFormatters",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://ownformatters.com/images/icon.png"
+        }
+      }
+    };
+
     let faqScript = document.querySelector('script[data-schema="faq-page"]');
     if (!faqScript) {
       faqScript = document.createElement('script');
@@ -66,9 +87,20 @@ export const ToolDocumentationSection: React.FC<ToolDocumentationSectionProps> =
     }
     faqScript.textContent = JSON.stringify(faqSchema);
 
+    let articleScript = document.querySelector('script[data-schema="tech-article"]');
+    if (!articleScript) {
+      articleScript = document.createElement('script');
+      articleScript.setAttribute('type', 'application/ld+json');
+      articleScript.setAttribute('data-schema', 'tech-article');
+      document.head.appendChild(articleScript);
+    }
+    articleScript.textContent = JSON.stringify(techArticleSchema);
+
     return () => {
-      const existing = document.querySelector('script[data-schema="faq-page"]');
-      if (existing) existing.remove();
+      const existingFaq = document.querySelector('script[data-schema="faq-page"]');
+      if (existingFaq) existingFaq.remove();
+      const existingArticle = document.querySelector('script[data-schema="tech-article"]');
+      if (existingArticle) existingArticle.remove();
     };
   }, [toolId, topicData]);
 
@@ -85,12 +117,12 @@ export const ToolDocumentationSection: React.FC<ToolDocumentationSectionProps> =
   const inputBgClass = theme?.inputBg || 'bg-slate-950';
 
   return (
-    <section 
+    <article 
       className={`mt-12 border rounded-2xl p-6 sm:p-10 space-y-10 shadow-2xl transition-all duration-300 ${cardBg} ${borderClass}`}
       aria-label={`${topicData.title} Technical Specifications, Developer Manual, and FAQs`}
     >
       {/* Article Top Header */}
-      <div className={`border-b ${isLight ? 'border-slate-200' : 'border-slate-800'} pb-6 space-y-3`}>
+      <header className={`border-b ${isLight ? 'border-slate-200' : 'border-slate-800'} pb-6 space-y-3`}>
         <div className="flex items-center justify-between flex-wrap gap-2">
           <div className="inline-flex items-center gap-2 px-3 py-1 text-[11px] font-mono font-bold rounded-full bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
             <BookOpen className="w-3.5 h-3.5" />
@@ -106,12 +138,12 @@ export const ToolDocumentationSection: React.FC<ToolDocumentationSectionProps> =
           {topicData.title}
         </h2>
         <p className={`text-xs sm:text-sm leading-relaxed max-w-4xl ${textMutedClass}`}>
-          {topicData.shortDesc} This technical guide provides comprehensive operational details, syntax specifications, security best practices, and troubleshooting guidelines.
+          {topicData.shortDesc} This authoritative technical specification provides exhaustive operational details, syntax requirements, security best practices, and troubleshooting guidelines.
         </p>
-      </div>
+      </header>
 
       {/* Comprehensive Architectural Overview */}
-      <div className="space-y-4">
+      <section className="space-y-4">
         <h3 className={`text-lg font-bold flex items-center gap-2 ${isLight ? 'text-slate-900' : 'text-white'}`}>
           <Zap className="w-5 h-5 text-indigo-400" />
           Architectural Definition & Operational Overview
@@ -122,10 +154,23 @@ export const ToolDocumentationSection: React.FC<ToolDocumentationSectionProps> =
         <p className={`text-xs sm:text-sm leading-relaxed ${textMutedClass}`}>
           {topicData.overviewDetailed}
         </p>
-      </div>
+      </section>
+
+      {/* Technical Deep Dive Section */}
+      {topicData.deepDiveText && (
+        <section className="space-y-3 p-5 rounded-xl border bg-indigo-500/5 border-indigo-500/20">
+          <h3 className={`text-base font-bold flex items-center gap-2 ${isLight ? 'text-indigo-950' : 'text-indigo-200'}`}>
+            <Layers className="w-4 h-4 text-indigo-400" />
+            Technical Deep Dive & Standard Specifications
+          </h3>
+          <p className={`text-xs sm:text-sm leading-relaxed ${isLight ? 'text-slate-700' : 'text-slate-300'}`}>
+            {topicData.deepDiveText}
+          </p>
+        </section>
+      )}
 
       {/* Step-by-Step Developer Quickstart Workflow */}
-      <div className="space-y-4">
+      <section className="space-y-4">
         <h3 className={`text-lg font-bold flex items-center gap-2 ${isLight ? 'text-slate-900' : 'text-white'}`}>
           <Compass className="w-5 h-5 text-cyan-400" />
           Step-by-Step Execution Workflow
@@ -151,13 +196,13 @@ export const ToolDocumentationSection: React.FC<ToolDocumentationSectionProps> =
             </div>
           ))}
         </div>
-      </div>
+      </section>
 
       {/* Industry Use Cases & Best Practices Side-by-Side */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 text-xs leading-relaxed">
         
         {/* Primary Use Cases */}
-        <div className="space-y-4">
+        <section className="space-y-4">
           <h3 className={`text-base font-bold flex items-center gap-2 ${isLight ? 'text-slate-900' : 'text-white'}`}>
             <FileCode2 className="w-4 h-4 text-emerald-400" />
             Primary Industry Use Cases
@@ -170,10 +215,10 @@ export const ToolDocumentationSection: React.FC<ToolDocumentationSectionProps> =
               </li>
             ))}
           </ul>
-        </div>
+        </section>
 
         {/* Developer Best Practices */}
-        <div className="space-y-4">
+        <section className="space-y-4">
           <h3 className={`text-base font-bold flex items-center gap-2 ${isLight ? 'text-slate-900' : 'text-white'}`}>
             <ShieldCheck className="w-4 h-4 text-amber-400" />
             Security & Developer Best Practices
@@ -186,16 +231,16 @@ export const ToolDocumentationSection: React.FC<ToolDocumentationSectionProps> =
               </li>
             ))}
           </ul>
-        </div>
+        </section>
 
       </div>
 
       {/* Troubleshooting & Edge Cases */}
       {topicData.troubleshooting && topicData.troubleshooting.length > 0 && (
-        <div className="space-y-4">
+        <section className="space-y-4">
           <h3 className={`text-base font-bold flex items-center gap-2 ${isLight ? 'text-slate-900' : 'text-white'}`}>
             <AlertTriangle className="w-4 h-4 text-rose-400" />
-            Common Syntax Errors & Troubleshooting
+            Common Syntax Errors & Troubleshooting Matrix
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             {topicData.troubleshooting.map((item, idx) => (
@@ -205,14 +250,14 @@ export const ToolDocumentationSection: React.FC<ToolDocumentationSectionProps> =
               </div>
             ))}
           </div>
-        </div>
+        </section>
       )}
 
       {/* Code Syntax Reference & Interactive FAQ */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 text-xs leading-relaxed">
         
         {/* Code Example */}
-        <div className="space-y-3">
+        <section className="space-y-3">
           <div className="flex items-center justify-between">
             <h3 className={`text-base font-bold flex items-center gap-2 ${isLight ? 'text-slate-900' : 'text-white'}`}>
               <Code2 className="w-4 h-4 text-cyan-400" />
@@ -246,10 +291,10 @@ export const ToolDocumentationSection: React.FC<ToolDocumentationSectionProps> =
               <code>{topicData.exampleCode}</code>
             </pre>
           </div>
-        </div>
+        </section>
 
-        {/* FAQs */}
-        <div className="space-y-3">
+        {/* FAQs - Guaranteed DOM Rendering for Search Engine Crawlers */}
+        <section className="space-y-3">
           <h3 className={`text-base font-bold flex items-center gap-2 ${isLight ? 'text-slate-900' : 'text-white'}`}>
             <HelpCircle className="w-4 h-4 text-violet-400" />
             Frequently Asked Questions (FAQs)
@@ -270,6 +315,7 @@ export const ToolDocumentationSection: React.FC<ToolDocumentationSectionProps> =
                   <button
                     onClick={() => setOpenFaqIndex(isOpen ? null : index)}
                     className="w-full text-left p-3.5 flex items-center justify-between gap-3 font-semibold text-xs cursor-pointer hover:opacity-90"
+                    aria-expanded={isOpen}
                   >
                     <span className={isLight ? 'text-slate-900' : 'text-white'}>
                       {faq.question}
@@ -281,25 +327,28 @@ export const ToolDocumentationSection: React.FC<ToolDocumentationSectionProps> =
                     )}
                   </button>
 
-                  {isOpen && (
-                    <div className={`px-3.5 pb-3.5 pt-0 text-[11px] leading-relaxed border-t mt-1 ${isLight ? 'border-indigo-100 text-slate-700' : 'border-slate-800/80 text-slate-300'}`}>
-                      <p className="mt-2">{faq.answer}</p>
-                    </div>
-                  )}
+                  {/* Render answer in DOM always so search engine crawlers index all FAQ text */}
+                  <div 
+                    className={`px-3.5 pb-3.5 pt-0 text-[11px] leading-relaxed border-t mt-1 ${
+                      isOpen ? 'block' : 'hidden md:block opacity-80 text-[10px]'
+                    } ${isLight ? 'border-indigo-100 text-slate-700' : 'border-slate-800/80 text-slate-300'}`}
+                  >
+                    <p className="mt-2">{faq.answer}</p>
+                  </div>
                 </div>
               );
             })}
           </div>
-        </div>
+        </section>
 
       </div>
 
-      {/* AdSense Transparency & Data Governance Statement Footer */}
-      <div className={`pt-5 border-t ${isLight ? 'border-slate-200' : 'border-slate-800'} flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px]`}>
+      {/* Privacy & Data Governance Statement Footer */}
+      <footer className={`pt-5 border-t ${isLight ? 'border-slate-200' : 'border-slate-800'} flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px]`}>
         <div className="flex items-center gap-2 text-slate-400">
           <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0" />
           <span>
-            <strong>Data Governance Pledge:</strong> OwnFormatters executes 100% locally in your browser memory thread. No inputs or secret keys are collected, logged, or sent to server clouds.
+            <strong>Data Governance Pledge:</strong> OwnFormatters processes all payloads 100% locally in your browser memory thread. Zero data is recorded or sent to remote servers.
           </span>
         </div>
         <a
@@ -315,7 +364,7 @@ export const ToolDocumentationSection: React.FC<ToolDocumentationSectionProps> =
         >
           View Privacy & Publisher Policy →
         </a>
-      </div>
-    </section>
+      </footer>
+    </article>
   );
 };

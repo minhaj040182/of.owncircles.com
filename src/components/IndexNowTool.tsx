@@ -31,7 +31,7 @@ interface IndexNowToolProps {
   };
 }
 
-const DEFAULT_KEY = '4b1050e9944447399a9f01ecb66e24fc';
+const DEFAULT_KEY = '613e87bbb04e45cfa9f488bc6056e990';
 const DEFAULT_HOST = 'ownformatters.com';
 
 const BUILT_IN_PAGES = [
