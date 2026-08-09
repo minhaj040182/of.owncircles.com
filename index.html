@@ -19,7 +19,7 @@
       }(window.location));
     </script>
     
-    <!-- Primary SEO -->
+    <!-- Primary SEO Meta Tags -->
     <meta name="title" content="OwnFormatters – Free JSON Formatter, JSON to Code Generator & Developer Utilities">
     <meta name="description" content="Free browser-based developer tools suite: JSON Formatter, JSON to Code Generator, YAML to JSON, XML Beautifier, JWT Decoder, Base64 Encoder, UUID Generator, Regex Tester, SQL Formatter, Epoch Converter, Cron Parser and more. 100% private client-side processing.">
     <meta name="keywords" content="json formatter,json to code,json to typescript,json to go,json to rust,json validator,yaml formatter,xml formatter,jwt decoder,base64 encoder,url encoder,uuid generator,regex tester,epoch converter,cron parser,sql formatter,diff tool,developer tools,online tools,free formatter">
@@ -28,22 +28,22 @@
     <meta name="googlebot" content="index, follow">
     <meta name="bingbot" content="index, follow">
 
-    <!-- Language -->
+    <!-- Language & Region -->
     <meta name="language" content="English">
     <meta name="content-language" content="en">
     <meta http-equiv="content-language" content="en">
 
-    <!-- Mobile -->
+    <!-- Mobile App Capabilities -->
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
 
-    <!-- Canonical -->
+    <!-- Canonical Link Tag -->
     <link rel="canonical" href="https://ownformatters.com/">
 
-    <!-- Theme -->
+    <!-- Theme Color -->
     <meta name="theme-color" content="#6366f1">
 
-    <!-- Open Graph -->
+    <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="OwnFormatters">
     <meta property="og:title" content="OwnFormatters – Free JSON Formatter, JSON to Code Generator & Developer Utilities">
@@ -64,7 +64,7 @@
     <meta name="msapplication-TileColor" content="#6366f1">
     <meta name="msapplication-config" content="none">
 
-    <!-- Classification -->
+    <!-- Classification Metadata -->
     <meta name="classification" content="Developer Tools">
     <meta name="category" content="Software Development">
     <meta name="subject" content="Online Developer Utilities">
@@ -72,10 +72,10 @@
     <meta name="distribution" content="Global">
     <meta name="rating" content="General">
 
-    <!-- Referrer -->
+    <!-- Referrer Policy -->
     <meta name="referrer" content="strict-origin-when-cross-origin">
 
-    <!-- Favicon -->
+    <!-- Favicon Links -->
     <link rel="icon" type="image/png" sizes="32x32" href="/images/icon.png">
     <link rel="shortcut icon" href="/images/icon.png">
     <link rel="apple-touch-icon" href="/images/icon.png">
@@ -83,30 +83,51 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
+    <!-- Sitemap & Robots References -->
     <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml">
     <link rel="robot" type="application/txt" title="robot" href="/robots.txt">
 
     <title>OwnFormatters – Free JSON Formatter, JSON to Code Generator & Developer Utilities</title>
 
-    <!-- JSON-LD Structured Data -->
+    <!-- JSON-LD Structured Data 1: Organization -->
     <script type="application/ld+json">
     {
-     "@context":"https://schema.org",
-     "@type":"Organization",
-     "name":"OwnFormatters",
-     "url":"https://ownformatters.com",
-     "logo":"https://ownformatters.com/images/icon.png"
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "OwnFormatters",
+      "url": "https://ownformatters.com/",
+      "logo": "https://ownformatters.com/images/icon.png",
+      "sameAs": [
+        "https://github.com/owncircles"
+      ]
     }
     </script>
+
+    <!-- JSON-LD Structured Data 2: WebSite with SearchAction -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "OwnFormatters",
+      "url": "https://ownformatters.com/",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://ownformatters.com/?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
+
+    <!-- JSON-LD Structured Data 3: WebApplication Schema -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "WebApplication",
       "name": "OwnFormatters",
       "url": "https://ownformatters.com/",
-      "description": "Free browser-based developer toolkit: JSON/YAML/XML/CSV formatting, Base64/URL/HTML encoding, JWT decoding, UUID & hash generation, regex testing, text diff, cron parsing, epoch conversion and more.",
+      "description": "Free browser-based developer toolkit: JSON/YAML/XML/CSV formatting, JSON to Code conversion, Base64/URL encoding, JWT decoding, UUID & hash generation, regex testing, text diffing, cron parsing, epoch conversion and more.",
       "applicationCategory": "DeveloperApplication",
       "operatingSystem": "Any",
       "offers": {
@@ -118,7 +139,7 @@
         "JSON Formatter & Validator",
         "JSON Schema Generator & Validator",
         "JSONPath Tester",
-        "JSON to Code Generator (TypeScript, Go, Rust, Java)",
+        "JSON to Code Generator (TypeScript, Go, Rust, Java, C#, Python, Swift)",
         "YAML to JSON Converter",
         "XML Formatter",
         "CSV to JSON Converter",
@@ -126,7 +147,6 @@
         "SQL Query Beautifier",
         "Base64 Encoder / Decoder",
         "URL Encoder / Decoder",
-        "HTML Encoder / Decoder",
         "UUID v4 & v7 Generator",
         "Hash Generator (MD5, SHA-1, SHA-256, SHA-512)",
         "Color Converter",
@@ -153,6 +173,48 @@
     }
     </script>
 
+    <!-- JSON-LD Structured Data 4: FAQPage Schema -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Are my payloads, JWT tokens, or API keys sent to any server?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No! OwnFormatters operates 100% client-side inside your browser thread. All formatting, decoding, and code generation algorithms execute locally without transmitting any data over the internet."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is OwnFormatters free to use for commercial and personal projects?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, OwnFormatters is completely free for all software engineers, DevOps teams, and commercial organizations without registration or usage limits."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does OwnFormatters work offline?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes! Because all scripts and worker engines run inside browser memory, once loaded you can continue using all formatting and validation tools even without an active internet connection."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What code languages are supported in the JSON to Code Generator?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The JSON to Code Generator supports strongly-typed interface and class generation for TypeScript, Go, Rust, Java, C#, Python, and Swift."
+          }
+        }
+      ]
+    }
+    </script>
+
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-VZPKBC605D"></script>
     <script>
@@ -165,138 +227,290 @@
   </head>
   <body style="margin:0; background-color:#020617; color:#f8fafc; font-family:'Inter',sans-serif;">
     <div id="root">
-      <!-- Pre-rendered Crawlable Semantic Content for Search Engines (Bingbot / Googlebot / DuckDuckBot) -->
+      <!-- Pre-rendered Crawlable Semantic Home Page Content for Search Engine Crawlers (Googlebot / Bingbot / DuckDuckBot) -->
       <main style="max-width:1200px; margin:0 auto; padding:32px 16px; font-size:14px; line-height:1.6;">
         <header style="margin-bottom:32px; border-bottom:1px solid #1e293b; padding-bottom:24px;">
-          <h1 style="font-size:28px; font-weight:800; color:#ffffff; margin-bottom:12px;">
+          <h1 style="font-size:32px; font-weight:800; color:#ffffff; margin-bottom:12px; tracking-tight: -0.02em;">
             OwnFormatters - Free Online Developer Tools, JSON Formatter & Code Generator
           </h1>
-          <p style="color:#94a3b8; font-size:16px; margin:0;">
+          <p style="color:#cbd5e1; font-size:18px; margin:0; max-width:850px;">
             100% Browser-Based, Private, Offline-Capable Client-Side Developer Suite for Software Engineers, System Architects, and DevOps Professionals.
           </p>
         </header>
 
-        <section style="margin-bottom:40px;">
-          <h2 style="font-size:20px; font-weight:700; color:#818cf8; margin-bottom:16px;">
+        <!-- Privacy & Zero-Upload Value Proposition -->
+        <section style="margin-bottom:40px; background:#0f172a; padding:24px; border-radius:12px; border:1px solid #1e293b;">
+          <h2 style="font-size:22px; font-weight:700; color:#818cf8; margin-top:0; margin-bottom:16px;">
             Zero Server Uploads: Maximum Security & Enterprise Privacy Guarantee
           </h2>
           <p style="color:#cbd5e1; margin-bottom:12px;">
             OwnFormatters is a privacy-first, offline-capable developer utility platform engineered to perform JSON formatting, JSON-to-Code generation, JWT decoding, Base64 conversion, YAML formatting, SQL query beautification, UUID generation, RegEx testing, and text diffing entirely within your local browser memory thread. Traditional online converters transmit your raw payloads, secret keys, API access tokens, connection strings, and database queries across public networks where they are subject to server access logging and third-party recording.
           </p>
-          <p style="color:#cbd5e1; margin-bottom:12px;">
-            With OwnFormatters, 0 bytes of your input data ever leave your computer. All parsing algorithms execute via V8 JavaScript WebWorkers locally, providing instant sub-millisecond execution without network latency, server downtime, or privacy risks.
+          <p style="color:#cbd5e1; margin:0;">
+            With OwnFormatters, <strong>0 bytes of your input data ever leave your computer</strong>. All parsing algorithms execute via V8 JavaScript WebWorkers locally, providing instant sub-millisecond execution without network latency, server downtime, or privacy risks.
           </p>
         </section>
 
-        <section style="margin-bottom:40px;">
+        <!-- Complete Tools Catalog Index -->
+        <section style="margin-bottom:48px;">
+          <h2 style="font-size:24px; font-weight:800; color:#ffffff; margin-bottom:20px; border-bottom:1px solid #334155; padding-bottom:8px;">
+            Complete Developer Tools Directory
+          </h2>
+
+          <!-- Section 1: JSON & Data Structures -->
+          <div style="margin-bottom:28px;">
+            <h3 style="font-size:18px; font-weight:700; color:#38bdf8; margin-bottom:12px;">JSON & Data Structure Utilities</h3>
+            <nav aria-label="JSON & Data Structure Utilities">
+              <ul style="display:grid; grid-template-columns:repeat(auto-fill, minmax(280px, 1fr)); gap:16px; list-style:none; padding:0; margin:0;">
+                <li style="background:#0f172a; padding:16px; border-radius:12px; border:1px solid #1e293b;">
+                  <a href="/json-formatter" style="color:#38bdf8; font-weight:700; text-decoration:none;">JSON Formatter & Validator</a>
+                  <p style="color:#94a3b8; font-size:12px; margin:8px 0 0 0;">Format, validate, repair, and minify JSON data payloads adhering to RFC 8259 specifications.</p>
+                </li>
+                <li style="background:#0f172a; padding:16px; border-radius:12px; border:1px solid #1e293b;">
+                  <a href="/json-to-code" style="color:#38bdf8; font-weight:700; text-decoration:none;">JSON to Code Generator</a>
+                  <p style="color:#94a3b8; font-size:12px; margin:8px 0 0 0;">Convert raw JSON objects into strongly-typed TypeScript interfaces, Go structs, Rust structs, or Java classes.</p>
+                </li>
+                <li style="background:#0f172a; padding:16px; border-radius:12px; border:1px solid #1e293b;">
+                  <a href="/json-schema-generator" style="color:#38bdf8; font-weight:700; text-decoration:none;">JSON Schema Generator</a>
+                  <p style="color:#94a3b8; font-size:12px; margin:8px 0 0 0;">Generate JSON Schema Draft-07 specifications from JSON samples with real-time validation.</p>
+                </li>
+                <li style="background:#0f172a; padding:16px; border-radius:12px; border:1px solid #1e293b;">
+                  <a href="/jsonpath-tester" style="color:#38bdf8; font-weight:700; text-decoration:none;">JSONPath Evaluator & Tester</a>
+                  <p style="color:#94a3b8; font-size:12px; margin:8px 0 0 0;">Query complex JSON trees using standard JSONPath syntax with instant match extraction.</p>
+                </li>
+              </ul>
+            </nav>
+          </div>
+
+          <!-- Section 2: API & Web Services -->
+          <div style="margin-bottom:28px;">
+            <h3 style="font-size:18px; font-weight:700; color:#38bdf8; margin-bottom:12px;">API Development & Web Services Suite</h3>
+            <nav aria-label="API Development & Web Services Suite">
+              <ul style="display:grid; grid-template-columns:repeat(auto-fill, minmax(280px, 1fr)); gap:16px; list-style:none; padding:0; margin:0;">
+                <li style="background:#0f172a; padding:16px; border-radius:12px; border:1px solid #1e293b;">
+                  <a href="/api-tester" style="color:#38bdf8; font-weight:700; text-decoration:none;">HTTP API Client & Tester</a>
+                  <p style="color:#94a3b8; font-size:12px; margin:8px 0 0 0;">Execute RESTful HTTP requests (GET, POST, PUT, DELETE) with CORS proxy support and header configuration.</p>
+                </li>
+                <li style="background:#0f172a; padding:16px; border-radius:12px; border:1px solid #1e293b;">
+                  <a href="/graphql-tester" style="color:#38bdf8; font-weight:700; text-decoration:none;">GraphQL Query Playground</a>
+                  <p style="color:#94a3b8; font-size:12px; margin:8px 0 0 0;">Build, validate, and execute GraphQL queries, mutations, and variables against GraphQL endpoints.</p>
+                </li>
+                <li style="background:#0f172a; padding:16px; border-radius:12px; border:1px solid #1e293b;">
+                  <a href="/openapi-viewer" style="color:#38bdf8; font-weight:700; text-decoration:none;">OpenAPI / Swagger Spec Viewer</a>
+                  <p style="color:#94a3b8; font-size:12px; margin:8px 0 0 0;">Render interactive API documentation from OpenAPI 3.0 and Swagger 2.0 YAML or JSON specs.</p>
+                </li>
+                <li style="background:#0f172a; padding:16px; border-radius:12px; border:1px solid #1e293b;">
+                  <a href="/webhook-tester" style="color:#38bdf8; font-weight:700; text-decoration:none;">Webhook Receiver & Inspector</a>
+                  <p style="color:#94a3b8; font-size:12px; margin:8px 0 0 0;">Generate mock webhook URL endpoints to capture and inspect real-time HTTP POST payload payloads.</p>
+                </li>
+                <li style="background:#0f172a; padding:16px; border-radius:12px; border:1px solid #1e293b;">
+                  <a href="/mock-api-server" style="color:#38bdf8; font-weight:700; text-decoration:none;">Mock API Server Generator</a>
+                  <p style="color:#94a3b8; font-size:12px; margin:8px 0 0 0;">Create instant mock REST API endpoints returning simulated JSON datasets for frontend prototyping.</p>
+                </li>
+              </ul>
+            </nav>
+          </div>
+
+          <!-- Section 3: DevOps & Infrastructure -->
+          <div style="margin-bottom:28px;">
+            <h3 style="font-size:18px; font-weight:700; color:#38bdf8; margin-bottom:12px;">DevOps, Cloud & Database Suite</h3>
+            <nav aria-label="DevOps, Cloud & Database Suite">
+              <ul style="display:grid; grid-template-columns:repeat(auto-fill, minmax(280px, 1fr)); gap:16px; list-style:none; padding:0; margin:0;">
+                <li style="background:#0f172a; padding:16px; border-radius:12px; border:1px solid #1e293b;">
+                  <a href="/sql-formatter" style="color:#38bdf8; font-weight:700; text-decoration:none;">SQL Query Beautifier</a>
+                  <p style="color:#94a3b8; font-size:12px; margin:8px 0 0 0;">Format and beautify PostgreSQL, MySQL, SQLite, Oracle, and T-SQL query strings with subquery indentation.</p>
+                </li>
+                <li style="background:#0f172a; padding:16px; border-radius:12px; border:1px solid #1e293b;">
+                  <a href="/yaml-formatter" style="color:#38bdf8; font-weight:700; text-decoration:none;">YAML Formatter & Converter</a>
+                  <p style="color:#94a3b8; font-size:12px; margin:8px 0 0 0;">Validate YAML indentation hierarchy and convert seamlessly between YAML and JSON formats.</p>
+                </li>
+                <li style="background:#0f172a; padding:16px; border-radius:12px; border:1px solid #1e293b;">
+                  <a href="/docker-compose-validator" style="color:#38bdf8; font-weight:700; text-decoration:none;">Docker Compose Generator & Validator</a>
+                  <p style="color:#94a3b8; font-size:12px; margin:8px 0 0 0;">Validate docker-compose.yml files, check port bindings, and configure container environments.</p>
+                </li>
+                <li style="background:#0f172a; padding:16px; border-radius:12px; border:1px solid #1e293b;">
+                  <a href="/k8s-yaml-validator" style="color:#38bdf8; font-weight:700; text-decoration:none;">Kubernetes Manifest Builder</a>
+                  <p style="color:#94a3b8; font-size:12px; margin:8px 0 0 0;">Validate Kubernetes Deployment, Service, and Ingress YAML configs against K8s API specifications.</p>
+                </li>
+                <li style="background:#0f172a; padding:16px; border-radius:12px; border:1px solid #1e293b;">
+                  <a href="/nginx-config-formatter" style="color:#38bdf8; font-weight:700; text-decoration:none;">Nginx Config Formatter</a>
+                  <p style="color:#94a3b8; font-size:12px; margin:8px 0 0 0;">Beautify and validate Nginx web server block directives, location proxies, and SSL settings.</p>
+                </li>
+              </ul>
+            </nav>
+          </div>
+
+          <!-- Section 4: Security & Encoding -->
+          <div style="margin-bottom:28px;">
+            <h3 style="font-size:18px; font-weight:700; color:#38bdf8; margin-bottom:12px;">Security, Encoding & Cryptography Utilities</h3>
+            <nav aria-label="Security, Encoding & Cryptography Utilities">
+              <ul style="display:grid; grid-template-columns:repeat(auto-fill, minmax(280px, 1fr)); gap:16px; list-style:none; padding:0; margin:0;">
+                <li style="background:#0f172a; padding:16px; border-radius:12px; border:1px solid #1e293b;">
+                  <a href="/jwt-debugger" style="color:#38bdf8; font-weight:700; text-decoration:none;">JWT Decoder & Inspector</a>
+                  <p style="color:#94a3b8; font-size:12px; margin:8px 0 0 0;">Decode Base64Url JSON Web Tokens (RFC 7519), inspect header algorithms, expiration times, and payload claims.</p>
+                </li>
+                <li style="background:#0f172a; padding:16px; border-radius:12px; border:1px solid #1e293b;">
+                  <a href="/base64-encoder" style="color:#38bdf8; font-weight:700; text-decoration:none;">Base64 Encoder & Decoder</a>
+                  <p style="color:#94a3b8; font-size:12px; margin:8px 0 0 0;">Encode text or binary data into Base64 (RFC 4648) and decode Base64 strings safely.</p>
+                </li>
+                <li style="background:#0f172a; padding:16px; border-radius:12px; border:1px solid #1e293b;">
+                  <a href="/url-encoder" style="color:#38bdf8; font-weight:700; text-decoration:none;">URL Encoder & Decoder</a>
+                  <p style="color:#94a3b8; font-size:12px; margin:8px 0 0 0;">Percent-encode URL query parameter strings according to RFC 3986 specs.</p>
+                </li>
+                <li style="background:#0f172a; padding:16px; border-radius:12px; border:1px solid #1e293b;">
+                  <a href="/uuid-generator" style="color:#38bdf8; font-weight:700; text-decoration:none;">UUID v4 & v7 Generator</a>
+                  <p style="color:#94a3b8; font-size:12px; margin:8px 0 0 0;">Generate cryptographically secure random UUID v4 and time-ordered UUID v7 identifiers.</p>
+                </li>
+                <li style="background:#0f172a; padding:16px; border-radius:12px; border:1px solid #1e293b;">
+                  <a href="/hash-generator" style="color:#38bdf8; font-weight:700; text-decoration:none;">Hash Generator</a>
+                  <p style="color:#94a3b8; font-size:12px; margin:8px 0 0 0;">Generate cryptographic MD5, SHA-1, SHA-256, and SHA-512 checksum hashes instantly.</p>
+                </li>
+                <li style="background:#0f172a; padding:16px; border-radius:12px; border:1px solid #1e293b;">
+                  <a href="/qrcode-generator" style="color:#38bdf8; font-weight:700; text-decoration:none;">QR Code Generator</a>
+                  <p style="color:#94a3b8; font-size:12px; margin:8px 0 0 0;">Generate high-resolution vector QR code images for URLs, Wi-Fi keys, and text.</p>
+                </li>
+              </ul>
+            </nav>
+          </div>
+
+          <!-- Section 5: Text, Code & General Utilities -->
+          <div style="margin-bottom:28px;">
+            <h3 style="font-size:18px; font-weight:700; color:#38bdf8; margin-bottom:12px;">Code, Text & Time Converters</h3>
+            <nav aria-label="Code, Text & Time Converters">
+              <ul style="display:grid; grid-template-columns:repeat(auto-fill, minmax(280px, 1fr)); gap:16px; list-style:none; padding:0; margin:0;">
+                <li style="background:#0f172a; padding:16px; border-radius:12px; border:1px solid #1e293b;">
+                  <a href="/regex-tester" style="color:#38bdf8; font-weight:700; text-decoration:none;">RegEx Pattern Tester</a>
+                  <p style="color:#94a3b8; font-size:12px; margin:8px 0 0 0;">Test regular expression patterns with real-time match highlighting, flag toggles, and substitution.</p>
+                </li>
+                <li style="background:#0f172a; padding:16px; border-radius:12px; border:1px solid #1e293b;">
+                  <a href="/text-diff" style="color:#38bdf8; font-weight:700; text-decoration:none;">Text Diff & Comparison Tool</a>
+                  <p style="color:#94a3b8; font-size:12px; margin:8px 0 0 0;">Compare text blocks side-by-side or inline to highlight added, modified, and deleted lines.</p>
+                </li>
+                <li style="background:#0f172a; padding:16px; border-radius:12px; border:1px solid #1e293b;">
+                  <a href="/code-minifier" style="color:#38bdf8; font-weight:700; text-decoration:none;">Code Minifier & Compression</a>
+                  <p style="color:#94a3b8; font-size:12px; margin:8px 0 0 0;">Minify JavaScript, CSS, HTML, and JSON code payloads to optimize asset delivery speeds.</p>
+                </li>
+                <li style="background:#0f172a; padding:16px; border-radius:12px; border:1px solid #1e293b;">
+                  <a href="/cron-parser" style="color:#38bdf8; font-weight:700; text-decoration:none;">Cron Expression Parser</a>
+                  <p style="color:#94a3b8; font-size:12px; margin:8px 0 0 0;">Parse standard 5-field Unix cron schedules into human-readable execution timetables.</p>
+                </li>
+                <li style="background:#0f172a; padding:16px; border-radius:12px; border:1px solid #1e293b;">
+                  <a href="/timestamp-converter" style="color:#38bdf8; font-weight:700; text-decoration:none;">Epoch Timestamp Studio</a>
+                  <p style="color:#94a3b8; font-size:12px; margin:8px 0 0 0;">Convert Unix epoch seconds and milliseconds to UTC, ISO 8601, and local human dates.</p>
+                </li>
+                <li style="background:#0f172a; padding:16px; border-radius:12px; border:1px solid #1e293b;">
+                  <a href="/xml-formatter" style="color:#38bdf8; font-weight:700; text-decoration:none;">XML Formatter & Beautifier</a>
+                  <p style="color:#94a3b8; font-size:12px; margin:8px 0 0 0;">Format XML trees, validate tag syntax, and convert between XML and JSON.</p>
+                </li>
+                <li style="background:#0f172a; padding:16px; border-radius:12px; border:1px solid #1e293b;">
+                  <a href="/csv-converter" style="color:#38bdf8; font-weight:700; text-decoration:none;">CSV to JSON Converter</a>
+                  <p style="color:#94a3b8; font-size:12px; margin:8px 0 0 0;">Parse CSV files into clean JSON array collections with custom column header mapping.</p>
+                </li>
+                <li style="background:#0f172a; padding:16px; border-radius:12px; border:1px solid #1e293b;">
+                  <a href="/markdown-editor" style="color:#38bdf8; font-weight:700; text-decoration:none;">Markdown Live Editor</a>
+                  <p style="color:#94a3b8; font-size:12px; margin:8px 0 0 0;">Write CommonMark Markdown with side-by-side HTML live preview and word statistics.</p>
+                </li>
+                <li style="background:#0f172a; padding:16px; border-radius:12px; border:1px solid #1e293b;">
+                  <a href="/color-converter" style="color:#38bdf8; font-weight:700; text-decoration:none;">Color Code Converter</a>
+                  <p style="color:#94a3b8; font-size:12px; margin:8px 0 0 0;">Convert color values seamlessly between HEX, RGB, HSL, and HSV formats.</p>
+                </li>
+                <li style="background:#0f172a; padding:16px; border-radius:12px; border:1px solid #1e293b;">
+                  <a href="/number-base-converter" style="color:#38bdf8; font-weight:700; text-decoration:none;">Number Base Converter</a>
+                  <p style="color:#94a3b8; font-size:12px; margin:8px 0 0 0;">Convert numeric strings between Binary (Base 2), Octal (Base 8), Decimal (Base 10), and Hexadecimal (Base 16).</p>
+                </li>
+                <li style="background:#0f172a; padding:16px; border-radius:12px; border:1px solid #1e293b;">
+                  <a href="/text-utility" style="color:#38bdf8; font-weight:700; text-decoration:none;">Text Case & String Utility</a>
+                  <p style="color:#94a3b8; font-size:12px; margin:8px 0 0 0;">Transform strings to camelCase, PascalCase, snake_case, kebab-case, or UPPERCASE.</p>
+                </li>
+              </ul>
+            </nav>
+          </div>
+        </section>
+
+        <!-- Educational & Learning Guides Center -->
+        <section style="margin-bottom:48px; background:#0f172a; padding:24px; border-radius:12px; border:1px solid #1e293b;">
+          <h2 style="font-size:22px; font-weight:800; color:#ffffff; margin-top:0; margin-bottom:16px;">
+            Developer Learning Guides & Educational Standards
+          </h2>
+          <nav aria-label="Developer Educational Guides">
+            <ul style="display:grid; grid-template-columns:repeat(auto-fill, minmax(220px, 1fr)); gap:12px; list-style:none; padding:0; margin:0;">
+              <li><a href="/learn-json" style="color:#818cf8; text-decoration:none; font-weight:600;">Learn JSON & RFC 8259 Specs</a></li>
+              <li><a href="/learn-jsonschema" style="color:#818cf8; text-decoration:none; font-weight:600;">Learn JSON Schema Draft-07</a></li>
+              <li><a href="/learn-jsonpath" style="color:#818cf8; text-decoration:none; font-weight:600;">Learn JSONPath Query Syntax</a></li>
+              <li><a href="/learn-jsontocode" style="color:#818cf8; text-decoration:none; font-weight:600;">Learn JSON Code Generation</a></li>
+              <li><a href="/learn-yaml" style="color:#818cf8; text-decoration:none; font-weight:600;">Learn YAML & K8s Manifests</a></li>
+              <li><a href="/learn-xml" style="color:#818cf8; text-decoration:none; font-weight:600;">Learn XML Standards</a></li>
+              <li><a href="/learn-sql" style="color:#818cf8; text-decoration:none; font-weight:600;">Learn SQL Formatting Standards</a></li>
+              <li><a href="/learn-jwt" style="color:#818cf8; text-decoration:none; font-weight:600;">Learn JWT & RFC 7519 Security</a></li>
+              <li><a href="/learn-regex" style="color:#818cf8; text-decoration:none; font-weight:600;">Learn RegEx Regular Expressions</a></li>
+              <li><a href="/learn-cron" style="color:#818cf8; text-decoration:none; font-weight:600;">Learn Unix Cron Schedules</a></li>
+              <li><a href="/learn-timestamp" style="color:#818cf8; text-decoration:none; font-weight:600;">Learn Unix Epoch Timestamps</a></li>
+              <li><a href="/learn-base64" style="color:#818cf8; text-decoration:none; font-weight:600;">Learn Base64 Encoding RFC 4648</a></li>
+              <li><a href="/learn-url" style="color:#818cf8; text-decoration:none; font-weight:600;">Learn Percent URL Encoding</a></li>
+              <li><a href="/learn-hash" style="color:#818cf8; text-decoration:none; font-weight:600;">Learn Cryptographic Hashes</a></li>
+            </ul>
+          </nav>
+        </section>
+
+        <!-- Technical Specification Articles for Search Engine Context -->
+        <section style="margin-bottom:48px;">
           <h2 style="font-size:22px; font-weight:800; color:#ffffff; margin-bottom:16px; border-bottom:1px solid #334155; padding-bottom:8px;">
             Developer Technical Standards & Utilities Specification Handbook
           </h2>
 
-          <article style="margin-bottom:24px; background:#0f172a; padding:20px; border-radius:12px; border:1px solid #1e293b;">
-            <h3 style="font-size:18px; font-weight:700; color:#38bdf8; margin-bottom:8px;">1. JSON Formatter, Validator & RFC 8259 Specification</h3>
+          <article style="margin-bottom:20px; background:#0f172a; padding:20px; border-radius:12px; border:1px solid #1e293b;">
+            <h3 style="font-size:18px; font-weight:700; color:#38bdf8; margin-top:0; margin-bottom:8px;">1. JSON Formatter, Validator & RFC 8259 Specification</h3>
             <p style="color:#cbd5e1; margin-bottom:8px;">
               JSON (JavaScript Object Notation) is a lightweight, text-based, language-independent data interchange format defined by RFC 8259 and ECMA-404 standards. Our client-side JSON Formatter formats, minifies, validates, and repairs raw JSON payloads. It highlights line-by-line syntax errors, trailing commas, unquoted keys, and string escape issues instantly without sending data to a remote server.
             </p>
           </article>
 
-          <article style="margin-bottom:24px; background:#0f172a; padding:20px; border-radius:12px; border:1px solid #1e293b;">
-            <h3 style="font-size:18px; font-weight:700; color:#38bdf8; margin-bottom:8px;">2. JSON to Code Generator (TypeScript, Go, Rust, Java, C#, Python, Swift)</h3>
+          <article style="margin-bottom:20px; background:#0f172a; padding:20px; border-radius:12px; border:1px solid #1e293b;">
+            <h3 style="font-size:18px; font-weight:700; color:#38bdf8; margin-top:0; margin-bottom:8px;">2. JSON to Code Generator (TypeScript, Go, Rust, Java, C#, Python, Swift)</h3>
             <p style="color:#cbd5e1; margin-bottom:8px;">
               Convert raw JSON API response payloads into strongly-typed data models, interfaces, structs, and classes. Automatically infers field data types, handles optional/nullable attributes, generates Go struct tags, Jackson annotations in Java, Serde derives in Rust, Pydantic models in Python, and TypeScript interfaces.
             </p>
           </article>
 
-          <article style="margin-bottom:24px; background:#0f172a; padding:20px; border-radius:12px; border:1px solid #1e293b;">
-            <h3 style="font-size:18px; font-weight:700; color:#38bdf8; margin-bottom:8px;">3. JWT (JSON Web Token) Decoder & Inspector (RFC 7519)</h3>
+          <article style="margin-bottom:20px; background:#0f172a; padding:20px; border-radius:12px; border:1px solid #1e293b;">
+            <h3 style="font-size:18px; font-weight:700; color:#38bdf8; margin-top:0; margin-bottom:8px;">3. JWT (JSON Web Token) Decoder & Inspector (RFC 7519)</h3>
             <p style="color:#cbd5e1; margin-bottom:8px;">
               Decode Base64Url-encoded JSON Web Tokens safely. Inspect token headers, signature algorithms (`alg`), token issuance timestamps (`iat`), expiration dates (`exp`), subject (`sub`), issuer (`iss`), and custom authorization role claims. Operates 100% in browser memory so session tokens are never leaked to server logs.
             </p>
           </article>
 
-          <article style="margin-bottom:24px; background:#0f172a; padding:20px; border-radius:12px; border:1px solid #1e293b;">
-            <h3 style="font-size:18px; font-weight:700; color:#38bdf8; margin-bottom:8px;">4. YAML Formatter & Kubernetes / Docker Compose Manifest Validator</h3>
+          <article style="margin-bottom:20px; background:#0f172a; padding:20px; border-radius:12px; border:1px solid #1e293b;">
+            <h3 style="font-size:18px; font-weight:700; color:#38bdf8; margin-top:0; margin-bottom:8px;">4. YAML Formatter & Kubernetes / Docker Compose Manifest Validator</h3>
             <p style="color:#cbd5e1; margin-bottom:8px;">
               Validate YAML indentation hierarchy and convert seamlessly between YAML and JSON formats. Ideal for verifying Kubernetes deployment manifests, Helm charts, Docker Compose files, Ansible playbooks, and GitHub Actions CI/CD workflow configurations.
             </p>
           </article>
 
-          <article style="margin-bottom:24px; background:#0f172a; padding:20px; border-radius:12px; border:1px solid #1e293b;">
-            <h3 style="font-size:18px; font-weight:700; color:#38bdf8; margin-bottom:8px;">5. SQL Query Beautifier & RDBMS Dialect Formatter</h3>
+          <article style="margin-bottom:20px; background:#0f172a; padding:20px; border-radius:12px; border:1px solid #1e293b;">
+            <h3 style="font-size:18px; font-weight:700; color:#38bdf8; margin-top:0; margin-bottom:8px;">5. SQL Query Beautifier & RDBMS Dialect Formatter</h3>
             <p style="color:#cbd5e1; margin-bottom:8px;">
               Beautify PostgreSQL, MySQL, SQLite, Oracle, and T-SQL database query strings. Capitalizes SQL keywords (`SELECT`, `FROM`, `JOIN`, `WHERE`), indents subqueries, and aligns clauses for transparent code reviews and query optimization.
             </p>
           </article>
 
-          <article style="margin-bottom:24px; background:#0f172a; padding:20px; border-radius:12px; border:1px solid #1e293b;">
-            <h3 style="font-size:18px; font-weight:700; color:#38bdf8; margin-bottom:8px;">6. UUID v4 & v7 Generator (RFC 4122 & RFC 9562)</h3>
+          <article style="margin-bottom:20px; background:#0f172a; padding:20px; border-radius:12px; border:1px solid #1e293b;">
+            <h3 style="font-size:18px; font-weight:700; color:#38bdf8; margin-top:0; margin-bottom:8px;">6. UUID v4 & v7 Generator (RFC 4122 & RFC 9562)</h3>
             <p style="color:#cbd5e1; margin-bottom:8px;">
               Generate cryptographically secure random UUID v4 and time-ordered UUID v7 identifiers. UUID v7 embeds millisecond Unix epoch timestamps to preserve database B-tree index locality and write performance while guaranteeing global uniqueness.
             </p>
           </article>
         </section>
 
-        <section style="margin-bottom:40px;">
-          <h2 style="font-size:20px; font-weight:700; color:#818cf8; margin-bottom:16px;">
-            Comprehensive Developer Toolkit Catalog
-          </h2>
-          <nav aria-label="Developer Tools Navigation">
-            <ul style="display:grid; grid-template-columns:repeat(auto-fill, minmax(280px, 1fr)); gap:16px; list-style:none; padding:0; margin:0;">
-              <li style="background:#0f172a; padding:16px; border-radius:12px; border:1px solid #1e293b;">
-                <a href="/json-formatter" style="color:#38bdf8; font-weight:700; text-decoration:none;">JSON Formatter & Validator</a>
-                <p style="color:#94a3b8; font-size:12px; margin:8px 0 0 0;">Format, validate, repair, and minify JSON data payloads adhering to RFC 8259 specifications.</p>
-              </li>
-              <li style="background:#0f172a; padding:16px; border-radius:12px; border:1px solid #1e293b;">
-                <a href="/json-to-code" style="color:#38bdf8; font-weight:700; text-decoration:none;">JSON to Code Generator</a>
-                <p style="color:#94a3b8; font-size:12px; margin:8px 0 0 0;">Convert raw JSON objects into strongly-typed TypeScript interfaces, Go structs, Rust structs, or Java classes.</p>
-              </li>
-              <li style="background:#0f172a; padding:16px; border-radius:12px; border:1px solid #1e293b;">
-                <a href="/jwt-decoder" style="color:#38bdf8; font-weight:700; text-decoration:none;">JWT Decoder & Inspector</a>
-                <p style="color:#94a3b8; font-size:12px; margin:8px 0 0 0;">Decode Base64Url JSON Web Tokens (RFC 7519), inspect header algorithms, expiration times, and payload claims.</p>
-              </li>
-              <li style="background:#0f172a; padding:16px; border-radius:12px; border:1px solid #1e293b;">
-                <a href="/yaml-formatter" style="color:#38bdf8; font-weight:700; text-decoration:none;">YAML Formatter & Converter</a>
-                <p style="color:#94a3b8; font-size:12px; margin:8px 0 0 0;">Validate YAML indentation hierarchy and convert seamlessly between YAML and JSON formats.</p>
-              </li>
-              <li style="background:#0f172a; padding:16px; border-radius:12px; border:1px solid #1e293b;">
-                <a href="/sql-formatter" style="color:#38bdf8; font-weight:700; text-decoration:none;">SQL Query Beautifier</a>
-                <p style="color:#94a3b8; font-size:12px; margin:8px 0 0 0;">Beautify PostgreSQL, MySQL, SQLite, and T-SQL queries with keyword capitalization and subquery indentation.</p>
-              </li>
-              <li style="background:#0f172a; padding:16px; border-radius:12px; border:1px solid #1e293b;">
-                <a href="/base64-encoder" style="color:#38bdf8; font-weight:700; text-decoration:none;">Base64 Encoder & Decoder</a>
-                <p style="color:#94a3b8; font-size:12px; margin:8px 0 0 0;">Encode text or binary data into Base64 (RFC 4648) and decode Base64 strings safely.</p>
-              </li>
-              <li style="background:#0f172a; padding:16px; border-radius:12px; border:1px solid #1e293b;">
-                <a href="/uuid-generator" style="color:#38bdf8; font-weight:700; text-decoration:none;">UUID v4 & v7 Generator</a>
-                <p style="color:#94a3b8; font-size:12px; margin:8px 0 0 0;">Generate cryptographically secure UUID v4 (random) and time-ordered UUID v7 identifiers.</p>
-              </li>
-              <li style="background:#0f172a; padding:16px; border-radius:12px; border:1px solid #1e293b;">
-                <a href="/regex-tester" style="color:#38bdf8; font-weight:700; text-decoration:none;">RegEx Pattern Tester</a>
-                <p style="color:#94a3b8; font-size:12px; margin:8px 0 0 0;">Test regular expression patterns with real-time match highlighting, flag toggles, and substitution.</p>
-              </li>
-              <li style="background:#0f172a; padding:16px; border-radius:12px; border:1px solid #1e293b;">
-                <a href="/text-diff" style="color:#38bdf8; font-weight:700; text-decoration:none;">Text Diff & Comparison Tool</a>
-                <p style="color:#94a3b8; font-size:12px; margin:8px 0 0 0;">Compare text blocks side-by-side or inline to highlight added, modified, and deleted lines.</p>
-              </li>
-              <li style="background:#0f172a; padding:16px; border-radius:12px; border:1px solid #1e293b;">
-                <a href="/hash-generator" style="color:#38bdf8; font-weight:700; text-decoration:none;">Hash Generator</a>
-                <p style="color:#94a3b8; font-size:12px; margin:8px 0 0 0;">Generate cryptographic MD5, SHA-1, SHA-256, and SHA-512 checksum hashes instantly.</p>
-              </li>
-              <li style="background:#0f172a; padding:16px; border-radius:12px; border:1px solid #1e293b;">
-                <a href="/cron-parser" style="color:#38bdf8; font-weight:700; text-decoration:none;">Cron Expression Parser</a>
-                <p style="color:#94a3b8; font-size:12px; margin:8px 0 0 0;">Parse standard 5-field Unix cron schedules into human-readable execution timetables.</p>
-              </li>
-              <li style="background:#0f172a; padding:16px; border-radius:12px; border:1px solid #1e293b;">
-                <a href="/epoch-converter" style="color:#38bdf8; font-weight:700; text-decoration:none;">Epoch Timestamp Studio</a>
-                <p style="color:#94a3b8; font-size:12px; margin:8px 0 0 0;">Convert Unix epoch seconds and milliseconds to UTC, ISO 8601, and local human dates.</p>
-              </li>
-            </ul>
-          </nav>
-        </section>
-
-        <footer style="border-top:1px solid #1e293b; padding-top:24px; color:#64748b; font-size:12px;">
-          <p>© 2026 OwnFormatters. Maintained by OwnCircles. All rights reserved.</p>
-          <p><a href="/privacy" style="color:#818cf8;">Privacy Policy</a> | <a href="/terms" style="color:#818cf8;">Terms of Service</a> | <a href="/about" style="color:#818cf8;">About Us</a></p>
+        <!-- Footer Navigation -->
+        <footer style="border-top:1px solid #1e293b; padding-top:24px; color:#64748b; font-size:13px; text-align:center;">
+          <p style="margin-bottom:12px;">© 2026 OwnFormatters. Maintained by OwnCircles. All rights reserved.</p>
+          <p style="margin:0;">
+            <a href="/privacy-policy" style="color:#818cf8; text-decoration:none; margin:0 8px;">Privacy Policy</a> | 
+            <a href="/terms-of-service" style="color:#818cf8; text-decoration:none; margin:0 8px;">Terms of Service</a> | 
+            <a href="/about-us" style="color:#818cf8; text-decoration:none; margin:0 8px;">About Us</a> | 
+            <a href="/sitemap.xml" style="color:#818cf8; text-decoration:none; margin:0 8px;">Sitemap</a> | 
+            <a href="/robots.txt" style="color:#818cf8; text-decoration:none; margin:0 8px;">Robots.txt</a>
+          </p>
         </footer>
       </main>
     </div>

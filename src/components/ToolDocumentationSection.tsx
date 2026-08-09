@@ -352,11 +352,11 @@ export const ToolDocumentationSection: React.FC<ToolDocumentationSectionProps> =
           </span>
         </div>
         <a
-          href="/privacy"
+          href="/privacy-policy"
           onClick={(e) => {
             if (!e.ctrlKey && !e.metaKey) {
               e.preventDefault();
-              window.history.pushState(null, '', '/privacy');
+              window.history.pushState(null, '', '/privacy-policy');
               window.dispatchEvent(new PopStateEvent('popstate'));
             }
           }}

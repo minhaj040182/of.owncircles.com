@@ -308,8 +308,8 @@ const TOOLS_LIST: ToolDefinition[] = [
 ];
 
 const PATH_TO_TOOL_MAP: Record<string, ToolId> = {
-  '/': 'json',
-  '/home': 'json',
+  '/': 'home',
+  '/home': 'home',
   '/json-formatter': 'json',
   '/json-schema-generator': 'jsonschema',
   '/jsonpath-tester': 'jsonpath',
@@ -328,7 +328,9 @@ const PATH_TO_TOOL_MAP: Record<string, ToolId> = {
   '/base64-encoder': 'base64',
   '/url-encoder': 'url',
   '/jwt-debugger': 'jwt',
+  '/jwt-decoder': 'jwt',
   '/timestamp-converter': 'timestamp',
+  '/epoch-converter': 'timestamp',
   '/text-utility': 'text',
   '/hash-generator': 'hash',
   '/uuid-generator': 'uuid',
@@ -341,8 +343,11 @@ const PATH_TO_TOOL_MAP: Record<string, ToolId> = {
   '/regex-tester': 'regex',
   '/text-diff': 'diff',
   '/privacy-policy': 'privacy',
+  '/privacy': 'privacy',
   '/terms-of-service': 'terms',
+  '/terms': 'terms',
   '/about-us': 'about',
+  '/about': 'about',
   '/indexnow-submitter': 'indexnow',
   '/json-to-code': 'jsontocode',
 };
@@ -581,6 +586,14 @@ export default function App() {
   const navigateToTool = (id: ToolId, source: 'normal' | 'favorite' | 'recent' = 'normal') => {
     setActiveTool(id);
     setActiveSelectionSource(source);
+    let targetPath = TOOL_TO_PATH_MAP[id] || '/';
+    if (id === 'education') {
+      targetPath = '/learn-' + educationTopic;
+    }
+    const fullPath = BASE_PATH + (targetPath === '/home' ? '/' : targetPath);
+    if (window.location.pathname !== fullPath) {
+      window.history.pushState(null, '', fullPath);
+    }
   };
 
   const [searchQuery, setSearchQuery] = useState<string>('');
@@ -706,6 +719,7 @@ export default function App() {
         setActiveSelectionSource('normal');
         return;
       }
+
       if (searchPath === '/ads.txt') {
         setActiveTool('ads_txt');
         setActiveSelectionSource('normal');
@@ -735,8 +749,8 @@ export default function App() {
         setActiveTool(validTool);
         setActiveSelectionSource('normal');
       } else {
-        window.history.replaceState(null, '', BASE_PATH + '/json-formatter');
-        setActiveTool('json');
+        // Unknown route -> render home without redirecting
+        setActiveTool('home');
         setActiveSelectionSource('normal');
       }
     };
@@ -756,18 +770,6 @@ export default function App() {
     let targetPath = TOOL_TO_PATH_MAP[activeTool];
     if (activeTool === 'education') {
       targetPath = '/learn-' + educationTopic;
-    }
-    if (targetPath) {
-      const fullTargetPath = BASE_PATH + (targetPath === '/home' ? '/' : targetPath);
-      const currentPathTool = PATH_TO_TOOL_MAP[window.location.pathname.toLowerCase().replace(/\/$/, '') || '/'];
-      if (currentPathTool !== activeTool && window.location.pathname !== fullTargetPath) {
-        // If current path contains /home, replace state to clean URL cleanly
-        if (window.location.pathname.includes('/home')) {
-          window.history.replaceState(null, '', fullTargetPath);
-        } else {
-          window.history.pushState(null, '', fullTargetPath);
-        }
-      }
     }
 
     // Dynamic Canonical URL Tag
@@ -948,13 +950,12 @@ export default function App() {
           {/* Brand Logo Identity */}
           <button 
             onClick={() => {
-              setActiveTool('json');
-              window.history.pushState(null, '', BASE_PATH + '/json-formatter');
+              navigateToTool('home');
               window.scrollTo({ top: 0, behavior: 'smooth' });
             }}
             className="flex items-center gap-3 self-start md:self-auto cursor-pointer hover:opacity-85 transition-opacity text-left focus:outline-none focus:ring-2 focus:ring-indigo-500 rounded-xl"
-            title="Go to JSON Formatter & Validator"
-            aria-label="OwnFormatters - JSON Formatter"
+            title="Go to OwnFormatters Home"
+            aria-label="OwnFormatters Home"
           >
             <div className="w-9 h-9 rounded-xl bg-[#eef2f6] dark:bg-[#1e293b] flex items-center justify-center shadow-md border border-indigo-100/50 dark:border-slate-800 transition-colors">
               <Code className="w-5 h-5 text-[#2563eb] dark:text-[#3b82f6]" strokeWidth={3.2} />
@@ -1063,12 +1064,11 @@ export default function App() {
             <h1 className={`text-2xl md:text-4xl font-black tracking-tight leading-tight ${themeKey === 'light' ? 'text-slate-800' : 'text-white'}`}>
               <button 
                 onClick={() => {
-                  setActiveTool('json');
-                  window.history.pushState(null, '', BASE_PATH + '/json-formatter');
+                  navigateToTool('home');
                   window.scrollTo({ top: 0, behavior: 'smooth' });
                 }}
                 className="hover:underline cursor-pointer text-left inline-block focus:outline-none"
-                title="Go to JSON Formatter & Validator"
+                title="Go to OwnFormatters Home"
               >
                 OwnFormatters
               </button>{' '}
@@ -1126,7 +1126,10 @@ export default function App() {
 
             {/* HOME NAVIGATOR */}
             <button
-              onClick={() => setActiveTool('home')}
+              onClick={() => {
+                navigateToTool('home');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
               className={`w-full flex items-center gap-2.5 px-3 py-3 rounded-xl text-left text-xs transition-all border group cursor-pointer ${
                 activeTool === 'home'
                   ? '!bg-indigo-600 !text-white font-bold border-indigo-550 shadow-md'
@@ -1645,7 +1648,7 @@ export default function App() {
             <span>Bypass-CORS Ready</span>
             <span>•</span>
             <button 
-              onClick={() => { setActiveTool('privacy'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+              onClick={() => { navigateToTool('privacy'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
               className="hover:text-indigo-400 hover:underline cursor-pointer transition-colors"
             >
               Privacy Policy
@@ -1659,14 +1662,14 @@ export default function App() {
             </button>
             <span>•</span>
             <button 
-              onClick={() => { setActiveTool('terms'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+              onClick={() => { navigateToTool('terms'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
               className="hover:text-indigo-400 hover:underline cursor-pointer transition-colors"
             >
               Terms of Service
             </button>
             <span>•</span>
             <button 
-              onClick={() => { setActiveTool('about'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+              onClick={() => { navigateToTool('about'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
               className="hover:text-indigo-400 hover:underline cursor-pointer transition-colors"
             >
               About & Contact Us
