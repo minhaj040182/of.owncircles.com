@@ -33,17 +33,13 @@ export const ToolDocumentationSection: React.FC<ToolDocumentationSectionProps> =
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
   const [copiedCode, setCopiedCode] = useState<boolean>(false);
 
-  if (toolId === 'home' || ['privacy', 'terms', 'about', 'education', 'ads_txt', 'robots_txt', 'sitemap_xml', 'indexnow', 'indexnow_key'].includes(toolId)) {
-    return null;
-  }
-
   const topicData = getEducationTopic(toolId, toolId.toUpperCase(), 'utility');
-  if (!topicData) return null;
   const isLight = themeKey === 'light';
 
   // Inject dynamic JSON-LD FAQPage & TechArticle Schema markup for search engines and Bing/Google crawlers
   useEffect(() => {
     if (!topicData) return;
+    if (toolId === 'home' || ['privacy', 'terms', 'about', 'education', 'ads_txt', 'robots_txt', 'sitemap_xml', 'indexnow', 'indexnow_key'].includes(toolId)) return;
 
     const faqSchema = {
       "@context": "https://schema.org",
@@ -103,6 +99,12 @@ export const ToolDocumentationSection: React.FC<ToolDocumentationSectionProps> =
       if (existingArticle) existingArticle.remove();
     };
   }, [toolId, topicData]);
+
+  if (toolId === 'home' || ['privacy', 'terms', 'about', 'education', 'ads_txt', 'robots_txt', 'sitemap_xml', 'indexnow', 'indexnow_key'].includes(toolId)) {
+    return null;
+  }
+
+  if (!topicData) return null;
 
   const handleCopyExample = () => {
     if (!topicData?.exampleCode) return;
