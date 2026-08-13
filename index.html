@@ -1,24 +1,27 @@
 <!doctype html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    
+
     <!-- SPA Redirect Handling for Static Hosting Fallbacks -->
     <script type="text/javascript">
-      (function(l) {
-        if (l.search[1] === '/' ) {
-          var decoded = l.search.slice(1).split('&').map(function(s) { 
-            return s.replace(/~and~/g, '&') 
-          }).join('?');
-          var cleanPath = l.pathname.replace(/\/$/, '');
-          window.history.replaceState(null, null,
-              cleanPath + decoded + l.hash
-          );
-        }
-      }(window.location));
+        (function (l) {
+            if (l.search[1] === '/') {
+                var decoded = l.search.slice(1).split('&').map(function (s) {
+                    return s.replace(/~and~/g, '&')
+                }).join('?');
+                var cleanPath = l.pathname.replace(/\/$/, '');
+                window.history.replaceState(null, null,
+                    cleanPath + decoded + l.hash
+                );
+            }
+        }(window.location));
     </script>
-    
+
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4969321741365615"
+            crossorigin="anonymous"></script>
+
     <!-- Primary SEO Meta Tags -->
     <meta name="title" content="OwnFormatters – Free JSON Formatter, JSON to Code Generator & Developer Utilities">
     <meta name="description" content="Free browser-based developer tools suite: JSON Formatter, JSON to Code Generator, YAML to JSON, XML Beautifier, JWT Decoder, Base64 Encoder, UUID Generator, Regex Tester, SQL Formatter, Epoch Converter, Cron Parser and more. 100% private client-side processing.">
@@ -93,138 +96,138 @@
 
     <!-- JSON-LD Structured Data 1: Organization -->
     <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "Organization",
-      "name": "OwnFormatters",
-      "url": "https://ownformatters.com/",
-      "logo": "https://ownformatters.com/images/icon.png",
-      "sameAs": [
-        "https://github.com/owncircles"
-      ]
-    }
+        {
+          "@context": "https://schema.org",
+          "@type": "Organization",
+          "name": "OwnFormatters",
+          "url": "https://ownformatters.com/",
+          "logo": "https://ownformatters.com/images/icon.png",
+          "sameAs": [
+            "https://github.com/owncircles"
+          ]
+        }
     </script>
 
     <!-- JSON-LD Structured Data 2: WebSite with SearchAction -->
     <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "WebSite",
-      "name": "OwnFormatters",
-      "url": "https://ownformatters.com/",
-      "potentialAction": {
-        "@type": "SearchAction",
-        "target": "https://ownformatters.com/?q={search_term_string}",
-        "query-input": "required name=search_term_string"
-      }
-    }
+        {
+          "@context": "https://schema.org",
+          "@type": "WebSite",
+          "name": "OwnFormatters",
+          "url": "https://ownformatters.com/",
+          "potentialAction": {
+            "@type": "SearchAction",
+            "target": "https://ownformatters.com/?q={search_term_string}",
+            "query-input": "required name=search_term_string"
+          }
+        }
     </script>
 
     <!-- JSON-LD Structured Data 3: WebApplication Schema -->
     <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "WebApplication",
-      "name": "OwnFormatters",
-      "url": "https://ownformatters.com/",
-      "description": "Free browser-based developer toolkit: JSON/YAML/XML/CSV formatting, JSON to Code conversion, Base64/URL encoding, JWT decoding, UUID & hash generation, regex testing, text diffing, cron parsing, epoch conversion and more.",
-      "applicationCategory": "DeveloperApplication",
-      "operatingSystem": "Any",
-      "offers": {
-        "@type": "Offer",
-        "price": "0",
-        "priceCurrency": "USD"
-      },
-      "featureList": [
-        "JSON Formatter & Validator",
-        "JSON Schema Generator & Validator",
-        "JSONPath Tester",
-        "JSON to Code Generator (TypeScript, Go, Rust, Java, C#, Python, Swift)",
-        "YAML to JSON Converter",
-        "XML Formatter",
-        "CSV to JSON Converter",
-        "JWT Decoder & Inspector",
-        "SQL Query Beautifier",
-        "Base64 Encoder / Decoder",
-        "URL Encoder / Decoder",
-        "UUID v4 & v7 Generator",
-        "Hash Generator (MD5, SHA-1, SHA-256, SHA-512)",
-        "Color Converter",
-        "Number Base Converter",
-        "Cron Expression Parser",
-        "Epoch Timestamp Studio",
-        "Regex Pattern Tester",
-        "Text Diff & Comparison Tool",
-        "HTTP API Tester",
-        "GraphQL Playground",
-        "OpenAPI Specification Viewer",
-        "Webhook Inspector",
-        "Mock API Server Generator",
-        "Docker Compose Generator",
-        "Kubernetes Manifest Builder",
-        "Nginx Config Generator",
-        "QR Code Generator",
-        "Markdown Live Preview"
-      ],
-      "creator": {
-        "@type": "Organization",
-        "name": "OwnFormatters"
-      }
-    }
+        {
+          "@context": "https://schema.org",
+          "@type": "WebApplication",
+          "name": "OwnFormatters",
+          "url": "https://ownformatters.com/",
+          "description": "Free browser-based developer toolkit: JSON/YAML/XML/CSV formatting, JSON to Code conversion, Base64/URL encoding, JWT decoding, UUID & hash generation, regex testing, text diffing, cron parsing, epoch conversion and more.",
+          "applicationCategory": "DeveloperApplication",
+          "operatingSystem": "Any",
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+          },
+          "featureList": [
+            "JSON Formatter & Validator",
+            "JSON Schema Generator & Validator",
+            "JSONPath Tester",
+            "JSON to Code Generator (TypeScript, Go, Rust, Java, C#, Python, Swift)",
+            "YAML to JSON Converter",
+            "XML Formatter",
+            "CSV to JSON Converter",
+            "JWT Decoder & Inspector",
+            "SQL Query Beautifier",
+            "Base64 Encoder / Decoder",
+            "URL Encoder / Decoder",
+            "UUID v4 & v7 Generator",
+            "Hash Generator (MD5, SHA-1, SHA-256, SHA-512)",
+            "Color Converter",
+            "Number Base Converter",
+            "Cron Expression Parser",
+            "Epoch Timestamp Studio",
+            "Regex Pattern Tester",
+            "Text Diff & Comparison Tool",
+            "HTTP API Tester",
+            "GraphQL Playground",
+            "OpenAPI Specification Viewer",
+            "Webhook Inspector",
+            "Mock API Server Generator",
+            "Docker Compose Generator",
+            "Kubernetes Manifest Builder",
+            "Nginx Config Generator",
+            "QR Code Generator",
+            "Markdown Live Preview"
+          ],
+          "creator": {
+            "@type": "Organization",
+            "name": "OwnFormatters"
+          }
+        }
     </script>
 
     <!-- JSON-LD Structured Data 4: FAQPage Schema -->
     <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "FAQPage",
-      "mainEntity": [
         {
-          "@type": "Question",
-          "name": "Are my payloads, JWT tokens, or API keys sent to any server?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "No! OwnFormatters operates 100% client-side inside your browser thread. All formatting, decoding, and code generation algorithms execute locally without transmitting any data over the internet."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Is OwnFormatters free to use for commercial and personal projects?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Yes, OwnFormatters is completely free for all software engineers, DevOps teams, and commercial organizations without registration or usage limits."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Does OwnFormatters work offline?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Yes! Because all scripts and worker engines run inside browser memory, once loaded you can continue using all formatting and validation tools even without an active internet connection."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "What code languages are supported in the JSON to Code Generator?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "The JSON to Code Generator supports strongly-typed interface and class generation for TypeScript, Go, Rust, Java, C#, Python, and Swift."
-          }
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "Are my payloads, JWT tokens, or API keys sent to any server?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "No! OwnFormatters operates 100% client-side inside your browser thread. All formatting, decoding, and code generation algorithms execute locally without transmitting any data over the internet."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Is OwnFormatters free to use for commercial and personal projects?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes, OwnFormatters is completely free for all software engineers, DevOps teams, and commercial organizations without registration or usage limits."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Does OwnFormatters work offline?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes! Because all scripts and worker engines run inside browser memory, once loaded you can continue using all formatting and validation tools even without an active internet connection."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "What code languages are supported in the JSON to Code Generator?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "The JSON to Code Generator supports strongly-typed interface and class generation for TypeScript, Go, Rust, Java, C#, Python, and Swift."
+              }
+            }
+          ]
         }
-      ]
-    }
     </script>
 
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-VZPKBC605D"></script>
     <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
 
-      gtag('config', 'G-VZPKBC605D');
+        gtag('config', 'G-VZPKBC605D');
     </script>
-  </head>
+</head>
   <body style="margin:0; background-color:#020617; color:#f8fafc; font-family:'Inter',sans-serif;">
     <div id="root">
       <!-- Pre-rendered Crawlable Semantic Home Page Content for Search Engine Crawlers (Googlebot / Bingbot / DuckDuckBot) -->
