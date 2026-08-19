@@ -1,462 +1,522 @@
 <!doctype html>
-<html lang="en" prefix="og: https://ogp.me/ns#">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="referrer" content="strict-origin-when-cross-origin" />
-    <title>TrendPulse - Viral Home, Kitchen & Fitness Gear Hub | AI YouTube Review Curation & Verified Amazon Deals</title>
     
+    <!-- SPA Redirect Handling for Static Hosting Fallbacks -->
+    <script type="text/javascript">
+      (function(l) {
+        if (l.search[1] === '/' ) {
+          var decoded = l.search.slice(1).split('&').map(function(s) { 
+            return s.replace(/~and~/g, '&') 
+          }).join('?');
+          var cleanPath = l.pathname.replace(/\/$/, '');
+          window.history.replaceState(null, null,
+              cleanPath + decoded + l.hash
+          );
+        }
+      }(window.location));
+    </script>
+    
+    <!-- Google AdSense Verification -->
+    <meta name="google-adsense-account" content="ca-pub-4969321741365615">
+
     <!-- Primary SEO Meta Tags -->
-    <meta name="description" content="Explore AI-curated YouTube product reviews, buyer sentiment analysis, and converted Amazon affiliate recommendations for trending 4K Smart TVs, smart double door refrigerators, robot vacuums, walking pads, and fitness gear." />
-    <meta name="keywords" content="product reviews, YouTube reviews, 4K Ultra HD Smart LED TV 55 Inch, Smart Double Door Refrigerator, Noise Cancelling Wireless Earbuds, Walking Pad Treadmill, Robot Vacuum Cleaner, 5G Smartphone, Digital Air Fryer, buyer sentiment, Amazon deals, TrendPulse" />
-    <meta name="author" content="TrendPulse Hub" />
-    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
-    <link rel="canonical" href="https://trends.owncircles.com/" />
-    <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml" />
+    <meta name="title" content="OwnFormatters – Free JSON Formatter, JSON to Code Generator & Developer Utilities">
+    <meta name="description" content="Free browser-based developer tools suite: JSON Formatter, JSON to Code Generator, YAML to JSON, XML Beautifier, JWT Decoder, Base64 Encoder, UUID Generator, Regex Tester, SQL Formatter, Epoch Converter, Cron Parser and more. 100% private client-side processing.">
+    <meta name="keywords" content="json formatter,json to code,json to typescript,json to go,json to rust,json validator,yaml formatter,xml formatter,jwt decoder,base64 encoder,url encoder,uuid generator,regex tester,epoch converter,cron parser,sql formatter,diff tool,developer tools,online tools,free formatter">
+    <meta name="author" content="OwnFormatters">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    <meta name="googlebot" content="index, follow">
+    <meta name="bingbot" content="index, follow">
 
-    <!-- Geo & Multi-Region Targeting Meta Tags -->
-    <meta name="geo.region" content="GLOBAL" />
-    <meta name="geo.placename" content="Global Online Hub" />
-    <meta name="geo.position" content="20.5937;78.9629" />
-    <meta name="ICBM" content="20.5937, 78.9629" />
-    <meta name="rating" content="General" />
-    <meta name="distribution" content="Global" />
-    <meta name="coverage" content="Worldwide" />
-    <meta name="target" content="all" />
+    <!-- Language & Region -->
+    <meta name="language" content="English">
+    <meta name="content-language" content="en">
+    <meta http-equiv="content-language" content="en">
 
-    <!-- Hreflang Multi-Region Alternates for SEO -->
-    <link rel="alternate" hreflang="x-default" href="https://trends.owncircles.com/" />
-    <link rel="alternate" hreflang="en-IN" href="https://trends.owncircles.com/?region=IN" />
-    <link rel="alternate" hreflang="en-US" href="https://trends.owncircles.com/?region=US" />
-    <link rel="alternate" hreflang="en-GB" href="https://trends.owncircles.com/?region=GB" />
-    <link rel="alternate" hreflang="en-CA" href="https://trends.owncircles.com/?region=CA" />
-    <link rel="alternate" hreflang="en-AU" href="https://trends.owncircles.com/?region=AU" />
-    <link rel="alternate" hreflang="de-DE" href="https://trends.owncircles.com/?region=DE" />
-    <link rel="alternate" hreflang="en-PK" href="https://trends.owncircles.com/?region=PK" />
-    <link rel="alternate" hreflang="en-BD" href="https://trends.owncircles.com/?region=BD" />
+    <!-- Mobile App Capabilities -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
 
-    <!-- Open Graph (Facebook, WhatsApp, LinkedIn, Pinterest) -->
-    <meta property="og:type" content="website" />
-    <meta property="og:site_name" content="TrendPulse" />
-    <meta property="og:title" content="TrendPulse - Viral Home, Kitchen & Fitness Gear Hub | AI YouTube Reviews" />
-    <meta property="og:description" content="AI-curated YouTube product video reviews, buyer sentiment scores, and converted Amazon affiliate deals for trending consumer electronics, kitchen, and home essentials." />
-    <meta property="og:url" content="https://trends.owncircles.com/" />
-    <meta property="og:image" content="https://i.ytimg.com/vi/3I4X8aM8ySg/hqdefault.jpg" />
-    <meta property="og:image:alt" content="TrendPulse Top Trending Product Reviews" />
-    <meta property="og:locale" content="en_US" />
-    <meta property="og:locale:alternate" content="en_IN" />
-    <meta property="og:locale:alternate" content="en_GB" />
-    <meta property="og:locale:alternate" content="en_CA" />
-    <meta property="og:locale:alternate" content="en_AU" />
-    <meta property="og:locale:alternate" content="de_DE" />
+    <!-- Canonical Link Tag -->
+    <link rel="canonical" href="https://of.owncircles.com/">
 
-    <!-- Twitter Card Meta Tags -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="TrendPulse - Viral Home, Kitchen & Fitness Gear Hub" />
-    <meta name="twitter:description" content="AI-curated YouTube product video reviews, buyer sentiment scores, and converted Amazon affiliate deals." />
-    <meta name="twitter:image" content="https://i.ytimg.com/vi/3I4X8aM8ySg/hqdefault.jpg" />
+    <!-- Theme Color -->
+    <meta name="theme-color" content="#6366f1">
 
-    <!-- Schema.org JSON-LD Structured Data for Search Engines -->
-    <script type="application/ld+json" id="json-ld-schema">
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="OwnFormatters">
+    <meta property="og:title" content="OwnFormatters – Free JSON Formatter, JSON to Code Generator & Developer Utilities">
+    <meta property="og:description" content="Free browser-based developer tools suite including JSON Formatter, JSON to Code Generator, JWT Decoder, Base64 Encoder, YAML, XML, CSV, Markdown, UUID, Hash Generator, Regex Tester, SQL Formatter and more. 100% Client-Side.">
+    <meta property="og:url" content="https://of.owncircles.com/">
+    <meta property="og:image" content="https://of.owncircles.com/images/fb.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:type" content="image/png">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="OwnFormatters – Free JSON Formatter, JSON to Code Generator & Developer Utilities">
+    <meta name="twitter:description" content="Free browser-based developer tools suite including JSON Formatter, JSON to Code Generator, JWT Decoder, Base64 Encoder, YAML, XML, CSV, Markdown, UUID, Hash Generator, Regex Tester, SQL Formatter and more.">
+    <meta name="twitter:image" content="https://of.owncircles.com/images/fb.png">
+
+    <!-- Microsoft / Bing -->
+    <meta name="msapplication-TileColor" content="#6366f1">
+    <meta name="msapplication-config" content="none">
+
+    <!-- Classification Metadata -->
+    <meta name="classification" content="Developer Tools">
+    <meta name="category" content="Software Development">
+    <meta name="subject" content="Online Developer Utilities">
+    <meta name="coverage" content="Worldwide">
+    <meta name="distribution" content="Global">
+    <meta name="rating" content="General">
+
+    <!-- Referrer Policy -->
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+
+    <!-- Favicon Links -->
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/icon.png">
+    <link rel="shortcut icon" href="/images/icon.png">
+    <link rel="apple-touch-icon" href="/images/icon.png">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Sitemap & Robots References -->
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml">
+    <link rel="robot" type="application/txt" title="robot" href="/robots.txt">
+
+    <title>OwnFormatters – Free JSON Formatter, JSON to Code Generator & Developer Utilities</title>
+
+    <!-- JSON-LD Structured Data 1: Organization -->
+    <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@graph": [
+      "@type": "Organization",
+      "name": "OwnFormatters",
+      "url": "https://of.owncircles.com/",
+      "logo": "https://of.owncircles.com/images/icon.png",
+      "sameAs": [
+        "https://github.com/owncircles"
+      ]
+    }
+    </script>
+
+    <!-- JSON-LD Structured Data 2: WebSite with SearchAction -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "OwnFormatters",
+      "url": "https://of.owncircles.com/",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://of.owncircles.com/?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
+
+    <!-- JSON-LD Structured Data 3: WebApplication Schema -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "OwnFormatters",
+      "url": "https://of.owncircles.com/",
+      "description": "Free browser-based developer toolkit: JSON/YAML/XML/CSV formatting, JSON to Code conversion, Base64/URL encoding, JWT decoding, UUID & hash generation, regex testing, text diffing, cron parsing, epoch conversion and more.",
+      "applicationCategory": "DeveloperApplication",
+      "operatingSystem": "Any",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "featureList": [
+        "JSON Formatter & Validator",
+        "JSON Schema Generator & Validator",
+        "JSONPath Tester",
+        "JSON to Code Generator (TypeScript, Go, Rust, Java, C#, Python, Swift)",
+        "YAML to JSON Converter",
+        "XML Formatter",
+        "CSV to JSON Converter",
+        "JWT Decoder & Inspector",
+        "SQL Query Beautifier",
+        "Base64 Encoder / Decoder",
+        "URL Encoder / Decoder",
+        "UUID v4 & v7 Generator",
+        "Hash Generator (MD5, SHA-1, SHA-256, SHA-512)",
+        "Color Converter",
+        "Number Base Converter",
+        "Cron Expression Parser",
+        "Epoch Timestamp Studio",
+        "Regex Pattern Tester",
+        "Text Diff & Comparison Tool",
+        "HTTP API Tester",
+        "GraphQL Playground",
+        "OpenAPI Specification Viewer",
+        "Webhook Inspector",
+        "Mock API Server Generator",
+        "Docker Compose Generator",
+        "Kubernetes Manifest Builder",
+        "Nginx Config Generator",
+        "QR Code Generator",
+        "Markdown Live Preview"
+      ],
+      "creator": {
+        "@type": "Organization",
+        "name": "OwnFormatters"
+      }
+    }
+    </script>
+
+    <!-- JSON-LD Structured Data 4: FAQPage Schema -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
         {
-          "@type": "WebSite",
-          "@id": "https://trends.owncircles.com/#website",
-          "url": "https://trends.owncircles.com/",
-          "name": "TrendPulse",
-          "description": "YouTube video curation hub with AI sentiment analysis and converted Amazon affiliate deals.",
-          "publisher": {
-            "@type": "Organization",
-            "@id": "https://trends.owncircles.com/#organization",
-            "name": "TrendPulse Network",
-            "url": "https://trends.owncircles.com/",
-            "logo": {
-              "@type": "ImageObject",
-              "url": "https://trends.owncircles.com/favicon.ico"
-            }
-          },
-          "potentialAction": {
-            "@type": "SearchAction",
-            "target": {
-              "@type": "EntryPoint",
-              "urlTemplate": "https://trends.owncircles.com/?q={search_term_string}"
-            },
-            "query-input": "required name=search_term_string"
+          "@type": "Question",
+          "name": "Are my payloads, JWT tokens, or API keys sent to any server?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No! OwnFormatters operates 100% client-side inside your browser thread. All formatting, decoding, and code generation algorithms execute locally without transmitting any data over the internet."
           }
         },
         {
-          "@type": "SiteNavigationElement",
-          "name": "Product Categories",
-          "hasPart": [
-            { "@type": "WebPage", "name": "Electronics", "url": "https://trends.owncircles.com/?category=electronics" },
-            { "@type": "WebPage", "name": "Kitchen", "url": "https://trends.owncircles.com/?category=kitchen" },
-            { "@type": "WebPage", "name": "Household", "url": "https://trends.owncircles.com/?category=household" },
-            { "@type": "WebPage", "name": "Fitness", "url": "https://trends.owncircles.com/?category=fitness" },
-            { "@type": "WebPage", "name": "Gadgets", "url": "https://trends.owncircles.com/?category=gadgets" },
-            { "@type": "WebPage", "name": "Personal Care", "url": "https://trends.owncircles.com/?category=personal_care" },
-            { "@type": "WebPage", "name": "Home Office", "url": "https://trends.owncircles.com/?category=home_office" },
-            { "@type": "WebPage", "name": "Travel & Outdoor", "url": "https://trends.owncircles.com/?category=travel_outdoor" }
-          ]
+          "@type": "Question",
+          "name": "Is OwnFormatters free to use for commercial and personal projects?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, OwnFormatters is completely free for all software engineers, DevOps teams, and commercial organizations without registration or usage limits."
+          }
         },
         {
-          "@type": "ItemList",
-          "name": "Top Google Trending Product Video Reviews",
-          "itemListElement": [
-            {
-              "@type": "ListItem",
-              "position": 1,
-              "item": {
-                "@type": "Product",
-                "name": "4K Ultra HD Smart LED TV 55 Inch",
-                "description": "Comprehensive real-world testing, display brightness benchmark, and viewer sentiment review of 55 Inch 4K Smart TVs.",
-                "image": "https://i.ytimg.com/vi/3I4X8aM8ySg/hqdefault.jpg",
-                "category": "Electronics",
-                "aggregateRating": {
-                  "@type": "AggregateRating",
-                  "ratingValue": "4.8",
-                  "reviewCount": "485",
-                  "bestRating": "5"
-                },
-                "offers": {
-                  "@type": "Offer",
-                  "priceCurrency": "INR",
-                  "price": "39999",
-                  "availability": "https://schema.org/InStock",
-                  "url": "https://www.amazon.in/s?k=4K+Ultra+HD+Smart+LED+TV+55+Inch&tag=trends0628-21"
-                }
-              }
-            },
-            {
-              "@type": "ListItem",
-              "position": 2,
-              "item": {
-                "@type": "Product",
-                "name": "Smart Double Door Refrigerator",
-                "description": "Long-term inverter compressor testing, energy savings breakdown, and cooling performance review for double door refrigerators.",
-                "image": "https://i.ytimg.com/vi/M1c9Y8j27E0/hqdefault.jpg",
-                "category": "Kitchen",
-                "aggregateRating": {
-                  "@type": "AggregateRating",
-                  "ratingValue": "4.8",
-                  "reviewCount": "320",
-                  "bestRating": "5"
-                },
-                "offers": {
-                  "@type": "Offer",
-                  "priceCurrency": "INR",
-                  "price": "28999",
-                  "availability": "https://schema.org/InStock",
-                  "url": "https://www.amazon.in/s?k=Smart+Double+Door+Refrigerator&tag=trends0628-21"
-                }
-              }
-            },
-            {
-              "@type": "ListItem",
-              "position": 3,
-              "item": {
-                "@type": "Product",
-                "name": "Compact Under Desk Walking Pad Treadmill",
-                "description": "Apartment cardio performance test, noise level evaluation, and foldable storage review for under-desk treadmills.",
-                "image": "https://i.ytimg.com/vi/1fbUlzz2zfY/hqdefault.jpg",
-                "category": "Fitness",
-                "aggregateRating": {
-                  "@type": "AggregateRating",
-                  "ratingValue": "4.7",
-                  "reviewCount": "290",
-                  "bestRating": "5"
-                },
-                "offers": {
-                  "@type": "Offer",
-                  "priceCurrency": "USD",
-                  "price": "189.99",
-                  "availability": "https://schema.org/InStock",
-                  "url": "https://www.amazon.com/s?k=Walking+Pad+Treadmill&tag=trends0628-21"
-                }
-              }
-            }
-          ]
+          "@type": "Question",
+          "name": "Does OwnFormatters work offline?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes! Because all scripts and worker engines run inside browser memory, once loaded you can continue using all formatting and validation tools even without an active internet connection."
+          }
         },
         {
-          "@type": "FAQPage",
-          "mainEntity": [
-            {
-              "@type": "Question",
-              "name": "What is TrendPulse?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "TrendPulse is an AI-powered product review curation platform that analyzes thousands of YouTube viewer comments and tech reviews to extract buyer consensus, pros, cons, and verified Amazon regional deals."
-              }
-            },
-            {
-              "@type": "Question",
-              "name": "How does TrendPulse calculate buyer sentiment scores?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "Our natural language processing algorithms evaluate real viewer feedback across YouTube comment threads, categorizing buyer remarks into positivity, build quality, reliability, and value-for-money metrics."
-              }
-            },
-            {
-              "@type": "Question",
-              "name": "Are the Amazon product links verified for regional shipping?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "Yes, TrendPulse automatically localizes Amazon store links and currency based on your region (India, USA, UK, Canada, Australia, Germany, Pakistan, Bangladesh) with official affiliate partner warranty."
-              }
-            }
-          ]
+          "@type": "Question",
+          "name": "What code languages are supported in the JSON to Code Generator?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The JSON to Code Generator supports strongly-typed interface and class generation for TypeScript, Go, Rust, Java, C#, Python, and Swift."
+          }
         }
       ]
     }
     </script>
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-VZPKBC605D"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-VZPKBC605D');
+    </script>
   </head>
-  <body class="bg-slate-950 text-slate-100 antialiased font-sans">
+  <body style="margin:0; background-color:#020617; color:#f8fafc; font-family:'Inter',sans-serif;">
     <div id="root">
-      <!-- Pre-rendered Static Semantic HTML for Googlebot and Web Crawlers -->
-      <header class="border-b border-slate-800 bg-slate-900/90 py-4 px-6">
-        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
-          <div class="flex items-center gap-3">
-            <span class="text-2xl font-bold bg-gradient-to-r from-amber-400 via-orange-400 to-rose-500 bg-clip-text text-transparent">TrendPulse</span>
-            <span class="text-xs uppercase tracking-wider text-slate-400 bg-slate-800 px-2 py-0.5 rounded">AI Video Review Hub</span>
-          </div>
-          <nav aria-label="Main Navigation" class="flex flex-wrap items-center justify-center gap-3 text-sm text-slate-300">
-            <a href="/?category=electronics" class="hover:text-amber-400 transition">Electronics</a>
-            <a href="/?category=kitchen" class="hover:text-amber-400 transition">Kitchen</a>
-            <a href="/?category=household" class="hover:text-amber-400 transition">Household</a>
-            <a href="/?category=fitness" class="hover:text-amber-400 transition">Fitness</a>
-            <a href="/?category=gadgets" class="hover:text-amber-400 transition">Smart Gadgets</a>
-            <a href="/?category=home_office" class="hover:text-amber-400 transition">Home Office</a>
-            <a href="/?category=personal_care" class="hover:text-amber-400 transition">Personal Care</a>
-            <a href="/?category=travel_outdoor" class="hover:text-amber-400 transition">Travel &amp; Outdoor</a>
-          </nav>
-          <div class="flex items-center gap-2 text-xs text-slate-400">
-            <span>Regions:</span>
-            <a href="/?region=IN" class="hover:text-amber-400" title="India">🇮🇳 IN</a>
-            <a href="/?region=US" class="hover:text-amber-400" title="USA">🇺🇸 US</a>
-            <a href="/?region=GB" class="hover:text-amber-400" title="United Kingdom">🇬🇧 UK</a>
-            <a href="/?region=CA" class="hover:text-amber-400" title="Canada">🇨🇦 CA</a>
-            <a href="/?region=AU" class="hover:text-amber-400" title="Australia">🇦🇺 AU</a>
-            <a href="/?region=DE" class="hover:text-amber-400" title="Germany">🇩🇪 DE</a>
-            <a href="/?region=PK" class="hover:text-amber-400" title="Pakistan">🇵🇰 PK</a>
-            <a href="/?region=BD" class="hover:text-amber-400" title="Bangladesh">🇧🇩 BD</a>
-          </div>
-        </div>
-      </header>
-
-      <main class="max-w-7xl mx-auto px-4 py-8">
-        <!-- Hero Section -->
-        <section class="text-center py-8 mb-8 border-b border-slate-800">
-          <h1 class="text-3xl md:text-5xl font-extrabold text-white mb-4 tracking-tight">
-            Viral Home, Kitchen &amp; Fitness Gear Hub
+      <!-- Pre-rendered Crawlable Semantic Home Page Content for Search Engine Crawlers (Googlebot / Bingbot / DuckDuckBot) -->
+      <main style="max-width:1200px; margin:0 auto; padding:32px 16px; font-size:14px; line-height:1.6;">
+        <header style="margin-bottom:32px; border-bottom:1px solid #1e293b; padding-bottom:24px;">
+          <h1 style="font-size:32px; font-weight:800; color:#ffffff; margin-bottom:12px; tracking-tight: -0.02em;">
+            OwnFormatters - Free Online Developer Tools, JSON Formatter & Code Generator
           </h1>
-          <p class="text-lg md:text-xl text-slate-300 max-w-3xl mx-auto mb-6">
-            AI-curated YouTube product reviews, buyer sentiment analysis, and verified Amazon deals for trending consumer electronics, smart appliances, and fitness equipment.
+          <p style="color:#cbd5e1; font-size:18px; margin:0; max-width:850px;">
+            100% Browser-Based, Private, Offline-Capable Client-Side Developer Suite for Software Engineers, System Architects, and DevOps Professionals.
           </p>
-          
-          <!-- Trending Product Search Pills -->
-          <div class="flex flex-wrap justify-center gap-2 max-w-4xl mx-auto">
-            <span class="text-xs uppercase font-semibold text-slate-400 py-1.5">Trending Searches:</span>
-            <a href="/?q=4K+Ultra+HD+Smart+LED+TV+55+Inch" class="text-xs bg-slate-800 hover:bg-slate-700 text-amber-300 px-3 py-1.5 rounded-full border border-slate-700 transition">4K Ultra HD Smart LED TV 55 Inch</a>
-            <a href="/?q=Smart+Double+Door+Refrigerator" class="text-xs bg-slate-800 hover:bg-slate-700 text-amber-300 px-3 py-1.5 rounded-full border border-slate-700 transition">Smart Double Door Refrigerator</a>
-            <a href="/?q=Flagship+5G+Smartphone" class="text-xs bg-slate-800 hover:bg-slate-700 text-amber-300 px-3 py-1.5 rounded-full border border-slate-700 transition">Flagship 5G Smartphone</a>
-            <a href="/?q=Noise+Cancelling+Wireless+Earbuds" class="text-xs bg-slate-800 hover:bg-slate-700 text-amber-300 px-3 py-1.5 rounded-full border border-slate-700 transition">Wireless Earbuds</a>
-            <a href="/?q=Compact+Under+Desk+Walking+Pad+Treadmill" class="text-xs bg-slate-800 hover:bg-slate-700 text-amber-300 px-3 py-1.5 rounded-full border border-slate-700 transition">Walking Pad Treadmill</a>
-            <a href="/?q=Smart+Robot+Vacuum+Cleaner" class="text-xs bg-slate-800 hover:bg-slate-700 text-amber-300 px-3 py-1.5 rounded-full border border-slate-700 transition">Robot Vacuum &amp; Mop</a>
-            <a href="/?q=Digital+Air+Fryer" class="text-xs bg-slate-800 hover:bg-slate-700 text-amber-300 px-3 py-1.5 rounded-full border border-slate-700 transition">Digital Air Fryer</a>
-          </div>
-        </section>
+        </header>
 
-        <!-- Curated Product Reviews Grid -->
-        <section aria-labelledby="featured-reviews-heading" class="mb-12">
-          <div class="flex justify-between items-center mb-6">
-            <h2 id="featured-reviews-heading" class="text-2xl font-bold text-white flex items-center gap-2">
-              <span class="text-amber-400">★</span> Top Trending YouTube Product Reviews &amp; Buyer Consensus
-            </h2>
-            <a href="/sitemap.xml" class="text-sm text-amber-400 hover:underline">View All in Sitemap</a>
-          </div>
-
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <!-- Article 1: 4K Smart TV -->
-            <article class="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden shadow-lg p-5 flex flex-col justify-between">
-              <div>
-                <span class="inline-block text-xs font-semibold uppercase tracking-wider text-amber-400 bg-amber-400/10 px-2.5 py-1 rounded mb-3">Electronics &bull; Display Lab</span>
-                <h3 class="text-lg font-bold text-white mb-2 leading-snug">
-                  <a href="/?q=4K+Ultra+HD+Smart+LED+TV+55+Inch" class="hover:text-amber-400 transition">4K Ultra HD Smart LED TV 55 Inch Real-World Review &amp; Performance Testing</a>
-                </h3>
-                <p class="text-sm text-slate-300 mb-4 line-clamp-3">
-                  In-depth display brightness testing, Dolby Vision hdr analysis, and real-world audio clarity testing for 55-inch smart televisions. Verified buyer consensus score of 95% positive approval.
-                </p>
-                <div class="bg-slate-800/60 rounded-lg p-3 text-xs text-slate-300 mb-4 space-y-1">
-                  <div><strong class="text-emerald-400">Buyer Sentiment:</strong> 95% Positive (Verified High Satisfaction)</div>
-                  <div><strong class="text-amber-400">Key Strengths:</strong> Vivid 4K panel, low input lag, easy Google/Alexa voice setup</div>
-                  <div><strong class="text-slate-400">Est. Price:</strong> ₹39,999 / $449.00 (Amazon Official Store)</div>
-                </div>
-              </div>
-              <div class="pt-3 border-t border-slate-800 flex items-center justify-between">
-                <span class="text-xs text-slate-400">Channel: Tech &amp; Display Reviews</span>
-                <a href="https://www.amazon.in/s?k=4K+Ultra+HD+Smart+LED+TV+55+Inch&tag=trends0628-21" target="_blank" rel="nofollow noopener noreferrer" class="text-xs bg-amber-500 hover:bg-amber-450 text-slate-950 font-semibold px-3 py-1.5 rounded transition">View on Amazon &rarr;</a>
-              </div>
-            </article>
-
-            <!-- Article 2: Smart Refrigerator -->
-            <article class="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden shadow-lg p-5 flex flex-col justify-between">
-              <div>
-                <span class="inline-block text-xs font-semibold uppercase tracking-wider text-amber-400 bg-amber-400/10 px-2.5 py-1 rounded mb-3">Kitchen &bull; Appliance Lab</span>
-                <h3 class="text-lg font-bold text-white mb-2 leading-snug">
-                  <a href="/?q=Smart+Double+Door+Refrigerator" class="hover:text-amber-400 transition">Smart Double Door Refrigerator &amp; Inverter Compressor Usability Test</a>
-                </h3>
-                <p class="text-sm text-slate-300 mb-4 line-clamp-3">
-                  Long-term energy efficiency test, inverter compressor cooling benchmarks, and frost-free multi-flow airflow review for modern double door refrigerators.
-                </p>
-                <div class="bg-slate-800/60 rounded-lg p-3 text-xs text-slate-300 mb-4 space-y-1">
-                  <div><strong class="text-emerald-400">Buyer Sentiment:</strong> 92% Positive Approval</div>
-                  <div><strong class="text-amber-400">Key Strengths:</strong> Fast cooling, whisper-quiet motor, spacious vegetable crisper</div>
-                  <div><strong class="text-slate-400">Est. Price:</strong> ₹28,999 / $899.00 (Amazon Verified Seller)</div>
-                </div>
-              </div>
-              <div class="pt-3 border-t border-slate-800 flex items-center justify-between">
-                <span class="text-xs text-slate-400">Channel: Home &amp; Kitchen Tech</span>
-                <a href="https://www.amazon.in/s?k=Smart+Double+Door+Refrigerator&tag=trends0628-21" target="_blank" rel="nofollow noopener noreferrer" class="text-xs bg-amber-500 hover:bg-amber-450 text-slate-950 font-semibold px-3 py-1.5 rounded transition">View on Amazon &rarr;</a>
-              </div>
-            </article>
-
-            <!-- Article 3: Walking Pad Treadmill -->
-            <article class="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden shadow-lg p-5 flex flex-col justify-between">
-              <div>
-                <span class="inline-block text-xs font-semibold uppercase tracking-wider text-amber-400 bg-amber-400/10 px-2.5 py-1 rounded mb-3">Fitness &bull; Cardio Gear</span>
-                <h3 class="text-lg font-bold text-white mb-2 leading-snug">
-                  <a href="/?q=Compact+Under+Desk+Walking+Pad+Treadmill" class="hover:text-amber-400 transition">Compact Under Desk Walking Pad Treadmill Field Test &amp; Noise Review</a>
-                </h3>
-                <p class="text-sm text-slate-300 mb-4 line-clamp-3">
-                  Tested for daily remote work step goals, apartment floor vibration insulation, and under-bed folding mobility. 89% positive buyer recommendation rating.
-                </p>
-                <div class="bg-slate-800/60 rounded-lg p-3 text-xs text-slate-300 mb-4 space-y-1">
-                  <div><strong class="text-emerald-400">Buyer Sentiment:</strong> 89% Positive Approval</div>
-                  <div><strong class="text-amber-400">Key Strengths:</strong> Quiet 2.5 HP motor, slim 4.5-inch profile, remote speed controls</div>
-                  <div><strong class="text-slate-400">Est. Price:</strong> ₹16,499 / $189.99 (Prime Shipping)</div>
-                </div>
-              </div>
-              <div class="pt-3 border-t border-slate-800 flex items-center justify-between">
-                <span class="text-xs text-slate-400">Channel: GoTechGeek Fitness</span>
-                <a href="https://www.amazon.com/s?k=Walking+Pad+Treadmill&tag=trends0628-21" target="_blank" rel="nofollow noopener noreferrer" class="text-xs bg-amber-500 hover:bg-amber-450 text-slate-950 font-semibold px-3 py-1.5 rounded transition">View on Amazon &rarr;</a>
-              </div>
-            </article>
-
-            <!-- Article 4: Flagship 5G Smartphone -->
-            <article class="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden shadow-lg p-5 flex flex-col justify-between">
-              <div>
-                <span class="inline-block text-xs font-semibold uppercase tracking-wider text-amber-400 bg-amber-400/10 px-2.5 py-1 rounded mb-3">Electronics &bull; Mobile Tech</span>
-                <h3 class="text-lg font-bold text-white mb-2 leading-snug">
-                  <a href="/?q=Flagship+5G+Smartphone" class="hover:text-amber-400 transition">Flagship 5G Smartphone Camera, Battery &amp; Gaming Performance Review</a>
-                </h3>
-                <p class="text-sm text-slate-300 mb-4 line-clamp-3">
-                  Comprehensive 4K camera stabilization test, 5000mAh battery drain analysis, and 120Hz AMOLED display benchmark across verified tech reviewers.
-                </p>
-                <div class="bg-slate-800/60 rounded-lg p-3 text-xs text-slate-300 mb-4 space-y-1">
-                  <div><strong class="text-emerald-400">Buyer Sentiment:</strong> 96% Positive Approval</div>
-                  <div><strong class="text-amber-400">Key Strengths:</strong> 50MP OIS sensor, all-day battery life, snappy processor</div>
-                  <div><strong class="text-slate-400">Est. Price:</strong> ₹49,999 / $799.00</div>
-                </div>
-              </div>
-              <div class="pt-3 border-t border-slate-800 flex items-center justify-between">
-                <span class="text-xs text-slate-400">Channel: TechSpurt Lab</span>
-                <a href="https://www.amazon.in/s?k=Flagship+5G+Smartphone&tag=trends0628-21" target="_blank" rel="nofollow noopener noreferrer" class="text-xs bg-amber-500 hover:bg-amber-450 text-slate-950 font-semibold px-3 py-1.5 rounded transition">View on Amazon &rarr;</a>
-              </div>
-            </article>
-
-            <!-- Article 5: Robot Vacuum Cleaner & Mop -->
-            <article class="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden shadow-lg p-5 flex flex-col justify-between">
-              <div>
-                <span class="inline-block text-xs font-semibold uppercase tracking-wider text-amber-400 bg-amber-400/10 px-2.5 py-1 rounded mb-3">Gadgets &bull; Smart Home</span>
-                <h3 class="text-lg font-bold text-white mb-2 leading-snug">
-                  <a href="/?q=Smart+Robot+Vacuum+Cleaner" class="hover:text-amber-400 transition">Smart Robot Vacuum Cleaner &amp; Mop Real Home Dust &amp; Pet Hair Test</a>
-                </h3>
-                <p class="text-sm text-slate-300 mb-4 line-clamp-3">
-                  LiDAR navigation accuracy evaluation, pet hair anti-tangle brush test, and auto-dock emptying performance across tile and carpet surfaces.
-                </p>
-                <div class="bg-slate-800/60 rounded-lg p-3 text-xs text-slate-300 mb-4 space-y-1">
-                  <div><strong class="text-emerald-400">Buyer Sentiment:</strong> 94% Positive Approval</div>
-                  <div><strong class="text-amber-400">Key Strengths:</strong> Strong 4000Pa suction, multi-floor mapping, quiet clean mode</div>
-                  <div><strong class="text-slate-400">Est. Price:</strong> ₹24,999 / $349.99</div>
-                </div>
-              </div>
-              <div class="pt-3 border-t border-slate-800 flex items-center justify-between">
-                <span class="text-xs text-slate-400">Channel: Smart Home Tech</span>
-                <a href="https://www.amazon.in/s?k=Smart+Robot+Vacuum+Cleaner&tag=trends0628-21" target="_blank" rel="nofollow noopener noreferrer" class="text-xs bg-amber-500 hover:bg-amber-450 text-slate-950 font-semibold px-3 py-1.5 rounded transition">View on Amazon &rarr;</a>
-              </div>
-            </article>
-
-            <!-- Article 6: Digital Air Fryer -->
-            <article class="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden shadow-lg p-5 flex flex-col justify-between">
-              <div>
-                <span class="inline-block text-xs font-semibold uppercase tracking-wider text-amber-400 bg-amber-400/10 px-2.5 py-1 rounded mb-3">Kitchen &bull; Culinary Tech</span>
-                <h3 class="text-lg font-bold text-white mb-2 leading-snug">
-                  <a href="/?q=Digital+Air+Fryer" class="hover:text-amber-400 transition">Digital Air Fryer &amp; Multi-Oven Cooking Speed &amp; Crispiness Test</a>
-                </h3>
-                <p class="text-sm text-slate-300 mb-4 line-clamp-3">
-                  Tested for 85% oil reduction, rapid 360-degree heat circulation, non-stick basket cleaning, and one-touch digital preset cooking.
-                </p>
-                <div class="bg-slate-800/60 rounded-lg p-3 text-xs text-slate-300 mb-4 space-y-1">
-                  <div><strong class="text-emerald-400">Buyer Sentiment:</strong> 97% Positive Approval</div>
-                  <div><strong class="text-amber-400">Key Strengths:</strong> Rapid preheating, dishwasher-safe basket, compact footprint</div>
-                  <div><strong class="text-slate-400">Est. Price:</strong> ₹5,999 / $89.99</div>
-                </div>
-              </div>
-              <div class="pt-3 border-t border-slate-800 flex items-center justify-between">
-                <span class="text-xs text-slate-400">Channel: Kitchen &amp; Cooking Tech</span>
-                <a href="https://www.amazon.in/s?k=Digital+Air+Fryer&tag=trends0628-21" target="_blank" rel="nofollow noopener noreferrer" class="text-xs bg-amber-500 hover:bg-amber-450 text-slate-950 font-semibold px-3 py-1.5 rounded transition">View on Amazon &rarr;</a>
-              </div>
-            </article>
-          </div>
-        </section>
-
-        <!-- Knowledge Base & Review Methodology FAQ Section -->
-        <section aria-labelledby="faq-heading" class="bg-slate-900/60 border border-slate-800 rounded-2xl p-6 md:p-8 mb-12">
-          <h2 id="faq-heading" class="text-2xl font-bold text-white mb-4">Frequently Asked Questions &amp; Verification Methodology</h2>
-          <div class="space-y-4 text-sm text-slate-300">
-            <div>
-              <h3 class="font-semibold text-amber-300 text-base mb-1">How does TrendPulse analyze YouTube video reviews?</h3>
-              <p>Our backend system continuously crawls top tech, household, and fitness creators on YouTube. We parse video audio transcripts, viewer feedback, and comment threads to calculate verified sentiment ratios, highlight pros/cons, and identify actual buyer questions.</p>
-            </div>
-            <div>
-              <h3 class="font-semibold text-amber-300 text-base mb-1">How are Amazon affiliate deals generated?</h3>
-              <p>When you browse products on TrendPulse, our system automatically localizes links to your corresponding regional Amazon marketplace (e.g. Amazon India, Amazon US, Amazon UK, etc.) with official product warranty access and fast Prime delivery.</p>
-            </div>
-            <div>
-              <h3 class="font-semibold text-amber-300 text-base mb-1">How often is the product catalog updated?</h3>
-              <p>Our automated cron collector updates every hour to pull newly trending Google products and YouTube review benchmarks across 8 global geographical regions, updating our sitemap.xml for real-time search discovery.</p>
-            </div>
-          </div>
-        </section>
-
-        <!-- FTC Affiliate Disclosure -->
-        <section class="text-xs text-slate-500 border-t border-slate-800 pt-6 pb-2 text-center">
-          <p>
-            <strong>Affiliate Disclosure:</strong> TrendPulse is a participant in the Amazon Services LLC Associates Program and regional Amazon Affiliate Networks. We may earn a small commission on qualifying purchases made through our curated product links at no additional cost to you.
+        <!-- Privacy & Zero-Upload Value Proposition -->
+        <section style="margin-bottom:40px; background:#0f172a; padding:24px; border-radius:12px; border:1px solid #1e293b;">
+          <h2 style="font-size:22px; font-weight:700; color:#818cf8; margin-top:0; margin-bottom:16px;">
+            Zero Server Uploads: Maximum Security & Enterprise Privacy Guarantee
+          </h2>
+          <p style="color:#cbd5e1; margin-bottom:12px;">
+            OwnFormatters is a privacy-first, offline-capable developer utility platform engineered to perform JSON formatting, JSON-to-Code generation, JWT decoding, Base64 conversion, YAML formatting, SQL query beautification, UUID generation, RegEx testing, and text diffing entirely within your local browser memory thread. Traditional online converters transmit your raw payloads, secret keys, API access tokens, connection strings, and database queries across public networks where they are subject to server access logging and third-party recording.
+          </p>
+          <p style="color:#cbd5e1; margin:0;">
+            With OwnFormatters, <strong>0 bytes of your input data ever leave your computer</strong>. All parsing algorithms execute via V8 JavaScript WebWorkers locally, providing instant sub-millisecond execution without network latency, server downtime, or privacy risks.
           </p>
         </section>
+
+        <!-- Complete Tools Catalog Index -->
+        <section style="margin-bottom:48px;">
+          <h2 style="font-size:24px; font-weight:800; color:#ffffff; margin-bottom:20px; border-bottom:1px solid #334155; padding-bottom:8px;">
+            Complete Developer Tools Directory
+          </h2>
+
+          <!-- Section 1: JSON & Data Structures -->
+          <div style="margin-bottom:28px;">
+            <h3 style="font-size:18px; font-weight:700; color:#38bdf8; margin-bottom:12px;">JSON & Data Structure Utilities</h3>
+            <nav aria-label="JSON & Data Structure Utilities">
+              <ul style="display:grid; grid-template-columns:repeat(auto-fill, minmax(280px, 1fr)); gap:16px; list-style:none; padding:0; margin:0;">
+                <li style="background:#0f172a; padding:16px; border-radius:12px; border:1px solid #1e293b;">
+                  <a href="/json-formatter" style="color:#38bdf8; font-weight:700; text-decoration:none;">JSON Formatter & Validator</a>
+                  <p style="color:#94a3b8; font-size:12px; margin:8px 0 0 0;">Format, validate, repair, and minify JSON data payloads adhering to RFC 8259 specifications.</p>
+                </li>
+                <li style="background:#0f172a; padding:16px; border-radius:12px; border:1px solid #1e293b;">
+                  <a href="/json-to-code" style="color:#38bdf8; font-weight:700; text-decoration:none;">JSON to Code Generator</a>
+                  <p style="color:#94a3b8; font-size:12px; margin:8px 0 0 0;">Convert raw JSON objects into strongly-typed TypeScript interfaces, Go structs, Rust structs, or Java classes.</p>
+                </li>
+                <li style="background:#0f172a; padding:16px; border-radius:12px; border:1px solid #1e293b;">
+                  <a href="/json-schema-generator" style="color:#38bdf8; font-weight:700; text-decoration:none;">JSON Schema Generator</a>
+                  <p style="color:#94a3b8; font-size:12px; margin:8px 0 0 0;">Generate JSON Schema Draft-07 specifications from JSON samples with real-time validation.</p>
+                </li>
+                <li style="background:#0f172a; padding:16px; border-radius:12px; border:1px solid #1e293b;">
+                  <a href="/jsonpath-tester" style="color:#38bdf8; font-weight:700; text-decoration:none;">JSONPath Evaluator & Tester</a>
+                  <p style="color:#94a3b8; font-size:12px; margin:8px 0 0 0;">Query complex JSON trees using standard JSONPath syntax with instant match extraction.</p>
+                </li>
+              </ul>
+            </nav>
+          </div>
+
+          <!-- Section 2: API & Web Services -->
+          <div style="margin-bottom:28px;">
+            <h3 style="font-size:18px; font-weight:700; color:#38bdf8; margin-bottom:12px;">API Development & Web Services Suite</h3>
+            <nav aria-label="API Development & Web Services Suite">
+              <ul style="display:grid; grid-template-columns:repeat(auto-fill, minmax(280px, 1fr)); gap:16px; list-style:none; padding:0; margin:0;">
+                <li style="background:#0f172a; padding:16px; border-radius:12px; border:1px solid #1e293b;">
+                  <a href="/api-tester" style="color:#38bdf8; font-weight:700; text-decoration:none;">HTTP API Client & Tester</a>
+                  <p style="color:#94a3b8; font-size:12px; margin:8px 0 0 0;">Execute RESTful HTTP requests (GET, POST, PUT, DELETE) with CORS proxy support and header configuration.</p>
+                </li>
+                <li style="background:#0f172a; padding:16px; border-radius:12px; border:1px solid #1e293b;">
+                  <a href="/graphql-tester" style="color:#38bdf8; font-weight:700; text-decoration:none;">GraphQL Query Playground</a>
+                  <p style="color:#94a3b8; font-size:12px; margin:8px 0 0 0;">Build, validate, and execute GraphQL queries, mutations, and variables against GraphQL endpoints.</p>
+                </li>
+                <li style="background:#0f172a; padding:16px; border-radius:12px; border:1px solid #1e293b;">
+                  <a href="/openapi-viewer" style="color:#38bdf8; font-weight:700; text-decoration:none;">OpenAPI / Swagger Spec Viewer</a>
+                  <p style="color:#94a3b8; font-size:12px; margin:8px 0 0 0;">Render interactive API documentation from OpenAPI 3.0 and Swagger 2.0 YAML or JSON specs.</p>
+                </li>
+                <li style="background:#0f172a; padding:16px; border-radius:12px; border:1px solid #1e293b;">
+                  <a href="/webhook-tester" style="color:#38bdf8; font-weight:700; text-decoration:none;">Webhook Receiver & Inspector</a>
+                  <p style="color:#94a3b8; font-size:12px; margin:8px 0 0 0;">Generate mock webhook URL endpoints to capture and inspect real-time HTTP POST payload payloads.</p>
+                </li>
+                <li style="background:#0f172a; padding:16px; border-radius:12px; border:1px solid #1e293b;">
+                  <a href="/mock-api-server" style="color:#38bdf8; font-weight:700; text-decoration:none;">Mock API Server Generator</a>
+                  <p style="color:#94a3b8; font-size:12px; margin:8px 0 0 0;">Create instant mock REST API endpoints returning simulated JSON datasets for frontend prototyping.</p>
+                </li>
+              </ul>
+            </nav>
+          </div>
+
+          <!-- Section 3: DevOps & Infrastructure -->
+          <div style="margin-bottom:28px;">
+            <h3 style="font-size:18px; font-weight:700; color:#38bdf8; margin-bottom:12px;">DevOps, Cloud & Database Suite</h3>
+            <nav aria-label="DevOps, Cloud & Database Suite">
+              <ul style="display:grid; grid-template-columns:repeat(auto-fill, minmax(280px, 1fr)); gap:16px; list-style:none; padding:0; margin:0;">
+                <li style="background:#0f172a; padding:16px; border-radius:12px; border:1px solid #1e293b;">
+                  <a href="/sql-formatter" style="color:#38bdf8; font-weight:700; text-decoration:none;">SQL Query Beautifier</a>
+                  <p style="color:#94a3b8; font-size:12px; margin:8px 0 0 0;">Format and beautify PostgreSQL, MySQL, SQLite, Oracle, and T-SQL query strings with subquery indentation.</p>
+                </li>
+                <li style="background:#0f172a; padding:16px; border-radius:12px; border:1px solid #1e293b;">
+                  <a href="/yaml-formatter" style="color:#38bdf8; font-weight:700; text-decoration:none;">YAML Formatter & Converter</a>
+                  <p style="color:#94a3b8; font-size:12px; margin:8px 0 0 0;">Validate YAML indentation hierarchy and convert seamlessly between YAML and JSON formats.</p>
+                </li>
+                <li style="background:#0f172a; padding:16px; border-radius:12px; border:1px solid #1e293b;">
+                  <a href="/docker-compose-validator" style="color:#38bdf8; font-weight:700; text-decoration:none;">Docker Compose Generator & Validator</a>
+                  <p style="color:#94a3b8; font-size:12px; margin:8px 0 0 0;">Validate docker-compose.yml files, check port bindings, and configure container environments.</p>
+                </li>
+                <li style="background:#0f172a; padding:16px; border-radius:12px; border:1px solid #1e293b;">
+                  <a href="/k8s-yaml-validator" style="color:#38bdf8; font-weight:700; text-decoration:none;">Kubernetes Manifest Builder</a>
+                  <p style="color:#94a3b8; font-size:12px; margin:8px 0 0 0;">Validate Kubernetes Deployment, Service, and Ingress YAML configs against K8s API specifications.</p>
+                </li>
+                <li style="background:#0f172a; padding:16px; border-radius:12px; border:1px solid #1e293b;">
+                  <a href="/nginx-config-formatter" style="color:#38bdf8; font-weight:700; text-decoration:none;">Nginx Config Formatter</a>
+                  <p style="color:#94a3b8; font-size:12px; margin:8px 0 0 0;">Beautify and validate Nginx web server block directives, location proxies, and SSL settings.</p>
+                </li>
+              </ul>
+            </nav>
+          </div>
+
+          <!-- Section 4: Security & Encoding -->
+          <div style="margin-bottom:28px;">
+            <h3 style="font-size:18px; font-weight:700; color:#38bdf8; margin-bottom:12px;">Security, Encoding & Cryptography Utilities</h3>
+            <nav aria-label="Security, Encoding & Cryptography Utilities">
+              <ul style="display:grid; grid-template-columns:repeat(auto-fill, minmax(280px, 1fr)); gap:16px; list-style:none; padding:0; margin:0;">
+                <li style="background:#0f172a; padding:16px; border-radius:12px; border:1px solid #1e293b;">
+                  <a href="/jwt-debugger" style="color:#38bdf8; font-weight:700; text-decoration:none;">JWT Decoder & Inspector</a>
+                  <p style="color:#94a3b8; font-size:12px; margin:8px 0 0 0;">Decode Base64Url JSON Web Tokens (RFC 7519), inspect header algorithms, expiration times, and payload claims.</p>
+                </li>
+                <li style="background:#0f172a; padding:16px; border-radius:12px; border:1px solid #1e293b;">
+                  <a href="/base64-encoder" style="color:#38bdf8; font-weight:700; text-decoration:none;">Base64 Encoder & Decoder</a>
+                  <p style="color:#94a3b8; font-size:12px; margin:8px 0 0 0;">Encode text or binary data into Base64 (RFC 4648) and decode Base64 strings safely.</p>
+                </li>
+                <li style="background:#0f172a; padding:16px; border-radius:12px; border:1px solid #1e293b;">
+                  <a href="/url-encoder" style="color:#38bdf8; font-weight:700; text-decoration:none;">URL Encoder & Decoder</a>
+                  <p style="color:#94a3b8; font-size:12px; margin:8px 0 0 0;">Percent-encode URL query parameter strings according to RFC 3986 specs.</p>
+                </li>
+                <li style="background:#0f172a; padding:16px; border-radius:12px; border:1px solid #1e293b;">
+                  <a href="/uuid-generator" style="color:#38bdf8; font-weight:700; text-decoration:none;">UUID v4 & v7 Generator</a>
+                  <p style="color:#94a3b8; font-size:12px; margin:8px 0 0 0;">Generate cryptographically secure random UUID v4 and time-ordered UUID v7 identifiers.</p>
+                </li>
+                <li style="background:#0f172a; padding:16px; border-radius:12px; border:1px solid #1e293b;">
+                  <a href="/hash-generator" style="color:#38bdf8; font-weight:700; text-decoration:none;">Hash Generator</a>
+                  <p style="color:#94a3b8; font-size:12px; margin:8px 0 0 0;">Generate cryptographic MD5, SHA-1, SHA-256, and SHA-512 checksum hashes instantly.</p>
+                </li>
+                <li style="background:#0f172a; padding:16px; border-radius:12px; border:1px solid #1e293b;">
+                  <a href="/qrcode-generator" style="color:#38bdf8; font-weight:700; text-decoration:none;">QR Code Generator</a>
+                  <p style="color:#94a3b8; font-size:12px; margin:8px 0 0 0;">Generate high-resolution vector QR code images for URLs, Wi-Fi keys, and text.</p>
+                </li>
+              </ul>
+            </nav>
+          </div>
+
+          <!-- Section 5: Text, Code & General Utilities -->
+          <div style="margin-bottom:28px;">
+            <h3 style="font-size:18px; font-weight:700; color:#38bdf8; margin-bottom:12px;">Code, Text & Time Converters</h3>
+            <nav aria-label="Code, Text & Time Converters">
+              <ul style="display:grid; grid-template-columns:repeat(auto-fill, minmax(280px, 1fr)); gap:16px; list-style:none; padding:0; margin:0;">
+                <li style="background:#0f172a; padding:16px; border-radius:12px; border:1px solid #1e293b;">
+                  <a href="/regex-tester" style="color:#38bdf8; font-weight:700; text-decoration:none;">RegEx Pattern Tester</a>
+                  <p style="color:#94a3b8; font-size:12px; margin:8px 0 0 0;">Test regular expression patterns with real-time match highlighting, flag toggles, and substitution.</p>
+                </li>
+                <li style="background:#0f172a; padding:16px; border-radius:12px; border:1px solid #1e293b;">
+                  <a href="/text-diff" style="color:#38bdf8; font-weight:700; text-decoration:none;">Text Diff & Comparison Tool</a>
+                  <p style="color:#94a3b8; font-size:12px; margin:8px 0 0 0;">Compare text blocks side-by-side or inline to highlight added, modified, and deleted lines.</p>
+                </li>
+                <li style="background:#0f172a; padding:16px; border-radius:12px; border:1px solid #1e293b;">
+                  <a href="/code-minifier" style="color:#38bdf8; font-weight:700; text-decoration:none;">Code Minifier & Compression</a>
+                  <p style="color:#94a3b8; font-size:12px; margin:8px 0 0 0;">Minify JavaScript, CSS, HTML, and JSON code payloads to optimize asset delivery speeds.</p>
+                </li>
+                <li style="background:#0f172a; padding:16px; border-radius:12px; border:1px solid #1e293b;">
+                  <a href="/cron-parser" style="color:#38bdf8; font-weight:700; text-decoration:none;">Cron Expression Parser</a>
+                  <p style="color:#94a3b8; font-size:12px; margin:8px 0 0 0;">Parse standard 5-field Unix cron schedules into human-readable execution timetables.</p>
+                </li>
+                <li style="background:#0f172a; padding:16px; border-radius:12px; border:1px solid #1e293b;">
+                  <a href="/timestamp-converter" style="color:#38bdf8; font-weight:700; text-decoration:none;">Epoch Timestamp Studio</a>
+                  <p style="color:#94a3b8; font-size:12px; margin:8px 0 0 0;">Convert Unix epoch seconds and milliseconds to UTC, ISO 8601, and local human dates.</p>
+                </li>
+                <li style="background:#0f172a; padding:16px; border-radius:12px; border:1px solid #1e293b;">
+                  <a href="/xml-formatter" style="color:#38bdf8; font-weight:700; text-decoration:none;">XML Formatter & Beautifier</a>
+                  <p style="color:#94a3b8; font-size:12px; margin:8px 0 0 0;">Format XML trees, validate tag syntax, and convert between XML and JSON.</p>
+                </li>
+                <li style="background:#0f172a; padding:16px; border-radius:12px; border:1px solid #1e293b;">
+                  <a href="/csv-converter" style="color:#38bdf8; font-weight:700; text-decoration:none;">CSV to JSON Converter</a>
+                  <p style="color:#94a3b8; font-size:12px; margin:8px 0 0 0;">Parse CSV files into clean JSON array collections with custom column header mapping.</p>
+                </li>
+                <li style="background:#0f172a; padding:16px; border-radius:12px; border:1px solid #1e293b;">
+                  <a href="/markdown-editor" style="color:#38bdf8; font-weight:700; text-decoration:none;">Markdown Live Editor</a>
+                  <p style="color:#94a3b8; font-size:12px; margin:8px 0 0 0;">Write CommonMark Markdown with side-by-side HTML live preview and word statistics.</p>
+                </li>
+                <li style="background:#0f172a; padding:16px; border-radius:12px; border:1px solid #1e293b;">
+                  <a href="/color-converter" style="color:#38bdf8; font-weight:700; text-decoration:none;">Color Code Converter</a>
+                  <p style="color:#94a3b8; font-size:12px; margin:8px 0 0 0;">Convert color values seamlessly between HEX, RGB, HSL, and HSV formats.</p>
+                </li>
+                <li style="background:#0f172a; padding:16px; border-radius:12px; border:1px solid #1e293b;">
+                  <a href="/number-base-converter" style="color:#38bdf8; font-weight:700; text-decoration:none;">Number Base Converter</a>
+                  <p style="color:#94a3b8; font-size:12px; margin:8px 0 0 0;">Convert numeric strings between Binary (Base 2), Octal (Base 8), Decimal (Base 10), and Hexadecimal (Base 16).</p>
+                </li>
+                <li style="background:#0f172a; padding:16px; border-radius:12px; border:1px solid #1e293b;">
+                  <a href="/text-utility" style="color:#38bdf8; font-weight:700; text-decoration:none;">Text Case & String Utility</a>
+                  <p style="color:#94a3b8; font-size:12px; margin:8px 0 0 0;">Transform strings to camelCase, PascalCase, snake_case, kebab-case, or UPPERCASE.</p>
+                </li>
+              </ul>
+            </nav>
+          </div>
+        </section>
+
+        <!-- Educational & Learning Guides Center -->
+        <section style="margin-bottom:48px; background:#0f172a; padding:24px; border-radius:12px; border:1px solid #1e293b;">
+          <h2 style="font-size:22px; font-weight:800; color:#ffffff; margin-top:0; margin-bottom:16px;">
+            Developer Learning Guides & Educational Standards
+          </h2>
+          <nav aria-label="Developer Educational Guides">
+            <ul style="display:grid; grid-template-columns:repeat(auto-fill, minmax(220px, 1fr)); gap:12px; list-style:none; padding:0; margin:0;">
+              <li><a href="/learn-json" style="color:#818cf8; text-decoration:none; font-weight:600;">Learn JSON & RFC 8259 Specs</a></li>
+              <li><a href="/learn-jsonschema" style="color:#818cf8; text-decoration:none; font-weight:600;">Learn JSON Schema Draft-07</a></li>
+              <li><a href="/learn-jsonpath" style="color:#818cf8; text-decoration:none; font-weight:600;">Learn JSONPath Query Syntax</a></li>
+              <li><a href="/learn-jsontocode" style="color:#818cf8; text-decoration:none; font-weight:600;">Learn JSON Code Generation</a></li>
+              <li><a href="/learn-yaml" style="color:#818cf8; text-decoration:none; font-weight:600;">Learn YAML & K8s Manifests</a></li>
+              <li><a href="/learn-xml" style="color:#818cf8; text-decoration:none; font-weight:600;">Learn XML Standards</a></li>
+              <li><a href="/learn-sql" style="color:#818cf8; text-decoration:none; font-weight:600;">Learn SQL Formatting Standards</a></li>
+              <li><a href="/learn-jwt" style="color:#818cf8; text-decoration:none; font-weight:600;">Learn JWT & RFC 7519 Security</a></li>
+              <li><a href="/learn-regex" style="color:#818cf8; text-decoration:none; font-weight:600;">Learn RegEx Regular Expressions</a></li>
+              <li><a href="/learn-cron" style="color:#818cf8; text-decoration:none; font-weight:600;">Learn Unix Cron Schedules</a></li>
+              <li><a href="/learn-timestamp" style="color:#818cf8; text-decoration:none; font-weight:600;">Learn Unix Epoch Timestamps</a></li>
+              <li><a href="/learn-base64" style="color:#818cf8; text-decoration:none; font-weight:600;">Learn Base64 Encoding RFC 4648</a></li>
+              <li><a href="/learn-url" style="color:#818cf8; text-decoration:none; font-weight:600;">Learn Percent URL Encoding</a></li>
+              <li><a href="/learn-hash" style="color:#818cf8; text-decoration:none; font-weight:600;">Learn Cryptographic Hashes</a></li>
+            </ul>
+          </nav>
+        </section>
+
+        <!-- Technical Specification Articles for Search Engine Context -->
+        <section style="margin-bottom:48px;">
+          <h2 style="font-size:22px; font-weight:800; color:#ffffff; margin-bottom:16px; border-bottom:1px solid #334155; padding-bottom:8px;">
+            Developer Technical Standards & Utilities Specification Handbook
+          </h2>
+
+          <article style="margin-bottom:20px; background:#0f172a; padding:20px; border-radius:12px; border:1px solid #1e293b;">
+            <h3 style="font-size:18px; font-weight:700; color:#38bdf8; margin-top:0; margin-bottom:8px;">1. JSON Formatter, Validator & RFC 8259 Specification</h3>
+            <p style="color:#cbd5e1; margin-bottom:8px;">
+              JSON (JavaScript Object Notation) is a lightweight, text-based, language-independent data interchange format defined by RFC 8259 and ECMA-404 standards. Our client-side JSON Formatter formats, minifies, validates, and repairs raw JSON payloads. It highlights line-by-line syntax errors, trailing commas, unquoted keys, and string escape issues instantly without sending data to a remote server.
+            </p>
+          </article>
+
+          <article style="margin-bottom:20px; background:#0f172a; padding:20px; border-radius:12px; border:1px solid #1e293b;">
+            <h3 style="font-size:18px; font-weight:700; color:#38bdf8; margin-top:0; margin-bottom:8px;">2. JSON to Code Generator (TypeScript, Go, Rust, Java, C#, Python, Swift)</h3>
+            <p style="color:#cbd5e1; margin-bottom:8px;">
+              Convert raw JSON API response payloads into strongly-typed data models, interfaces, structs, and classes. Automatically infers field data types, handles optional/nullable attributes, generates Go struct tags, Jackson annotations in Java, Serde derives in Rust, Pydantic models in Python, and TypeScript interfaces.
+            </p>
+          </article>
+
+          <article style="margin-bottom:20px; background:#0f172a; padding:20px; border-radius:12px; border:1px solid #1e293b;">
+            <h3 style="font-size:18px; font-weight:700; color:#38bdf8; margin-top:0; margin-bottom:8px;">3. JWT (JSON Web Token) Decoder & Inspector (RFC 7519)</h3>
+            <p style="color:#cbd5e1; margin-bottom:8px;">
+              Decode Base64Url-encoded JSON Web Tokens safely. Inspect token headers, signature algorithms (`alg`), token issuance timestamps (`iat`), expiration dates (`exp`), subject (`sub`), issuer (`iss`), and custom authorization role claims. Operates 100% in browser memory so session tokens are never leaked to server logs.
+            </p>
+          </article>
+
+          <article style="margin-bottom:20px; background:#0f172a; padding:20px; border-radius:12px; border:1px solid #1e293b;">
+            <h3 style="font-size:18px; font-weight:700; color:#38bdf8; margin-top:0; margin-bottom:8px;">4. YAML Formatter & Kubernetes / Docker Compose Manifest Validator</h3>
+            <p style="color:#cbd5e1; margin-bottom:8px;">
+              Validate YAML indentation hierarchy and convert seamlessly between YAML and JSON formats. Ideal for verifying Kubernetes deployment manifests, Helm charts, Docker Compose files, Ansible playbooks, and GitHub Actions CI/CD workflow configurations.
+            </p>
+          </article>
+
+          <article style="margin-bottom:20px; background:#0f172a; padding:20px; border-radius:12px; border:1px solid #1e293b;">
+            <h3 style="font-size:18px; font-weight:700; color:#38bdf8; margin-top:0; margin-bottom:8px;">5. SQL Query Beautifier & RDBMS Dialect Formatter</h3>
+            <p style="color:#cbd5e1; margin-bottom:8px;">
+              Beautify PostgreSQL, MySQL, SQLite, Oracle, and T-SQL database query strings. Capitalizes SQL keywords (`SELECT`, `FROM`, `JOIN`, `WHERE`), indents subqueries, and aligns clauses for transparent code reviews and query optimization.
+            </p>
+          </article>
+
+          <article style="margin-bottom:20px; background:#0f172a; padding:20px; border-radius:12px; border:1px solid #1e293b;">
+            <h3 style="font-size:18px; font-weight:700; color:#38bdf8; margin-top:0; margin-bottom:8px;">6. UUID v4 & v7 Generator (RFC 4122 & RFC 9562)</h3>
+            <p style="color:#cbd5e1; margin-bottom:8px;">
+              Generate cryptographically secure random UUID v4 and time-ordered UUID v7 identifiers. UUID v7 embeds millisecond Unix epoch timestamps to preserve database B-tree index locality and write performance while guaranteeing global uniqueness.
+            </p>
+          </article>
+        </section>
+
+        <!-- Footer Navigation -->
+        <footer style="border-top:1px solid #1e293b; padding-top:24px; color:#64748b; font-size:13px; text-align:center;">
+          <p style="margin-bottom:12px;">© 2026 OwnFormatters. Maintained by OwnCircles. All rights reserved.</p>
+          <p style="margin:0;">
+            <a href="/privacy-policy" style="color:#818cf8; text-decoration:none; margin:0 8px;">Privacy Policy</a> | 
+            <a href="/terms-of-service" style="color:#818cf8; text-decoration:none; margin:0 8px;">Terms of Service</a> | 
+            <a href="/about-us" style="color:#818cf8; text-decoration:none; margin:0 8px;">About Us</a> | 
+            <a href="/sitemap.xml" style="color:#818cf8; text-decoration:none; margin:0 8px;">Sitemap</a> | 
+            <a href="/robots.txt" style="color:#818cf8; text-decoration:none; margin:0 8px;">Robots.txt</a>
+          </p>
+        </footer>
       </main>
-
-      <footer class="border-t border-slate-800 bg-slate-900 py-8 px-6 text-sm text-slate-400">
-        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left">
-          <div>
-            <p class="font-bold text-white">TrendPulse &copy; 2026</p>
-            <p class="text-xs text-slate-500">Curating the world's most viral and trusted consumer product reviews.</p>
-          </div>
-          <div class="flex flex-wrap justify-center gap-4 text-xs">
-            <a href="/" class="hover:text-white">Home</a>
-            <a href="/?category=electronics" class="hover:text-white">Electronics</a>
-            <a href="/?category=kitchen" class="hover:text-white">Kitchen</a>
-            <a href="/?category=fitness" class="hover:text-white">Fitness</a>
-            <a href="/?category=household" class="hover:text-white">Household</a>
-            <a href="/sitemap.xml" class="hover:text-white">XML Sitemap</a>
-          </div>
-        </div>
-      </footer>
     </div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
-
-

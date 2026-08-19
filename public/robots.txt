@@ -1,7 +1,4 @@
 User-agent: *
 Allow: /
-Disallow: /api/
-Disallow: /api_mysql.php
 
 Sitemap: https://of.owncircles.com/sitemap.xml
-Sitemap: https://trends.owncircles.com/sitemap.xml

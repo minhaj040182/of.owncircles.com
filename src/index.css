@@ -1,9 +1,195 @@
 @import "tailwindcss";
 
-@utility no-scrollbar {
-  &::-webkit-scrollbar {
-    display: none;
-  }
-  scrollbar-width: none;
-  -ms-overflow-style: none;
+/* Classic Light Mode CSS Overrides */
+.theme-light {
+  color-scheme: light;
+}
+
+.theme-light textarea,
+.theme-light input[type="text"],
+.theme-light input[type="url"],
+.theme-light input[type="number"],
+.theme-light select {
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+  border-color: #cbd5e1 !important;
+}
+
+.theme-light textarea::placeholder,
+.theme-light input::placeholder {
+  color: #64748b !important;
+}
+
+.theme-light pre,
+.theme-light code {
+  color: #0f172a !important;
+  background-color: #f8fafc !important;
+}
+
+/* Ensure all typical dark/slate panels switch to pure white/light gray in light mode */
+.theme-light .bg-slate-950,
+.theme-light .bg-slate-900,
+.theme-light .bg-slate-900\/50,
+.theme-light .bg-slate-950\/40,
+.theme-light .bg-\[\#02050c\],
+.theme-light .bg-\[\#02050b\] {
+  background-color: #ffffff !important;
+}
+
+.theme-light .bg-slate-900\/40,
+.theme-light .bg-slate-950\/60,
+.theme-light .bg-\[\#02050b\]\/80 {
+  background-color: rgba(255, 255, 255, 0.95) !important;
+}
+
+/* Borders in light mode */
+.theme-light .border-slate-900,
+.theme-light .border-slate-850,
+.theme-light .border-slate-800,
+.theme-light .border-slate-900\/60 {
+  border-color: #e2e8f0 !important;
+}
+
+/* Text gray and slate colors in light mode */
+.theme-light .text-slate-400,
+.theme-light .text-slate-500,
+.theme-light .text-slate-600 {
+  color: #475569 !important;
+}
+
+.theme-light .text-slate-200,
+.theme-light .text-slate-300 {
+  color: #0f172a !important;
+}
+
+/* Solid background active buttons, tabs, and brand badges must always have white text and white icons in light mode */
+.theme-light .bg-indigo-600,
+.theme-light .bg-indigo-600 *,
+.theme-light .bg-indigo-700,
+.theme-light .bg-indigo-700 *,
+.theme-light .bg-indigo-800,
+.theme-light .bg-indigo-800 *,
+.theme-light button.bg-indigo-600,
+.theme-light button.bg-indigo-600 *,
+.theme-light .bg-gradient-to-br.from-indigo-500,
+.theme-light .bg-gradient-to-br.from-indigo-500 * {
+  color: #ffffff !important;
+}
+
+/* Ensure icons (SVGs) in light mode default to deep charcoal for perfect readability, but NOT inside buttons, text-white elements, or indigo background elements */
+.theme-light svg:not(.text-emerald-500):not(.text-red-500):not(.text-amber-500):not(.text-emerald-400):not(button svg):not(.text-white svg):not([class*="bg-indigo-"] svg):not([class*="bg-emerald-"] svg) {
+  color: #1e293b !important;
+}
+
+/* Accent colors in light mode */
+.theme-light .text-indigo-300,
+.theme-light .text-indigo-400,
+.theme-light .text-indigo-450 {
+  color: #4f46e5 !important;
+}
+
+.theme-light .bg-indigo-950\/30 {
+  background-color: #f0f2fe !important;
+  color: #4f46e5 !important;
+  border-color: #e0e4fd !important;
+}
+
+/* ACCESSIBILITY FONT SIZE SCALING ENGINE */
+/* 1. Large Scale (A+) */
+.font-scale-large .text-xs,
+.font-scale-large textarea.text-xs,
+.font-scale-large input.text-xs,
+.font-scale-large pre.text-xs,
+.font-scale-large code.text-xs,
+.font-scale-large .font-mono.text-xs {
+  font-size: 0.875rem !important; /* text-sm equivalent */
+}
+.font-scale-large .text-sm,
+.font-scale-large textarea.text-sm,
+.font-scale-large input.text-sm,
+.font-scale-large pre.text-sm,
+.font-scale-large code.text-sm,
+.font-scale-large .font-mono.text-sm {
+  font-size: 1rem !important; /* text-base equivalent */
+}
+.font-scale-large .text-base,
+.font-scale-large textarea.text-base,
+.font-scale-large input.text-base,
+.font-scale-large select.text-base {
+  font-size: 1.125rem !important; /* text-lg equivalent */
+}
+.font-scale-large textarea,
+.font-scale-large input,
+.font-scale-large select {
+  font-size: 14px !important;
+}
+.font-scale-large pre,
+.font-scale-large code {
+  font-size: 13px !important;
+}
+
+/* 2. Larger Scale (A++) */
+.font-scale-larger .text-xs,
+.font-scale-larger textarea.text-xs,
+.font-scale-larger input.text-xs,
+.font-scale-larger pre.text-xs,
+.font-scale-larger code.text-xs,
+.font-scale-larger .font-mono.text-xs {
+  font-size: 1rem !important; /* text-base equivalent */
+}
+.font-scale-larger .text-sm,
+.font-scale-larger textarea.text-sm,
+.font-scale-larger input.text-sm,
+.font-scale-larger pre.text-sm,
+.font-scale-larger code.text-sm,
+.font-scale-larger .font-mono.text-sm {
+  font-size: 1.125rem !important; /* text-lg equivalent */
+}
+.font-scale-larger .text-base,
+.font-scale-larger textarea.text-base,
+.font-scale-larger input.text-base,
+.font-scale-larger select.text-base {
+  font-size: 1.25rem !important; /* text-xl equivalent */
+}
+.font-scale-larger textarea,
+.font-scale-larger input,
+.font-scale-larger select {
+  font-size: 16px !important;
+}
+.font-scale-larger pre,
+.font-scale-larger code {
+  font-size: 15px !important;
+}
+
+/* 3. Largest Scale (A+++) */
+.font-scale-largest .text-xs,
+.font-scale-largest textarea.text-xs,
+.font-scale-largest input.text-xs,
+.font-scale-largest pre.text-xs,
+.font-scale-largest code.text-xs,
+.font-scale-largest .font-mono.text-xs {
+  font-size: 1.125rem !important; /* text-lg equivalent */
+}
+.font-scale-largest .text-sm,
+.font-scale-largest textarea.text-sm,
+.font-scale-largest input.text-sm,
+.font-scale-largest pre.text-sm,
+.font-scale-largest code.text-sm,
+.font-scale-largest .font-mono.text-sm {
+  font-size: 1.25rem !important; /* text-xl equivalent */
+}
+.font-scale-largest .text-base,
+.font-scale-largest textarea.text-base,
+.font-scale-largest input.text-base,
+.font-scale-largest select.text-base {
+  font-size: 1.5rem !important; /* text-2xl equivalent */
+}
+.font-scale-largest textarea,
+.font-scale-largest input,
+.font-scale-largest select {
+  font-size: 18px !important;
+}
+.font-scale-largest pre,
+.font-scale-largest code {
+  font-size: 17px !important;
 }

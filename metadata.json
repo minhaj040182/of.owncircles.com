@@ -1,6 +1,6 @@
 {
-  "name": "TrendPulse - Viral Home & Fitness Gear Hub",
-  "description": "YouTube video curation hub for household items, trending gadgets, and fitness gear with Amazon affiliate link auto-conversion (tag: trends0628-21) and comment sentiment analysis.",
+  "name": "OwnFormatters",
+  "description": "A modern, premium developer utilities suite including JSON Formatter & Validator, API Request Tester, XML Formatter, Base64 Encoder, URL Encoder, JWT Decoder, Timestamp Converter, and SQL Beautifier.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

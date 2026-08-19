@@ -1,34 +1,8 @@
-# Apache .htaccess configuration for Trends / OwnCircles
-# Resolves Google Search Console "Crawled - currently not indexed" & redirect loops
-
 <IfModule mod_rewrite.c>
   RewriteEngine On
   RewriteBase /
-
-  # 1. Strip trailing slashes and multiple trailing slashes (except real directories)
-  RewriteCond %{REQUEST_FILENAME} !-d
-  RewriteCond %{REQUEST_URI} ^(.+)/+$
-  RewriteRule ^ %1 [L,R=301]
-
-  # 2. Redirect outdated / legacy WordPress/RSS URLs with 301 Permanent Redirect to clean canonical URLs
-  RewriteCond %{QUERY_STRING} utm_source=rss [NC]
-  RewriteRule ^(.*)$ /$1? [L,R=301]
-
-  # 3. Handle old blog posts and 2023 articles gracefully
-  RewriteRule ^attendance-system-smart-emp-lets-explore/?$ / [L,R=301]
-  RewriteRule ^the-hottest-selling-products-on-amazon-in-2023/?$ /?category=electronics [L,R=301]
-
-  # 4. Standard Single Page Application Routing
+  RewriteRule ^index\.html$ - [L]
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_FILENAME} !-d
-  RewriteRule ^ index.html [L]
-</IfModule>
-
-# Force proper MIME types and UTF-8
-AddDefaultCharset UTF-8
-
-# Security & Crawler Headers
-<IfModule mod_headers.c>
-  Header set X-Robots-Tag "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
-  Header set Cache-Control "public, max-age=3600"
+  RewriteRule . /index.html [L]
 </IfModule>
