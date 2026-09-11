@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://of.owncircles.com/sitemap.xml
+Sitemap: https://ownformatters.com/sitemap.xml

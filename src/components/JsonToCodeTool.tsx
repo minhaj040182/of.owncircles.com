@@ -625,8 +625,7 @@ export default function JsonToCodeTool({ theme }: JsonToCodeToolProps) {
             <div className="flex flex-wrap gap-4 pt-1">
               <label className="flex items-center gap-2.5 cursor-pointer select-none">
                 <input 
-                  type="checkbox" 
-                  checked={optionalFields}
+                  type="checkbox" checked={optionalFields} aria-label="Mark fields as optional in generated types"
                   onChange={(e) => setOptionalFields(e.target.checked)}
                   className="rounded text-indigo-600 focus:ring-indigo-500/30"
                 />

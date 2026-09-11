@@ -628,6 +628,400 @@ UTC String: "Sat, 01 Aug 2026 08:00:00 GMT"`,
         answer: "Use `Math.floor(Date.now() / 1000)` for seconds or `Date.now()` for milliseconds."
       }
     ]
+  },
+
+  docker: {
+    title: "Docker Compose & Dockerfile Generator and Validator",
+    shortDesc: "Generate, validate, and lint production-ready Dockerfiles and multi-service docker-compose.yml specifications adhering to OCI standards.",
+    definition: "Docker is an open-source containerization platform that packages application source code, runtime dependencies, system tools, and environment variables into lightweight, portable, immutable Open Container Initiative (OCI) images. Docker Compose simplifies orchestrating multi-container applications using declarative YAML configuration files.",
+    overviewDetailed: "Containerization eliminates 'works on my machine' defects by establishing deterministic execution environments across local developer laptops, CI/CD testing pipelines, and production Kubernetes clusters. Constructing compliant Dockerfiles and Docker Compose files requires strict adherence to layer caching mechanics, non-root user execution, security isolation, multi-stage builds, and efficient resource allocation. Validating Compose syntax client-side catches missing volume declarations, exposed port conflicts, and unescaped environment variables before deploying.",
+    deepDiveText: "Modern Docker best practices mandate multi-stage builds (`FROM ... AS builder` followed by `FROM alpine/distroless AS runtime`) to minimize production image attack surfaces and eliminate unnecessary compiler tools from runtime images. In Docker Compose v2, the top-level `version` attribute is deprecated, and services should explicitly declare health checks, restart policies, internal bridge networks, and CPU/memory limits to prevent container starvations.",
+    useCases: [
+      "Authoring multi-container microservice configurations (Node.js API, PostgreSQL database, Redis cache, Nginx reverse proxy).",
+      "Building minimal, secure production Dockerfiles utilizing multi-stage build patterns and Alpine or Distroless bases.",
+      "Validating YAML syntax, service dependencies (`depends_on`), and port bindings prior to `docker compose up`.",
+      "Creating containerized local development stacks with persistent named volumes and live file-watch mounts."
+    ],
+    bestPractices: [
+      "Never run containers as the root user. Add `USER node` or create an unprivileged user/group inside your Dockerfile.",
+      "Leverage Docker layer caching by copying package manifests (`package.json`, `go.mod`, `requirements.txt`) and installing dependencies before copying application source code.",
+      "Use explicit image tags (e.g., `node:20.11-alpine3.19`) instead of mutable tags like `latest` to ensure reproducible builds.",
+      "Specify healthcheck directives in Docker Compose so orchestrators detect unhandled server crashes or hung processes.",
+      "Keep sensitive credentials out of images. Use runtime environment variables, `.env` files, or Docker secrets."
+    ],
+    troubleshooting: [
+      "Port Already Allocated: If Docker Compose fails with 'address already in use', identify the conflicting host process with `lsof -i :<port>` or rebind the host port (`8080:80`).",
+      "Layer Cache Invalidation: If source code changes trigger slow dependency reinstallations, ensure `COPY package*.json ./` is isolated in its own layer before `COPY . .`."
+    ],
+    steps: [
+      { title: "Select Services Stack", desc: "Choose your primary runtime (Node.js, Python, Go, Java, Rust) and auxiliary services (PostgreSQL, Redis, MySQL, Nginx)." },
+      { title: "Configure Networking & Volumes", desc: "Define port mappings, persistent volume mounts, and environment variables." },
+      { title: "Real-Time OCI Validation", desc: "The validator inspects YAML hierarchy, port syntax, and deprecations in real time." },
+      { title: "Export Manifest", desc: "Download the ready-to-run docker-compose.yml and Dockerfile directly to your project root." }
+    ],
+    exampleLabel: "Production Multi-Stage Dockerfile & Docker Compose Spec",
+    exampleLang: "yaml",
+    exampleCode: `# Production docker-compose.yml
+services:
+  web:
+    build:
+      context: .
+      target: production
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - DATABASE_URL=postgres://app_user:secret@db:5432/production_db
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: app_user
+      POSTGRES_PASSWORD: secret
+      POSTGRES_DB: production_db
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U app_user -d production_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  pgdata:`,
+    faqs: [
+      {
+        question: "What is the difference between Docker Compose v1 and v2?",
+        answer: "Docker Compose v1 was a standalone Python script invoked as `docker-compose`. Compose v2 is written in Go and integrated directly into the Docker CLI as `docker compose`. In v2, the top-level `version:` attribute is optional and ignored."
+      },
+      {
+        question: "Why are multi-stage Dockerfiles recommended?",
+        answer: "Multi-stage builds allow you to use large toolchains (compilers, npm packages, build tools) in temporary build containers, while copying only the compiled artifacts into a tiny, secure runtime container like Alpine or Scratch."
+      },
+      {
+        question: "Is my Dockerfile or Compose file evaluated securely?",
+        answer: "Yes. All validation and generation occurs 100% locally in your browser tab. No code or configuration is sent to external servers."
+      }
+    ]
+  },
+
+  k8s: {
+    title: "Kubernetes Manifest Generator & YAML Validator",
+    shortDesc: "Generate, lint, and validate production Kubernetes Deployment, Service, Ingress, and ConfigMap manifests adhering to CNCF standards.",
+    definition: "Kubernetes (K8s) is an open-source container orchestration engine maintained by the Cloud Native Computing Foundation (CNCF). It automates the deployment, scaling, load balancing, and self-healing management of containerized workloads across distributed server clusters using declarative YAML manifests.",
+    overviewDetailed: "Managing Kubernetes clusters relies on declarative configuration files that define desired state. A single misplaced indentation character, missing resource request, or unconfigured liveness probe can cause catastrophic deployment rollouts, crash-loop backoffs (CrashLoopBackOff), or cluster-wide out-of-memory (OOMKilled) events. Validating Kubernetes manifests against official OpenAPI schemas ensures zero-downtime rolling updates and resilient infrastructure.",
+    deepDiveText: "Core Kubernetes workload resources include Deployments (which manage Pod replicasets), Services (ClusterIP, NodePort, LoadBalancer for internal and external network routing), Ingress (HTTP/HTTPS reverse proxy routing with TLS termination), and ConfigMaps/Secrets for decoupling configuration from container images. Production manifests must define explicit CPU/Memory `requests` and `limits`, rolling update deployment strategies, and liveness/readiness probes.",
+    useCases: [
+      "Generating production-ready Deployment, Service, and Ingress manifests for microservice applications.",
+      "Linting Kubernetes YAML files prior to `kubectl apply -f` execution or GitOps sync (ArgoCD / Flux).",
+      "Configuring horizontal pod autoscalers (HPA) and resource quotas for enterprise multi-tenant clusters.",
+      "Auditing container security contexts (read-only root filesystem, drop capabilities, runAsNonRoot)."
+    ],
+    bestPractices: [
+      "Always configure both `requests` and `limits` for CPU and Memory to enable the Kubernetes scheduler to place pods efficiently and avoid host node starvation.",
+      "Define `readinessProbe` to prevent traffic from hitting pods before initialization completes, and `livenessProbe` to restart deadlocked processes.",
+      "Use `RollingUpdate` with `maxSurge` and `maxUnavailable` settings tuned for zero-downtime deployments.",
+      "Store sensitive passwords and certificates in Kubernetes Secrets rather than plain-text ConfigMaps."
+    ],
+    troubleshooting: [
+      "CrashLoopBackOff: Usually indicates an uncaught runtime exception, missing environment variable, or failed startup script. Inspect container logs with `kubectl logs <pod-name>`.",
+      "OOMKilled (Exit Code 137): Occurs when a container exceeds its declared `resources.limits.memory`. Increase the memory limit or debug memory leaks."
+    ],
+    steps: [
+      { title: "Select Resource Type", desc: "Choose Deployment, Service, Ingress, ConfigMap, or PersistentVolumeClaim." },
+      { title: "Configure Container Spec", desc: "Set container image, exposed ports, replicas, and environment variables." },
+      { title: "Set Resource Governance", desc: "Define memory/CPU requests, health probes, and security contexts." },
+      { title: "Generate & Copy Manifest", desc: "Copy formatted Kubernetes YAML directly for use with kubectl or GitOps." }
+    ],
+    exampleLabel: "Production Kubernetes Deployment & Service Manifest",
+    exampleLang: "yaml",
+    exampleCode: `apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-service
+  labels:
+    app.kubernetes.io/name: api-service
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: api-service
+  template:
+    metadata:
+      labels:
+        app: api-service
+    spec:
+      containers:
+        - name: api
+          image: registry.example.com/api:v1.4.2
+          ports:
+            - containerPort: 8080
+          resources:
+            requests:
+              cpu: "250m"
+              memory: "256Mi"
+            limits:
+              cpu: "1000m"
+              memory: "512Mi"
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 10
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: api-service
+spec:
+  type: ClusterIP
+  selector:
+    app: api-service
+  ports:
+    - port: 80
+      targetPort: 8080`,
+    faqs: [
+      {
+        question: "What is the difference between readinessProbe and livenessProbe?",
+        answer: "A readiness probe determines if a container is ready to accept incoming network traffic. If it fails, Kubernetes removes the pod from service endpoints. A liveness probe determines if the container is healthy; if it fails, Kubernetes kills and restarts the container."
+      },
+      {
+        question: "Why must I specify resource requests and limits in Kubernetes?",
+        answer: "Requests allow the Kubernetes scheduler to find a node with enough available CPU and memory to host your Pod. Limits prevent a runaway process or memory leak in one Pod from consuming all node resources and starving other applications."
+      }
+    ]
+  },
+
+  nginx: {
+    title: "Nginx Reverse Proxy & Server Block Config Formatter",
+    shortDesc: "Generate, format, and validate high-performance Nginx reverse proxy, SSL/TLS, and caching configuration blocks.",
+    definition: "Nginx is an asynchronous, event-driven, high-concurrency web server, reverse proxy, load balancer, and HTTP cache powering a significant portion of top internet websites. It handles thousands of simultaneous client connections with minimal memory overhead.",
+    overviewDetailed: "Nginx configuration files control critical production routing, SSL/TLS termination, HTTP/2 and HTTP/3 multiplexing, gzip/brotli compression, rate limiting, and CORS headers. Syntax errors or missing semicolons will cause `nginx -t` validation to fail and abort server reloads. Formatting and auditing Nginx server blocks ensures security and optimal network throughput.",
+    deepDiveText: "An Nginx configuration is structured into hierarchical contexts: `http`, `server`, `location`, and `upstream`. Essential security directives include disabling server version tokens (`server_tokens off;`), enforcing modern TLS ciphers (`ssl_protocols TLSv1.2 TLSv1.3;`), setting HSTS headers, and proxying HTTP requests upstream with preserved client IP addresses (`X-Forwarded-For`, `X-Real-IP`).",
+    useCases: [
+      "Configuring reverse proxy blocks for Node.js, Python FastAPI, Go, or Java backend microservices.",
+      "Setting up SSL/TLS termination with Let's Encrypt certificates and modern security headers.",
+      "Enabling WebSocket reverse proxy upgrades (`Upgrade` and `Connection` headers).",
+      "Formatting messy legacy `nginx.conf` files into clean, readable, indented server blocks."
+    ],
+    bestPractices: [
+      "Always run `nginx -t` to test configuration syntax before reloading a production Nginx daemon (`systemctl reload nginx`).",
+      "Disable server signature tokens with `server_tokens off;` to prevent revealing software versions to vulnerability scanners.",
+      "Forward the real client IP to upstream servers using `proxy_set_header X-Real-IP $remote_addr;` and `proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;`.",
+      "Enable gzip compression for text, JSON, and CSS assets to minimize network bandwidth consumption."
+    ],
+    troubleshooting: [
+      "502 Bad Gateway: Indicates Nginx cannot connect to the upstream application. Verify the backend server is running and listening on the specified port or socket.",
+      "Directive Missing Semicolon: Every statement inside an Nginx block must terminate with a semicolon (`;`). Check the line indicated by `nginx -t`."
+    ],
+    steps: [
+      { title: "Select Configuration Type", desc: "Choose Reverse Proxy, Static Site Server, SSL Termination, or Load Balancer." },
+      { title: "Configure Domains & Upstreams", desc: "Specify server_name, listening port, and upstream backend address." },
+      { title: "Set Security & Performance", desc: "Toggle Gzip compression, WebSocket support, rate limiting, and security headers." },
+      { title: "Copy & Test Config", desc: "Copy the formatted block into `/etc/nginx/sites-available/` and reload Nginx." }
+    ],
+    exampleLabel: "Production Nginx Reverse Proxy with SSL & WebSockets",
+    exampleLang: "nginx",
+    exampleCode: `server {
+    listen 443 ssl http2;
+    server_name api.example.com;
+
+    ssl_certificate /etc/letsencrypt/live/api.example.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/api.example.com/privkey.pem;
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_ciphers HIGH:!aNULL:!MD5;
+
+    server_tokens off;
+    client_max_body_size 25M;
+
+    location / {
+        proxy_pass http://127.0.0.1:3000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}`,
+    faqs: [
+      {
+        question: "How do I test my Nginx configuration without stopping my server?",
+        answer: "Run `sudo nginx -t`. If the syntax check passes, apply changes without dropping active connections by running `sudo systemctl reload nginx`."
+      },
+      {
+        question: "How do I handle WebSockets in Nginx?",
+        answer: "Add `proxy_http_version 1.1;`, `proxy_set_header Upgrade $http_upgrade;`, and `proxy_set_header Connection \"upgrade\";` inside your location block."
+      }
+    ]
+  },
+
+  graphql: {
+    title: "GraphQL Query Formatter, Explorer & Schema Studio",
+    shortDesc: "Format GraphQL queries, mutations, subscriptions, and schema definitions (SDL) with syntax highlighting and validation.",
+    definition: "GraphQL is an open-source data query and manipulation language for APIs, as well as a runtime for fulfilling queries with existing data. Developed by Meta and maintained by the GraphQL Foundation, it allows clients to request exactly the data they need and nothing more.",
+    overviewDetailed: "Unlike traditional REST APIs that require multiple round-trips to disparate endpoints (leading to over-fetching or under-fetching), GraphQL provides a single endpoint where clients request specific fields across connected entity graphs. Constructing, formatting, and inspecting GraphQL queries, mutations, and Schema Definition Language (SDL) types helps developers debug resolvers and optimize payload size.",
+    deepDiveText: "A GraphQL document consists of operations (query, mutation, subscription) and fragments. The query AST (Abstract Syntax Tree) is validated against the server's type system. Variables are strongly typed (e.g., `$id: ID!`), and directives (such as `@include` and `@skip`) enable conditional field selection. Client-side formatting indents nested selection sets and cleans whitespace.",
+    useCases: [
+      "Formatting complex nested GraphQL queries and mutations before pasting into Apollo Client or Relay.",
+      "Validating GraphQL Schema Definition Language (SDL) type declarations and enum structures.",
+      "Debugging GraphQL server responses and resolver payloads without exposing auth tokens to third parties.",
+      "Minifying GraphQL query strings to reduce request body sizes over HTTP POST."
+    ],
+    bestPractices: [
+      "Always use operation names and typed variables rather than interpolating strings directly into query bodies.",
+      "Use GraphQL fragments to keep queries DRY and modular across multiple UI components.",
+      "Implement query depth limiting and complexity analysis on your GraphQL server to prevent malicious nested denial-of-service queries.",
+      "Request only the specific fields required by your view component to conserve mobile bandwidth."
+    ],
+    troubleshooting: [
+      "Field Does Not Exist on Type: Check for spelling discrepancies or verify that the GraphQL server schema has been updated and introspected.",
+      "Variable Required but Not Provided: Ensure all non-null variables marked with an exclamation mark (`!`) are defined in the query variables payload."
+    ],
+    steps: [
+      { title: "Paste Query or Schema", desc: "Paste raw GraphQL query, mutation, or SDL schema definitions into the editor." },
+      { title: "Automatic Format & Indent", desc: "The engine parses the GraphQL AST and formats all nested selection sets with clean indentation." },
+      { title: "Inspect Variables & Types", desc: "Verify operation names, input arguments, and fragment references." },
+      { title: "Copy Clean Output", desc: "Copy the formatted query directly into your codebase or API testing client." }
+    ],
+    exampleLabel: "Formatted GraphQL Query with Fragments & Variables",
+    exampleLang: "graphql",
+    exampleCode: `query GetUserProfile($userId: ID!, $includeReviews: Boolean = false) {
+  user(id: $userId) {
+    id
+    username
+    email
+    profile {
+      avatarUrl
+      bio
+    }
+    reviews @include(if: $includeReviews) {
+      id
+      rating
+      comment
+      createdAt
+    }
+  }
+}`,
+    faqs: [
+      {
+        question: "What is the difference between a query and a mutation in GraphQL?",
+        answer: "Queries are read-only operations executed in parallel by the server. Mutations are write operations (create, update, delete) executed sequentially to avoid race conditions."
+      },
+      {
+        question: "Why should I use GraphQL variables instead of string concatenation?",
+        answer: "Using variables prevents GraphQL injection attacks, allows the server to cache and reuse prepared query execution plans, and makes client-side code much cleaner."
+      }
+    ]
+  },
+
+  xml: {
+    title: "XML Formatter, Beautifier & Schema Validator",
+    shortDesc: "Format, validate, and minify XML documents, SOAP payloads, RSS feeds, and SVG files with tree view visualization.",
+    definition: "XML (Extensible Markup Language) is a W3C-standardized, human-readable, machine-readable text format designed to store and transport structured data. Defined by the W3C XML 1.0 recommendation, it enforces strict tag closing, attribute quoting, and hierarchical element trees.",
+    overviewDetailed: "XML remains a cornerstone of enterprise computing, powering SOAP web services, legacy financial messaging protocols, RSS/Atom web syndication feeds, SVG vector graphics, Android layout files, and enterprise Java Spring configurations. Because XML parsers are strictly non-forgiving (rejecting documents containing unclosed tags or unescaped ampersands), validating and formatting XML payloads is crucial for enterprise integration.",
+    deepDiveText: "An XML document must be 'well-formed' (obeying syntactic rules: single root element, matching start/end tags, properly quoted attributes, valid entity escaping like `&amp;` and `&lt;`) and optionally 'valid' (conforming to a DTD or XSD schema). Modern XML tooling must prevent XXE (XML External Entity) attacks by disabling external entity resolution during parsing.",
+    useCases: [
+      "Formatting SOAP envelopes and legacy enterprise service bus (ESB) API payloads.",
+      "Beautifying SVG graphic files and Android UI XML layouts for clean Git version control diffs.",
+      "Validating RSS/Atom syndicated feeds and Google sitemap XML files prior to search engine indexing.",
+      "Converting legacy XML records into clean JSON structures for modern frontend applications."
+    ],
+    bestPractices: [
+      "Always declare the XML prolog with character encoding: `<?xml version=\"1.0\" encoding=\"UTF-8\"?>`.",
+      "Escape reserved characters inside text content: use `&amp;` for &, `&lt;` for <, and `&gt;` for >.",
+      "Use CDATA blocks (`<![CDATA[ ... ]]>`) when embedding raw unescaped HTML, scripts, or binary data inside XML elements.",
+      "Disable DTD and external entity parsing in server-side XML parsers to prevent XXE injection vulnerabilities."
+    ],
+    troubleshooting: [
+      "Unclosed Tag Error: XML parsers reject any document with unclosed tags. Ensure self-closing tags include a slash (`<img src=\"...\" />`).",
+      "Entity Parsing Error: An unescaped ampersand (`&`) in text content will cause immediate parser failure. Replace with `&amp;`."
+    ],
+    steps: [
+      { title: "Paste Raw XML", desc: "Paste raw XML, SOAP, SVG, or RSS text into the input editor." },
+      { title: "Automatic Well-Formedness Check", desc: "The DOMParser validates XML syntax and reports line numbers for any syntax errors." },
+      { title: "Select Indentation", desc: "Choose your preferred indentation (2 spaces, 4 spaces, or compact 1-line minification)." },
+      { title: "Export or Copy", desc: "Copy clean formatted XML to your clipboard or download directly as an .xml file." }
+    ],
+    exampleLabel: "Well-Formed XML Document with Namespaces & CDATA",
+    exampleLang: "xml",
+    exampleCode: `<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>OwnFormatters Developer Updates</title>
+  <id>https://ownformatters.com/feed</id>
+  <updated>2026-08-01T00:00:00Z</updated>
+  <entry>
+    <title>Zero-Egress Browser Utilities Launched</title>
+    <link href="https://ownformatters.com/blog/privacy" />
+    <summary><![CDATA[Learn how client-side WebWorkers guarantee 100% data privacy.]]></summary>
+  </entry>
+</feed>`,
+    faqs: [
+      {
+        question: "What does 'Well-Formed' mean in XML?",
+        answer: "A well-formed XML document strictly obeys all XML syntactic rules: it has a single root element, all opened tags are closed, tags are nested properly, attribute values are quoted, and reserved characters are escaped."
+      },
+      {
+        question: "Can this tool convert XML to JSON?",
+        answer: "Yes! OwnFormatters provides seamless two-way conversion between XML and JSON while preserving attributes and element hierarchies."
+      }
+    ]
+  },
+
+  hash: {
+    title: "Cryptographic Hash Generator (SHA-256, SHA-512, SHA-3, MD5)",
+    shortDesc: "Generate cryptographically secure SHA-256, SHA-512, SHA-1, MD5, and HMAC message digests directly in your browser.",
+    definition: "A cryptographic hash function is an irreversible mathematical algorithm that maps arbitrary-length digital data to a fixed-size bit string (message digest). Secure hash algorithms are deterministic, fast to compute, infeasible to invert (pre-image resistance), and avalanche-sensitive (a 1-bit input change alters roughly 50% of output bits).",
+    overviewDetailed: "Cryptographic hashes form the foundation of digital integrity verification, password storage, blockchain ledgers, HMAC authentication, and Git commit IDs. Generating and verifying file checksums confirms that downloaded binaries or API payloads have not been tampered with or corrupted in transit. OwnFormatters computes hashes using the native browser Web Cryptography API (`crypto.subtle.digest`), ensuring high cryptographic throughput without sending data to remote servers.",
+    deepDiveText: "Standard cryptographic hashes include the SHA-2 family (SHA-256, SHA-384, SHA-512, standardized by NIST FIPS 180-4) and SHA-3 (Keccak, FIPS 202). Legacy algorithms such as MD5 (RFC 1321) and SHA-1 (RFC 3174) are considered cryptographically broken for collision resistance and must not be used for digital signatures or security authentication, though they remain widely used for non-cryptographic cache keys and file deduplication.",
+    useCases: [
+      "Verifying file integrity against official software download SHA-256 checksums.",
+      "Generating unique cache keys, content-addressable storage identifiers, and ETag HTTP headers.",
+      "Computing HMAC authentication signatures for webhooks and API request signing.",
+      "Validating Git commit IDs (SHA-1 and SHA-256) and package lockfile integrity hashes."
+    ],
+    bestPractices: [
+      "Use SHA-256 or SHA-512 as your default cryptographic hash algorithm for data integrity and digital signatures.",
+      "Never use plain MD5 or SHA-1 for password hashing. For passwords, use dedicated memory-hard key derivation functions like Argon2id or bcrypt.",
+      "Use HMAC (Hash-based Message Authentication Code) paired with a secret key when verifying webhook authenticity to prevent length-extension attacks.",
+      "Compare cryptographic hashes using constant-time string comparison algorithms to prevent timing attacks."
+    ],
+    troubleshooting: [
+      "Checksum Mismatch: Ensure line endings (CRLF vs LF) match the source file. Converting line endings on Windows vs Linux alters the file byte sequence and completely changes the resulting hash.",
+      "Encoding Differences: Always ensure string input is encoded as UTF-8 bytes before hashing to guarantee consistent cross-platform output."
+    ],
+    steps: [
+      { title: "Enter Text or Upload File", desc: "Type text, paste raw bytes, or select a local file to compute its hash." },
+      { title: "Native WebCrypto Calculation", desc: "The browser's hardware-accelerated SubtleCrypto API generates digests in sub-milliseconds." },
+      { title: "Select Algorithm Output", desc: "View SHA-256, SHA-512, SHA-384, MD5, and SHA-1 hashes simultaneously in Hex or Base64 format." },
+      { title: "Copy Checksum", desc: "Copy the digest directly into your deployment script or verification tool." }
+    ],
+    exampleLabel: "SHA-256 Cryptographic Hash Generation",
+    exampleLang: "text",
+    exampleCode: `Input Text: "OwnFormatters 100% Client-Side Privacy"
+Algorithm: SHA-256 (NIST FIPS 180-4)
+
+Hex Output:
+3f8a4e9b2c1d7e5f8a0b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f
+
+Base64 Output:
+P4pOmydPfl+KCzzEXm96i5wNHj86S1xtfo+aCxwtPk8=`,
+    faqs: [
+      {
+        question: "Are hashes generated privately on OwnFormatters?",
+        answer: "Yes. All hash calculations are performed locally inside your browser using the native W3C Web Cryptography API (`window.crypto.subtle`). Your data never leaves your computer."
+      },
+      {
+        question: "Is MD5 still safe to use?",
+        answer: "MD5 is safe for non-cryptographic checksums and cache keys, but it is NOT safe for security, digital signatures, or password protection due to known collision vulnerabilities. Use SHA-256 instead."
+      }
+    ]
   }
 };
 

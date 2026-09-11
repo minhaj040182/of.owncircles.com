@@ -62,7 +62,8 @@ export const ToolDocumentationSection: React.FC<ToolDocumentationSectionProps> =
       "articleBody": `${topicData.definition} ${topicData.overviewDetailed} ${topicData.deepDiveText || ''}`,
       "author": {
         "@type": "Organization",
-        "name": "OwnFormatters"
+        "name": "OwnFormatters Core Engineering Team",
+        "url": "https://ownformatters.com/about"
       },
       "publisher": {
         "@type": "Organization",
@@ -72,6 +73,31 @@ export const ToolDocumentationSection: React.FC<ToolDocumentationSectionProps> =
           "url": "https://ownformatters.com/images/icon.png"
         }
       }
+    };
+
+    const breadcrumbSchema = {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://ownformatters.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Developer Utilities",
+          "item": "https://ownformatters.com/#tools"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": topicData.title,
+          "item": `https://ownformatters.com/${toolId}`
+        }
+      ]
     };
 
     let faqScript = document.querySelector('script[data-schema="faq-page"]');
@@ -92,11 +118,22 @@ export const ToolDocumentationSection: React.FC<ToolDocumentationSectionProps> =
     }
     articleScript.textContent = JSON.stringify(techArticleSchema);
 
+    let breadcrumbScript = document.querySelector('script[data-schema="breadcrumb"]');
+    if (!breadcrumbScript) {
+      breadcrumbScript = document.createElement('script');
+      breadcrumbScript.setAttribute('type', 'application/ld+json');
+      breadcrumbScript.setAttribute('data-schema', 'breadcrumb');
+      document.head.appendChild(breadcrumbScript);
+    }
+    breadcrumbScript.textContent = JSON.stringify(breadcrumbSchema);
+
     return () => {
       const existingFaq = document.querySelector('script[data-schema="faq-page"]');
       if (existingFaq) existingFaq.remove();
       const existingArticle = document.querySelector('script[data-schema="tech-article"]');
       if (existingArticle) existingArticle.remove();
+      const existingBreadcrumb = document.querySelector('script[data-schema="breadcrumb"]');
+      if (existingBreadcrumb) existingBreadcrumb.remove();
     };
   }, [toolId, topicData]);
 
@@ -343,6 +380,76 @@ export const ToolDocumentationSection: React.FC<ToolDocumentationSectionProps> =
           </div>
         </section>
 
+      </div>
+
+      {/* Contextual Cross-Tool Navigation for SEO Link Equity */}
+      <section className={`pt-6 border-t ${isLight ? 'border-slate-200' : 'border-slate-800'}`}>
+        <h4 className={`text-xs font-bold uppercase tracking-wider mb-3 flex items-center gap-1.5 ${isLight ? 'text-slate-600' : 'text-slate-400'}`}>
+          <Compass className="w-3.5 h-3.5 text-indigo-400" />
+          Related Developer Utilities & Formatters
+        </h4>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
+          {[
+            { name: 'JSON to Code Types', path: '/json-to-code', desc: 'Type Struct Generator' },
+            { name: 'JSON Formatter', path: '/json-formatter', desc: 'RFC 8259 Validator' },
+            { name: 'JWT Debugger', path: '/jwt-debugger', desc: 'Token Claims Inspector' },
+            { name: 'YAML Converter', path: '/yaml-converter', desc: 'K8s & Compose Formatter' },
+            { name: 'Base64 Tool', path: '/base64-encoder', desc: 'RFC 4648 Encoder/Decoder' },
+            { name: 'SQL Beautifier', path: '/sql-formatter', desc: 'Multi-Dialect Pretty Printer' },
+            { name: 'Diff Checker', path: '/diff-checker', desc: 'Myers Line-by-Line Diff' },
+            { name: 'UUID v4/v7', path: '/uuid-generator', desc: 'Cryptographic ID Generator' }
+          ].filter(item => !item.path.includes(toolId)).slice(0, 4).map((rel, idx) => (
+            <a
+              key={idx}
+              href={rel.path}
+              onClick={(e) => {
+                if (!e.ctrlKey && !e.metaKey) {
+                  e.preventDefault();
+                  window.history.pushState(null, '', rel.path);
+                  window.dispatchEvent(new PopStateEvent('popstate'));
+                }
+              }}
+              className={`p-2.5 rounded-lg border transition-all hover:border-indigo-500/40 block ${
+                isLight ? 'bg-slate-50 hover:bg-indigo-50/50 border-slate-200' : 'bg-slate-950/40 hover:bg-slate-900 border-slate-800/80'
+              }`}
+            >
+              <div className={`font-semibold text-xs ${isLight ? 'text-slate-900' : 'text-slate-200'}`}>{rel.name}</div>
+              <div className="text-[10px] text-slate-500 truncate">{rel.desc}</div>
+            </a>
+          ))}
+        </div>
+      </section>
+
+      {/* Editorial Trust & E-E-A-T Attribution */}
+      <div className={`pt-4 border-t ${isLight ? 'border-slate-200' : 'border-slate-800/80'} flex flex-wrap items-center justify-between gap-3 text-[11px] text-slate-500`}>
+        <div className="flex items-center gap-2">
+          <BookOpen className="w-3.5 h-3.5 text-indigo-400" />
+          <span>Curated & peer-reviewed by the <strong>OwnFormatters Core Engineering Team</strong> • Updated for 2026 Standards</span>
+        </div>
+        <div className="flex items-center gap-3">
+          <a
+            href="/about"
+            onClick={(e) => {
+              if (!e.ctrlKey && !e.metaKey) {
+                e.preventDefault();
+                window.history.pushState(null, '', '/about');
+                window.dispatchEvent(new PopStateEvent('popstate'));
+              }
+            }}
+            className="hover:text-indigo-400 underline"
+          >
+            Editorial Guidelines & About
+          </a>
+          <span>•</span>
+          <a
+            href="https://github.com/ownformatters"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-indigo-400 underline"
+          >
+            Report Specification Inconsistency
+          </a>
+        </div>
       </div>
 
       {/* Privacy & Data Governance Statement Footer */}

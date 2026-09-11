@@ -206,8 +206,7 @@ export default function RegexTool({ theme }: RegexToolProps) {
               
               <label className="flex items-center gap-1 text-xs cursor-pointer select-none">
                 <input
-                  type="checkbox"
-                  checked={flags.includes('i')}
+                  type='checkbox' checked={flags.includes('i')} aria-label='Enable case-insensitive regex flag'
                   onChange={() => toggleFlag('i')}
                   className="accent-indigo-600 rounded"
                 />
@@ -217,8 +216,7 @@ export default function RegexTool({ theme }: RegexToolProps) {
 
               <label className="flex items-center gap-1 text-xs cursor-pointer select-none">
                 <input
-                  type="checkbox"
-                  checked={flags.includes('m')}
+                  type='checkbox' checked={flags.includes('m')} aria-label='Enable multiline regex matching flag'
                   onChange={() => toggleFlag('m')}
                   className="accent-indigo-600 rounded"
                 />

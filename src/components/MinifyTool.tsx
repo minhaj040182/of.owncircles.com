@@ -236,7 +236,7 @@ export default function MinifyTool({ theme }: MinifyToolProps) {
             <button
               onClick={handleClear}
               className={`${isLight ? 'text-slate-500 hover:text-red-600' : 'text-slate-400 hover:text-pink-400'} p-1 rounded transition-colors`}
-              title="Clear Input"
+              title="Clear Input" aria-label="Clear Input"
             >
               <Trash2 className="w-4 h-4" />
             </button>

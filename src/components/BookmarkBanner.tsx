@@ -153,7 +153,7 @@ export default function BookmarkBanner({ theme }: BookmarkBannerProps) {
                   ? 'border-transparent hover:bg-slate-100 text-slate-500'
                   : 'border-transparent hover:bg-slate-800/60 text-slate-400'
               }`}
-              title="Never show again"
+              title="Never show again" aria-label="Never show again"
             >
               <X className="w-3.5 h-3.5" />
             </button>
@@ -168,7 +168,7 @@ export default function BookmarkBanner({ theme }: BookmarkBannerProps) {
             
             <button 
               onClick={() => setShowInstructions(null)}
-              className="absolute right-4 top-4 p-1.5 rounded-lg hover:bg-slate-800/40 text-slate-400 transition"
+              className="absolute right-4 top-4 p-1.5 rounded-lg hover:bg-slate-800/40 text-slate-400 transition" aria-label="Close bookmark instructions"
             >
               <X className="w-4 h-4" />
             </button>

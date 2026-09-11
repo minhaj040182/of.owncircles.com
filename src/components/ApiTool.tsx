@@ -1426,8 +1426,7 @@ export default function ApiTool({ theme }: ApiToolProps) {
                 {headers.map((h, i) => (
                   <div key={i} className="flex items-center gap-2">
                     <input
-                      type="checkbox"
-                      checked={h.enabled}
+                      type="checkbox" checked={h.enabled} aria-label="Enable or disable header"
                       onChange={(e) => updateHeader(i, 'enabled', e.target.checked)}
                       className={`rounded text-indigo-600 focus:ring-indigo-500 ${isLight ? 'border-slate-300 bg-white' : 'border-slate-800 bg-slate-900'}`}
                     />
@@ -1471,8 +1470,7 @@ export default function ApiTool({ theme }: ApiToolProps) {
                 {params.map((p, i) => (
                   <div key={i} className="flex items-center gap-2">
                     <input
-                      type="checkbox"
-                      checked={p.enabled}
+                      type="checkbox" checked={p.enabled} aria-label="Enable or disable URL parameter"
                       onChange={(e) => updateParam(i, 'enabled', e.target.checked)}
                       className={`rounded text-indigo-600 focus:ring-indigo-500 ${isLight ? 'border-slate-300 bg-white' : 'border-slate-800 bg-slate-900'}`}
                     />

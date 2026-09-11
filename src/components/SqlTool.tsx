@@ -82,8 +82,7 @@ export default function SqlTool({ theme }: SqlToolProps) {
         <div className="flex flex-wrap items-center gap-3">
           <label className={`flex items-center gap-2 text-xs font-semibold cursor-pointer ${isLight ? 'text-slate-700' : 'text-slate-300'}`}>
             <input
-              type="checkbox"
-              checked={uppercaseKeywords}
+              type="checkbox" checked={uppercaseKeywords} aria-label="Auto-uppercase SQL syntax keywords"
               onChange={(e) => setUppercaseKeywords(e.target.checked)}
               className={`rounded focus:ring-indigo-500 ${isLight ? 'border-slate-300 bg-white text-indigo-600' : 'border-slate-800 bg-slate-900 text-indigo-600'}`}
             />
@@ -118,7 +117,7 @@ export default function SqlTool({ theme }: SqlToolProps) {
             <button
               onClick={handleClear}
               className={`${isLight ? 'text-slate-500 hover:text-red-600' : 'text-slate-400 hover:text-pink-400'} p-1 rounded transition-colors`}
-              title="Clear Input"
+              title="Clear Input" aria-label="Clear Input"
             >
               <Trash2 className="w-4 h-4" />
             </button>

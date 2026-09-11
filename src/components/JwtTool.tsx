@@ -123,7 +123,7 @@ export default function JwtTool({ theme }: JwtToolProps) {
             <button
               onClick={handleClear}
               className={`${isLight ? 'text-slate-400 hover:text-red-500' : 'text-slate-400 hover:text-pink-400'} p-1 rounded transition-colors cursor-pointer`}
-              title="Clear Token"
+              title="Clear Token" aria-label="Clear Token"
             >
               <Trash2 className="w-4 h-4" />
             </button>

@@ -298,6 +298,7 @@ export default function ColorTool({ theme }: ColorToolProps) {
               type="color" 
               value={hex} 
               onChange={handleColorPicker}
+              aria-label="Interactive visual color picker"
               className="absolute inset-0 opacity-0 cursor-pointer w-full h-full"
             />
             <span className="text-white text-xs font-mono font-bold bg-black/45 px-2 py-1 rounded-md opacity-0 group-hover:opacity-100 transition-opacity">
@@ -325,6 +326,7 @@ export default function ColorTool({ theme }: ColorToolProps) {
                   type="text"
                   value={hex}
                   onChange={handleHexChange}
+                  aria-label="Hexadecimal color value"
                   className={`w-full ${inputBgClass} border ${borderClass} text-xs font-mono rounded-xl pl-3 pr-10 py-2.5 focus:outline-none focus:border-indigo-500`}
                 />
                 <button
@@ -345,6 +347,7 @@ export default function ColorTool({ theme }: ColorToolProps) {
                   type="text"
                   value={rgb}
                   onChange={handleRgbChange}
+                  aria-label="RGB color values"
                   className={`w-full ${inputBgClass} border ${borderClass} text-xs font-mono rounded-xl pl-3 pr-10 py-2.5 focus:outline-none focus:border-indigo-500`}
                 />
                 <button
@@ -365,6 +368,7 @@ export default function ColorTool({ theme }: ColorToolProps) {
                   type="text"
                   value={hsl}
                   onChange={handleHslChange}
+                  aria-label="HSL color values"
                   className={`w-full ${inputBgClass} border ${borderClass} text-xs font-mono rounded-xl pl-3 pr-10 py-2.5 focus:outline-none focus:border-indigo-500`}
                 />
                 <button
@@ -385,6 +389,7 @@ export default function ColorTool({ theme }: ColorToolProps) {
                   type="text"
                   value={cmyk}
                   onChange={handleCmykChange}
+                  aria-label="CMYK color values"
                   className={`w-full ${inputBgClass} border ${borderClass} text-xs font-mono rounded-xl pl-3 pr-10 py-2.5 focus:outline-none focus:border-indigo-500`}
                 />
                 <button

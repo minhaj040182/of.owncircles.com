@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, lazy, Suspense } from 'react';
 import { 
   Sparkles, 
   Code, 
@@ -39,51 +39,55 @@ import {
   Check
 } from 'lucide-react';
 
-import JsonTool from './components/JsonTool';
-import JsonSchemaTool from './components/JsonSchemaTool';
-import JsonPathTool from './components/JsonPathTool';
-import OpenApiTool from './components/OpenApiTool';
-import WebhookTool from './components/WebhookTool';
-import MockApiTool from './components/MockApiTool';
-import ApiTool from './components/ApiTool';
-import GraphqlTool from './components/GraphqlTool';
-import DockerTool from './components/DockerTool';
-import K8sTool from './components/K8sTool';
-import NginxTool from './components/NginxTool';
-import EncoderTool from './components/EncoderTool';
-import JwtTool from './components/JwtTool';
-import SqlTool from './components/SqlTool';
-import XmlTool from './components/XmlTool';
-import TimestampTool from './components/TimestampTool';
-import TextTool from './components/TextTool';
+// Code-split all tool components with React.lazy to reduce initial bundle payload and optimize Core Web Vitals
+const JsonTool = lazy(() => import('./components/JsonTool'));
+const JsonSchemaTool = lazy(() => import('./components/JsonSchemaTool'));
+const JsonPathTool = lazy(() => import('./components/JsonPathTool'));
+const OpenApiTool = lazy(() => import('./components/OpenApiTool'));
+const WebhookTool = lazy(() => import('./components/WebhookTool'));
+const MockApiTool = lazy(() => import('./components/MockApiTool'));
+const ApiTool = lazy(() => import('./components/ApiTool'));
+const GraphqlTool = lazy(() => import('./components/GraphqlTool'));
+const DockerTool = lazy(() => import('./components/DockerTool'));
+const K8sTool = lazy(() => import('./components/K8sTool'));
+const NginxTool = lazy(() => import('./components/NginxTool'));
+const EncoderTool = lazy(() => import('./components/EncoderTool'));
+const JwtTool = lazy(() => import('./components/JwtTool'));
+const SqlTool = lazy(() => import('./components/SqlTool'));
+const XmlTool = lazy(() => import('./components/XmlTool'));
+const TimestampTool = lazy(() => import('./components/TimestampTool'));
+const TextTool = lazy(() => import('./components/TextTool'));
 
 // New Advanced Tools Imports
-import YamlTool from './components/YamlTool';
-import HashTool from './components/HashTool';
-import MinifyTool from './components/MinifyTool';
-import UuidTool from './components/UuidTool';
-import QrcodeTool from './components/QrcodeTool';
-import MarkdownTool from './components/MarkdownTool';
+const YamlTool = lazy(() => import('./components/YamlTool'));
+const HashTool = lazy(() => import('./components/HashTool'));
+const MinifyTool = lazy(() => import('./components/MinifyTool'));
+const UuidTool = lazy(() => import('./components/UuidTool'));
+const QrcodeTool = lazy(() => import('./components/QrcodeTool'));
+const MarkdownTool = lazy(() => import('./components/MarkdownTool'));
 
 // Missing Tools Imports
-import CsvTool from './components/CsvTool';
-import ColorTool from './components/ColorTool';
-import NumberBaseTool from './components/NumberBaseTool';
-import CronTool from './components/CronTool';
-import RegexTool from './components/RegexTool';
-import DiffTool from './components/DiffTool';
-import HomeTool from './components/HomeTool';
-import PrivacyTool from './components/PrivacyTool';
-import TermsTool from './components/TermsTool';
-import AboutTool from './components/AboutTool';
-import IndexNowTool from './components/IndexNowTool';
+const CsvTool = lazy(() => import('./components/CsvTool'));
+const ColorTool = lazy(() => import('./components/ColorTool'));
+const NumberBaseTool = lazy(() => import('./components/NumberBaseTool'));
+const CronTool = lazy(() => import('./components/CronTool'));
+const RegexTool = lazy(() => import('./components/RegexTool'));
+const DiffTool = lazy(() => import('./components/DiffTool'));
+const HomeTool = lazy(() => import('./components/HomeTool'));
+const PrivacyTool = lazy(() => import('./components/PrivacyTool'));
+const TermsTool = lazy(() => import('./components/TermsTool'));
+const AboutTool = lazy(() => import('./components/AboutTool'));
+const IndexNowTool = lazy(() => import('./components/IndexNowTool'));
+const JsonToCodeTool = lazy(() => import('./components/JsonToCodeTool'));
+const EducationTool = lazy(() => import('./components/EducationTool'));
+
+import ToolLoadingSkeleton from './components/ToolLoadingSkeleton';
 import BookmarkBanner from './components/BookmarkBanner';
 import CookieBanner from './components/CookieBanner';
-import JsonToCodeTool from './components/JsonToCodeTool';
-import EducationTool from './components/EducationTool';
 import ShareWidget from './components/ShareWidget';
 import { ITServicesBanner } from './components/ITServicesBanner';
 import { ToolDocumentationSection } from './components/ToolDocumentationSection';
+import { Breadcrumbs } from './components/Breadcrumbs';
 
 import { ToolId, ToolDefinition } from './types';
 
@@ -861,8 +865,8 @@ export default function App() {
     let canonicalPath = targetPath || '/';
     if (canonicalPath === '/home') canonicalPath = '/';
     
-    // Dynamically detect production domain with fallback to of.owncircles.com
-    let siteOrigin = 'https://of.owncircles.com';
+    // Dynamically detect production domain with fallback to ownformatters.com
+    let siteOrigin = 'https://ownformatters.com';
     if (typeof window !== 'undefined' && window.location.origin) {
       const origin = window.location.origin;
       if (!origin.includes('localhost') && !origin.includes('run.app') && !origin.includes('127.0.0.1')) {
@@ -1147,6 +1151,23 @@ export default function App() {
 
         </div>
       </header>
+
+      {/* Dynamic SEO & Path Breadcrumbs */}
+      <Breadcrumbs 
+        activeTool={activeTool}
+        educationTopic={educationTopic}
+        toolsList={TOOLS_LIST}
+        theme={theme}
+        themeKey={themeKey}
+        basePath={BASE_PATH}
+        onNavigate={(toolId, topic) => {
+          if (toolId === 'education' && topic) {
+            setEducationTopic(topic);
+          }
+          navigateToTool(toolId);
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }}
+      />
 
       <BookmarkBanner theme={theme} />
       <CookieBanner theme={theme} onOpenPrivacy={() => { setActiveTool('privacy'); window.scrollTo({ top: 0, behavior: 'smooth' }); }} />
@@ -1549,74 +1570,76 @@ export default function App() {
                 </div>
               )}
 
-              {activeTool === 'home' && (
-                <HomeTool 
-                  theme={theme} 
-                  themeKey={themeKey}
-                  shareUrl={typeof window !== 'undefined' ? (window.location.origin + BASE_PATH + '/') : ''}
-                  tools={TOOLS_LIST} 
-                  favorites={favorites}
-                  toggleFavorite={toggleFavorite}
-                  recents={recents}
-                  onSelectTool={(id, source) => {
-                    setActiveTool(id);
-                    setActiveSelectionSource(source || 'normal');
-                  }} 
-                />
-              )}
-              {activeTool === 'json' && <JsonTool theme={theme} />}
-              {activeTool === 'jsonschema' && <JsonSchemaTool theme={theme} />}
-              {activeTool === 'jsonpath' && <JsonPathTool theme={theme} />}
-              {activeTool === 'jsontocode' && <JsonToCodeTool theme={theme} />}
-              {activeTool === 'yaml' && <YamlTool theme={theme} />}
-              {activeTool === 'xml' && <XmlTool theme={theme} />}
-              {activeTool === 'sql' && <SqlTool theme={theme} />}
-              {activeTool === 'minify' && <MinifyTool theme={theme} />}
-              {activeTool === 'api' && <ApiTool theme={theme} />}
-              {activeTool === 'graphql' && <GraphqlTool theme={theme} />}
-              {activeTool === 'openapi' && <OpenApiTool theme={theme} />}
-              {activeTool === 'webhook' && <WebhookTool theme={theme} />}
-              {activeTool === 'mockapi' && <MockApiTool theme={theme} />}
-              {activeTool === 'indexnow' && <IndexNowTool theme={theme} />}
-              {activeTool === 'docker' && <DockerTool theme={theme} />}
-              {activeTool === 'k8s' && <K8sTool theme={theme} />}
-              {activeTool === 'nginx' && <NginxTool theme={theme} />}
-              {activeTool === 'base64' && <EncoderTool theme={theme} />}
-              {activeTool === 'url' && <EncoderTool theme={theme} />}
-              {activeTool === 'jwt' && <JwtTool theme={theme} />}
-              {activeTool === 'timestamp' && <TimestampTool theme={theme} />}
-              {activeTool === 'text' && <TextTool theme={theme} />}
-              {activeTool === 'hash' && <HashTool theme={theme} />}
-              {activeTool === 'uuid' && <UuidTool theme={theme} />}
-              {activeTool === 'qrcode' && <QrcodeTool theme={theme} />}
-              {activeTool === 'markdown' && <MarkdownTool theme={theme} />}
-              
-              {/* Missing Tools Components */}
-              {activeTool === 'csv' && <CsvTool theme={theme} />}
-              {activeTool === 'color' && <ColorTool theme={theme} />}
-              {activeTool === 'base' && <NumberBaseTool theme={theme} />}
-              {activeTool === 'cron' && <CronTool theme={theme} />}
-              {activeTool === 'regex' && <RegexTool theme={theme} />}
-              {activeTool === 'diff' && <DiffTool theme={theme} />}
+              <Suspense fallback={<ToolLoadingSkeleton themeKey={themeKey} />}>
+                {activeTool === 'home' && (
+                  <HomeTool 
+                    theme={theme} 
+                    themeKey={themeKey}
+                    shareUrl={typeof window !== 'undefined' ? (window.location.origin + BASE_PATH + '/') : ''}
+                    tools={TOOLS_LIST} 
+                    favorites={favorites}
+                    toggleFavorite={toggleFavorite}
+                    recents={recents}
+                    onSelectTool={(id, source) => {
+                      setActiveTool(id);
+                      setActiveSelectionSource(source || 'normal');
+                    }} 
+                  />
+                )}
+                {activeTool === 'json' && <JsonTool theme={theme} />}
+                {activeTool === 'jsonschema' && <JsonSchemaTool theme={theme} />}
+                {activeTool === 'jsonpath' && <JsonPathTool theme={theme} />}
+                {activeTool === 'jsontocode' && <JsonToCodeTool theme={theme} />}
+                {activeTool === 'yaml' && <YamlTool theme={theme} />}
+                {activeTool === 'xml' && <XmlTool theme={theme} />}
+                {activeTool === 'sql' && <SqlTool theme={theme} />}
+                {activeTool === 'minify' && <MinifyTool theme={theme} />}
+                {activeTool === 'api' && <ApiTool theme={theme} />}
+                {activeTool === 'graphql' && <GraphqlTool theme={theme} />}
+                {activeTool === 'openapi' && <OpenApiTool theme={theme} />}
+                {activeTool === 'webhook' && <WebhookTool theme={theme} />}
+                {activeTool === 'mockapi' && <MockApiTool theme={theme} />}
+                {activeTool === 'indexnow' && <IndexNowTool theme={theme} />}
+                {activeTool === 'docker' && <DockerTool theme={theme} />}
+                {activeTool === 'k8s' && <K8sTool theme={theme} />}
+                {activeTool === 'nginx' && <NginxTool theme={theme} />}
+                {activeTool === 'base64' && <EncoderTool theme={theme} />}
+                {activeTool === 'url' && <EncoderTool theme={theme} />}
+                {activeTool === 'jwt' && <JwtTool theme={theme} />}
+                {activeTool === 'timestamp' && <TimestampTool theme={theme} />}
+                {activeTool === 'text' && <TextTool theme={theme} />}
+                {activeTool === 'hash' && <HashTool theme={theme} />}
+                {activeTool === 'uuid' && <UuidTool theme={theme} />}
+                {activeTool === 'qrcode' && <QrcodeTool theme={theme} />}
+                {activeTool === 'markdown' && <MarkdownTool theme={theme} />}
+                
+                {/* Missing Tools Components */}
+                {activeTool === 'csv' && <CsvTool theme={theme} />}
+                {activeTool === 'color' && <ColorTool theme={theme} />}
+                {activeTool === 'base' && <NumberBaseTool theme={theme} />}
+                {activeTool === 'cron' && <CronTool theme={theme} />}
+                {activeTool === 'regex' && <RegexTool theme={theme} />}
+                {activeTool === 'diff' && <DiffTool theme={theme} />}
 
-              {/* Compliance & Legal Documentation Hub */}
-              {activeTool === 'privacy' && <PrivacyTool theme={theme} />}
-              {activeTool === 'terms' && <TermsTool theme={theme} />}
-              {activeTool === 'about' && <AboutTool theme={theme} />}
+                {/* Compliance & Legal Documentation Hub */}
+                {activeTool === 'privacy' && <PrivacyTool theme={theme} />}
+                {activeTool === 'terms' && <TermsTool theme={theme} />}
+                {activeTool === 'about' && <AboutTool theme={theme} />}
 
-              {activeTool === 'education' && (
-                <EducationTool 
-                  theme={theme} 
-                  activeTopicId={educationTopic} 
-                  onSelectTopic={(topicId) => {
-                    setEducationTopic(topicId);
-                  }}
-                  onLaunchTool={(toolId) => {
-                    setActiveTool(toolId);
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                  }}
-                />
-              )}
+                {activeTool === 'education' && (
+                  <EducationTool 
+                    theme={theme} 
+                    activeTopicId={educationTopic} 
+                    onSelectTopic={(topicId) => {
+                      setEducationTopic(topicId);
+                    }}
+                    onLaunchTool={(toolId) => {
+                      setActiveTool(toolId);
+                      window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }}
+                  />
+                )}
+              </Suspense>
 
               {/* Dynamic Rich Developer Guide, Technical Specifications & FAQs for Google AdSense & Crawlers */}
               <ToolDocumentationSection toolId={activeTool} theme={theme} themeKey={themeKey} />

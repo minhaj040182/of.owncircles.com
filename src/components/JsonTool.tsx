@@ -260,7 +260,7 @@ export default function JsonTool({ theme }: { theme?: any }) {
                 <button
                   onClick={handleClear}
                   className="text-slate-400 hover:text-pink-400 p-1 rounded transition-colors"
-                  title="Clear Input"
+                  title="Clear Input" aria-label="Clear Input"
                 >
                   <Trash2 className="w-4 h-4" />
                 </button>

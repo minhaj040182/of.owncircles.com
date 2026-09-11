@@ -320,7 +320,7 @@ export default function TextTool({ theme }: TextToolProps) {
               <button
                 onClick={handleClear}
                 className={`${isLight ? 'text-slate-400 hover:text-red-500' : 'text-slate-400 hover:text-pink-400'} p-1 rounded transition-colors cursor-pointer`}
-                title="Clear All Text"
+                title="Clear All Text" aria-label="Clear All Text"
               >
                 <Trash2 className="w-4 h-4" />
               </button>

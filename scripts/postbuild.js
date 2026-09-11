@@ -134,15 +134,85 @@ if (!fs.existsSync(indexPath)) {
   process.exit(1);
 }
 
-console.log('Generating physical route index.html files for static SEO indexation...');
+const baseHtml = fs.readFileSync(indexPath, 'utf8');
+
+function formatTitle(route) {
+  if (route === 'home') {
+    return 'OwnFormatters – Free JSON Formatter, JSON to Code Generator & Developer Utilities';
+  }
+  const clean = route.replace(/^learn-/, 'Learn ').replace(/-/g, ' ');
+  const capitalized = clean.replace(/\b\w/g, l => l.toUpperCase());
+  return `${capitalized} – OwnFormatters`;
+}
+
+function getRouteDescription(route) {
+  const name = route.replace(/^learn-/, '').replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+  return `Comprehensive developer guide, technical specifications, and 100% offline client-side utility for ${name}. Formatted following strict RFC and W3C web standards with zero server logging and zero network egress.`;
+}
+
+console.log('Generating physical route index.html files with self-referencing canonical URLs and pre-rendered semantic HTML...');
 
 routes.forEach((route) => {
   const routeDir = path.join(distDir, route);
   if (!fs.existsSync(routeDir)) {
     fs.mkdirSync(routeDir, { recursive: true });
   }
-  fs.copyFileSync(indexPath, path.join(routeDir, 'index.html'));
-  console.log(`- Created ${route}/index.html`);
+
+  const canonicalUrl = route === 'home' ? 'https://ownformatters.com/' : `https://ownformatters.com/${route}`;
+  const routeTitle = formatTitle(route);
+  const routeDesc = getRouteDescription(route);
+
+  // Inject route-specific fallback content inside <div id="root">
+  const fallbackHtml = route === 'home' 
+    ? '' 
+    : `<div id="static-fallback" style="padding:40px 20px;max-width:900px;margin:0 auto;font-family:system-ui,-apple-system,sans-serif;color:#cbd5e1;line-height:1.7;">
+        <header style="border-bottom:1px solid #334155;padding-bottom:20px;margin-bottom:24px;">
+          <h1 style="color:#f8fafc;font-size:28px;font-weight:800;margin:0 0 12px 0;">${routeTitle}</h1>
+          <p style="font-size:15px;color:#94a3b8;margin:0;">${routeDesc}</p>
+        </header>
+        <section style="margin-bottom:32px;">
+          <h2 style="color:#38bdf8;font-size:20px;font-weight:700;">Technical Overview & Standards Compliance</h2>
+          <p>OwnFormatters provides enterprise-grade, browser-based developer utilities designed to eliminate data privacy risks. When working with sensitive payloads, tokens, database configurations, and source code, traditional online utilities send raw text over public networks to remote servers. OwnFormatters runs 100% locally in your browser memory thread.</p>
+        </section>
+        <section style="margin-bottom:32px;">
+          <h2 style="color:#38bdf8;font-size:20px;font-weight:700;">Developer Guidelines & Best Practices</h2>
+          <ul style="padding-left:20px;color:#cbd5e1;">
+            <li>Verify syntax against international standards (RFC 8259, RFC 7519, RFC 4122, W3C specifications) before deploying.</li>
+            <li>Maintain zero server logging: all data is isolated within client-side WebWorkers.</li>
+            <li>Use offline PWA capabilities to format, validate, and convert payloads without internet connectivity.</li>
+          </ul>
+        </section>
+        <footer style="border-top:1px solid #334155;padding-top:20px;color:#64748b;font-size:13px;">
+          <p>© 2026 OwnFormatters Core Engineering Team. Published with zero-egress data guarantees.</p>
+        </footer>
+      </div>`;
+
+  let customizedHtml = baseHtml
+    .replace(/<link rel="canonical" href="[^"]*">/, `<link rel="canonical" href="${canonicalUrl}">`)
+    .replace(/<meta property="og:url" content="[^"]*">/, `<meta property="og:url" content="${canonicalUrl}">`)
+    .replace(/<title>[^<]*<\/title>/, `<title>${routeTitle}</title>`)
+    .replace(/<meta property="og:title" content="[^"]*">/, `<meta property="og:title" content="${routeTitle}">`)
+    .replace(/<meta name="twitter:title" content="[^"]*">/, `<meta name="twitter:title" content="${routeTitle}">`)
+    .replace(/<meta name="description" content="[^"]*">/, `<meta name="description" content="${routeDesc}">`)
+    .replace(/<meta property="og:description" content="[^"]*">/, `<meta property="og:description" content="${routeDesc}">`);
+
+  if (fallbackHtml) {
+    customizedHtml = customizedHtml.replace(
+      '<div id="root"></div>',
+      `<div id="root">${fallbackHtml}</div>`
+    );
+  }
+
+  // 1. Write route/index.html
+  fs.writeFileSync(path.join(routeDir, 'index.html'), customizedHtml, 'utf8');
+  
+  // 2. Also write route.html directly for clean-URL web servers
+  if (route !== 'home') {
+    fs.writeFileSync(path.join(distDir, `${route}.html`), customizedHtml, 'utf8');
+  }
+
+  console.log(`- Created ${route}/index.html & ${route}.html [canonical: ${canonicalUrl}]`);
 });
 
 console.log('SEO static routes successfully generated!');
+

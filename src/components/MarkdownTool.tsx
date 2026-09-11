@@ -233,7 +233,7 @@ export default function MarkdownTool({ theme }: MarkdownToolProps) {
                 <button
                   onClick={handleClear}
                   className={`${isLight ? 'text-slate-500 hover:text-red-500' : 'text-slate-400 hover:text-pink-400'} p-1 rounded transition-colors cursor-pointer`}
-                  title="Clear Document"
+                  title="Clear Document" aria-label="Clear Document"
                 >
                   <Trash2 className="w-4 h-4" />
                 </button>
