@@ -1,1 +1,19 @@
+# Permanent 301 Redirects for Alias URLs
+/json-beautifier    /json-formatter    301!
+/json-validator     /json-formatter    301!
+/cron-expression-parser  /cron-parser  301!
+/cron-tester        /cron-parser       301!
+/cron-expression-descriptor  /cron-parser  301!
+/yaml-converter     /yaml-formatter    301!
+/yaml-to-json       /yaml-formatter    301!
+/json-to-yaml       /yaml-formatter    301!
+/base64-encoder     /base64-encoder-decoder  301!
+/base64-decoder     /base64-encoder-decoder  301!
+/base64-decode      /base64-encoder-decoder  301!
+/base64-encode      /base64-encoder-decoder  301!
+/csv-converter      /csv-to-json       301!
+/json-to-csv        /csv-to-json       301!
+/csv-json-converter /csv-to-json       301!
+
+# SPA Fallback
 /*    /index.html   200

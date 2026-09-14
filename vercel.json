@@ -1,4 +1,21 @@
 {
+  "redirects": [
+    { "source": "/json-beautifier", "destination": "/json-formatter", "permanent": true },
+    { "source": "/json-validator", "destination": "/json-formatter", "permanent": true },
+    { "source": "/cron-expression-parser", "destination": "/cron-parser", "permanent": true },
+    { "source": "/cron-tester", "destination": "/cron-parser", "permanent": true },
+    { "source": "/cron-expression-descriptor", "destination": "/cron-parser", "permanent": true },
+    { "source": "/yaml-converter", "destination": "/yaml-formatter", "permanent": true },
+    { "source": "/yaml-to-json", "destination": "/yaml-formatter", "permanent": true },
+    { "source": "/json-to-yaml", "destination": "/yaml-formatter", "permanent": true },
+    { "source": "/base64-encoder", "destination": "/base64-encoder-decoder", "permanent": true },
+    { "source": "/base64-decoder", "destination": "/base64-encoder-decoder", "permanent": true },
+    { "source": "/base64-decode", "destination": "/base64-encoder-decoder", "permanent": true },
+    { "source": "/base64-encode", "destination": "/base64-encoder-decoder", "permanent": true },
+    { "source": "/csv-converter", "destination": "/csv-to-json", "permanent": true },
+    { "source": "/json-to-csv", "destination": "/csv-to-json", "permanent": true },
+    { "source": "/csv-json-converter", "destination": "/csv-to-json", "permanent": true }
+  ],
   "rewrites": [
     { "source": "/(.*)", "destination": "/index.html" }
   ]

@@ -128,7 +128,8 @@ export const Breadcrumbs: React.FC<BreadcrumbsProps> = ({
     });
   } else if (currentTool) {
     const categoryInfo = CATEGORY_META[currentTool.category];
-    if (categoryInfo) {
+    // Only show category breadcrumb if it does not point to the exact same page
+    if (categoryInfo && categoryInfo.representativeToolId !== currentTool.id) {
       items.push({
         label: categoryInfo.label,
         href: `${basePath}${categoryInfo.path}`,
@@ -138,10 +139,13 @@ export const Breadcrumbs: React.FC<BreadcrumbsProps> = ({
       });
     }
 
-    // Current Active Tool (e.g. Nginx Config Formatter)
+    // Current Active Tool (e.g. JSON Formatter, YAML Formatter, Cron Parser)
+    const toolLabel = currentTool.id === 'json' ? 'JSON Formatter' : currentTool.id === 'yaml' ? 'YAML Formatter & Converter' : currentTool.id === 'cron' ? 'Cron Expression Parser' : currentTool.name;
+    const toolHref = currentTool.id === 'json' ? '/json-formatter' : currentTool.id === 'yaml' ? '/yaml-formatter' : currentTool.id === 'cron' ? '/cron-parser' : (typeof window !== 'undefined' ? window.location.pathname : `${basePath}/${currentTool.id}`);
+
     items.push({
-      label: currentTool.name,
-      href: typeof window !== 'undefined' ? window.location.pathname : `${basePath}/${currentTool.id}`,
+      label: toolLabel,
+      href: toolHref,
       isCurrent: true
     });
   }

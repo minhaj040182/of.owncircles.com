@@ -1,5 +1,38 @@
-import React, { useState } from 'react';
-import { Play, Copy, Check, Trash2, ArrowLeftRight, HelpCircle, FileText, CheckCircle, AlertCircle } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { 
+  Play, 
+  Copy, 
+  Check, 
+  Trash2, 
+  ArrowLeftRight, 
+  HelpCircle, 
+  FileText, 
+  CheckCircle, 
+  AlertCircle, 
+  Download,
+  ShieldCheck,
+  Code2,
+  Layers,
+  ChevronDown,
+  ChevronUp,
+  Compass,
+  ArrowRight,
+  BookOpen
+} from 'lucide-react';
+
+function getJsonErrorDetails(raw: string, err: any): string {
+  const message = err.message || 'Invalid JSON syntax';
+  const posMatch = message.match(/at position (\d+)/i);
+  if (posMatch) {
+    const pos = parseInt(posMatch[1], 10);
+    const beforeError = raw.substring(0, pos);
+    const lines = beforeError.split('\n');
+    const line = lines.length;
+    const col = lines[lines.length - 1].length + 1;
+    return `${message} (Line ${line}, Column ${col})`;
+  }
+  return message;
+}
 
 const SAMPLE_JSON = `{
   "projectName": "OwnFormatters",
@@ -26,6 +59,90 @@ export default function JsonTool({ theme }: { theme?: any }) {
   // Expand / Collapse state trackers for Interactive Tree View
   const [toggledPaths, setToggledPaths] = useState<Record<string, boolean>>({});
   const [defaultExpanded, setDefaultExpanded] = useState<boolean>(true);
+
+  // Open / Close state for FAQ accordion
+  const [openFaqs, setOpenFaqs] = useState<Record<number, boolean>>({
+    0: true,
+    1: true,
+    2: true,
+    3: true,
+    4: true
+  });
+
+  const toggleFaq = (index: number) => {
+    setOpenFaqs(prev => ({
+      ...prev,
+      [index]: !prev[index]
+    }));
+  };
+
+  const handleInternalNav = (e: React.MouseEvent<HTMLAnchorElement>, path: string) => {
+    if (!e.ctrlKey && !e.metaKey) {
+      e.preventDefault();
+      window.history.pushState(null, '', path);
+      window.dispatchEvent(new PopStateEvent('popstate'));
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+
+  // Synchronize FAQ JSON-LD schema with visible questions
+  useEffect(() => {
+    const faqSchema = {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What does a JSON formatter do?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A JSON formatter parses unformatted, messy, or minified JSON strings and reorganizes them with consistent indentation (such as 2 spaces, 4 spaces, or tabs) and line breaks, making complex data structures easy for developers to read, inspect, and debug."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can this tool format minified JSON?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. You can paste single-line or heavily minified JSON into the editor and click 'Beautify & Validate' to instantly expand it into human-readable formatted JSON with proper indentation."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does the formatter validate JSON?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. The formatter checks your input against standard RFC 8259 JSON syntax rules. If your JSON has errors—such as missing quotes, trailing commas, or unescaped characters—the tool highlights the issue and points to the specific line and column number. It reports errors accurately without silently altering your source data."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is the difference between formatting and minifying JSON?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Formatting (or beautifying / pretty printing) adds whitespace, indentation, and newlines to maximize human readability. Minifying removes all unnecessary whitespace, comments, and line breaks to produce the smallest possible payload size for fast network transmission."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is my JSON uploaded to a server?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. All JSON formatting, validation, minification, and tree inspection happen entirely client-side inside your web browser. Your data is never uploaded, transmitted, or logged to OwnFormatters servers."
+          }
+        }
+      ]
+    };
+
+    let faqScript = document.getElementById('schema-faq') as HTMLScriptElement | null;
+    if (!faqScript) {
+      faqScript = document.createElement('script');
+      faqScript.setAttribute('type', 'application/ld+json');
+      faqScript.setAttribute('id', 'schema-faq');
+      document.head.appendChild(faqScript);
+    }
+    faqScript.textContent = JSON.stringify(faqSchema);
+  }, []);
 
   const t = theme || {
     isDark: true,
@@ -64,9 +181,23 @@ export default function JsonTool({ theme }: { theme?: any }) {
       setOutput('');
       setStatus({ 
         type: 'error', 
-        message: err.message || 'Invalid JSON syntax' 
+        message: getJsonErrorDetails(input, err)
       });
     }
+  };
+
+  const handleDownload = () => {
+    const textToDownload = output || input;
+    if (!textToDownload) return;
+    const blob = new Blob([textToDownload], { type: 'application/json;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'formatted.json';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
   };
 
   const handleLoadSample = () => {
@@ -201,8 +332,10 @@ export default function JsonTool({ theme }: { theme?: any }) {
       {/* Top Banner Controls */}
       <div className={`flex flex-col sm:flex-row sm:items-center justify-between gap-4 border p-4 rounded-xl ${t.card} ${t.border}`}>
         <div className="flex flex-wrap items-center gap-3">
-          <span className={`text-xs font-semibold ${t.textMuted}`}>Indent Style:</span>
+          <label htmlFor="indent-style" className={`text-xs font-semibold ${t.textMuted}`}>Indent Style:</label>
           <select 
+            id="indent-style"
+            aria-label="Select Indentation Style"
             value={indent} 
             onChange={(e) => setIndent(Number(e.target.value))}
             className={`border text-xs rounded-lg px-2.5 py-1.5 focus:outline-none focus:border-indigo-500 ${t.inputBg} ${t.text} ${t.border}`}
@@ -215,6 +348,7 @@ export default function JsonTool({ theme }: { theme?: any }) {
 
           <button
             onClick={handleLoadSample}
+            aria-label="Load Sample JSON Data"
             className={`border text-xs font-semibold px-3 py-1.5 rounded-lg transition-all flex items-center gap-1 ${t.btnSecondary}`}
           >
             <FileText className="w-3.5 h-3.5" />
@@ -266,7 +400,10 @@ export default function JsonTool({ theme }: { theme?: any }) {
                 </button>
               </div>
             </div>
+            <label htmlFor="raw-json-input" className="sr-only">Raw JSON Input</label>
             <textarea
+              id="raw-json-input"
+              aria-label="Raw JSON Input"
               className={`flex-1 w-full p-4 font-mono text-sm leading-relaxed focus:outline-none resize-none placeholder:text-slate-650 bg-transparent ${t.text}`}
               placeholder='Paste or write your raw JSON here... e.g. {"name": "OwnFormatters"}'
               value={input}
@@ -282,9 +419,20 @@ export default function JsonTool({ theme }: { theme?: any }) {
           <div className={`flex flex-col h-[520px] border rounded-xl overflow-hidden ${t.inputBg} ${t.border}`}>
             <div className={`px-4 py-3 border-b flex items-center justify-between ${t.panelBg} ${t.border}`}>
               <span className={`text-xs font-semibold font-mono ${t.text}`}>Formatted & Beautified Output</span>
-              <div className="flex items-center gap-1">
+              <div className="flex items-center gap-1.5">
+                <button
+                  onClick={handleDownload}
+                  disabled={!output && !input}
+                  aria-label="Download Formatted JSON file"
+                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1 disabled:opacity-40 ${t.btnSecondary}`}
+                  title="Download JSON"
+                >
+                  <Download className="w-3.5 h-3.5" />
+                  <span>Download</span>
+                </button>
                 <button
                   onClick={handleCopy}
+                  aria-label="Copy Formatted JSON to Clipboard"
                   className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1 ${t.btnSecondary}`}
                 >
                   {copied ? <Check className="w-3.5 h-3.5 text-emerald-500" /> : <Copy className="w-3.5 h-3.5" />}
@@ -384,7 +532,10 @@ export default function JsonTool({ theme }: { theme?: any }) {
 
           {/* Validation Status Indicator */}
           {status.type !== 'idle' && (
-            <div className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-medium border font-mono ${
+            <div 
+              role="status" 
+              aria-live="polite"
+              className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-medium border font-mono ${
               status.type === 'success' 
                 ? (isLight 
                     ? 'bg-emerald-50 border-emerald-200 text-emerald-800' 
@@ -404,55 +555,290 @@ export default function JsonTool({ theme }: { theme?: any }) {
         </div>
       )}
 
-      {/* CORE JSON KNOWLEDGE GUIDE AND DOCUMENTATION (AdSense compliance) */}
-      <div className={`border rounded-xl p-6 md:p-8 space-y-6 ${t.card} ${t.border}`}>
-        <div className={`flex items-center gap-2.5 border-b pb-4 ${t.border}`}>
-          <FileText className="w-5 h-5 text-indigo-400" />
-          <h3 className={`text-base font-bold font-sans ${t.text}`}>The Comprehensive JSON Syntax & Validation Handbook</h3>
-        </div>
+      {/* SEMANTIC SUPPORTING CONTENT & SPECIFICATIONS */}
+      <article className={`border-t pt-10 mt-10 space-y-10 font-sans ${isLight ? 'text-slate-700' : 'text-slate-300'}`}>
+        
+        {/* Section 1: What is a JSON Formatter? */}
+        <section className={`p-6 sm:p-8 rounded-2xl border ${t.card} ${t.border} space-y-4`}>
+          <h2 className={`text-xl font-bold tracking-tight flex items-center gap-2.5 ${t.text}`}>
+            <Code2 className="w-5 h-5 text-indigo-500 shrink-0" />
+            <span>What is a JSON Formatter?</span>
+          </h2>
+          <p className="text-sm leading-relaxed">
+            A JSON formatter (also known as a JSON beautifier or pretty printer) is a developer utility that converts unformatted, minified, or disorganized JavaScript Object Notation text into clean, structured, and properly indented code. Raw JSON returned by REST APIs, microservices, and database queries is typically compressed onto a single line to reduce bandwidth consumption. While efficient for machine transmission, dense payloads are challenging for humans to read. A JSON formatter reconstructs the structural hierarchy with consistent spacing and line breaks, making keys, values, nested arrays, and objects immediately clear.
+          </p>
+        </section>
 
-        <div className={`grid grid-cols-1 md:grid-cols-2 gap-8 text-xs leading-relaxed font-sans ${isLight ? 'text-slate-600' : 'text-slate-400'}`}>
-          <div className="space-y-4">
-            <h4 className={`text-sm font-bold font-sans ${t.text}`}>What is JSON (JavaScript Object Notation)?</h4>
-            <p>
-              JSON is a lightweight, language-independent data interchange standard defined under <strong>RFC 8259</strong>. It uses simple human-readable text to encode structured data in key-value collections and ordered lists (arrays).
-            </p>
-            <p>
-              Despite having originated from the JavaScript language syntax, JSON is supported by almost every modern programming language including Python, Java, Go, PHP, C++, and Ruby, making it the supreme choice for REST APIs, modern web sockets, and static app configurations.
-            </p>
-
-            <h4 className={`text-sm font-bold font-sans ${t.text}`}>Essential JSON Syntax Rules:</h4>
-            <ul className="list-disc list-inside space-y-1.5 pl-1">
-              <li><strong>Double Quotes Only:</strong> All string literals, including key declarations, must be wrapped in double quotes (<code className="text-indigo-400">"key"</code>). Single quotes (<code className="text-pink-400">'key'</code>) are invalid.</li>
-              <li><strong>No Trailing Commas:</strong> Commas must separate items inside arrays or objects, but the final item must NOT have a trailing comma.</li>
-              <li><strong>Primitive Types:</strong> Supports numbers, strings, booleans (<code className="text-indigo-300">true</code>, <code className="text-indigo-300">false</code>), objects, arrays, and <code className="text-indigo-300">null</code> values.</li>
-            </ul>
-          </div>
-
-          <div className="space-y-4">
-            <h4 className={`text-sm font-bold font-sans ${t.text}`}>Common JSON Pitfalls and Troubleshooting:</h4>
-            <p>
-              Developers often encounter errors when compiling JSON manually. Here are the most typical syntax bugs:
-            </p>
-            <div className={`p-4 rounded-xl border space-y-2.5 ${t.inputBg} ${t.border}`}>
+        {/* Section 2: How to Format JSON */}
+        <section className={`p-6 sm:p-8 rounded-2xl border ${t.card} ${t.border} space-y-5`}>
+          <h2 className={`text-xl font-bold tracking-tight flex items-center gap-2.5 ${t.text}`}>
+            <Layers className="w-5 h-5 text-indigo-500 shrink-0" />
+            <span>How to Format JSON</span>
+          </h2>
+          <p className="text-sm leading-relaxed">
+            Formatting your data takes three simple steps with the OwnFormatters online JSON tool:
+          </p>
+          <ol className="space-y-3 text-sm">
+            <li className="flex items-start gap-3">
+              <span className="flex items-center justify-center w-6 h-6 rounded-full bg-indigo-600/20 text-indigo-400 font-bold text-xs shrink-0 mt-0.5 border border-indigo-500/30">1</span>
               <div>
-                <span className={`font-bold block ${t.text}`}>1. Unescaped Control Characters:</span>
-                <p className="text-[11px] text-slate-400">Characters like tabulator keys or raw line-breaks inside a string must be escaped as <code className="text-indigo-450">\t</code> or <code className="text-indigo-450">\n</code>.</p>
+                <strong className={t.text}>Paste or load your JSON:</strong> Paste raw JSON text into the editor on the left, or click <span className="font-semibold text-indigo-400">Load Sample</span> to test with an example payload.
               </div>
+            </li>
+            <li className="flex items-start gap-3">
+              <span className="flex items-center justify-center w-6 h-6 rounded-full bg-indigo-600/20 text-indigo-400 font-bold text-xs shrink-0 mt-0.5 border border-indigo-500/30">2</span>
               <div>
-                <span className={`font-bold block ${t.text}`}>2. Incorrect Comments:</span>
-                <p className="text-[11px] text-slate-400">The JSON specification strictly prohibits comments (<code className="text-pink-400">//</code> or <code className="text-pink-400">/* */</code>). Strip comments before validating.</p>
+                <strong className={t.text}>Choose your indentation and format:</strong> Select 2 spaces, 4 spaces, 8 spaces, or tabs, then click <span className="font-semibold text-indigo-400">Beautify & Validate</span>. You can also click <span className="font-semibold text-indigo-400">Minify JSON</span> if you need a compact one-line output.
               </div>
-            </div>
+            </li>
+            <li className="flex items-start gap-3">
+              <span className="flex items-center justify-center w-6 h-6 rounded-full bg-indigo-600/20 text-indigo-400 font-bold text-xs shrink-0 mt-0.5 border border-indigo-500/30">3</span>
+              <div>
+                <strong className={t.text}>Copy or download the result:</strong> Click <span className="font-semibold text-indigo-400">Copy</span> to send the formatted JSON to your clipboard, or click <span className="font-semibold text-indigo-400">Download</span> to save a clean <code className="text-xs px-1.5 py-0.5 rounded bg-slate-800 text-indigo-300 font-mono">formatted.json</code> file directly to your device.
+              </div>
+            </li>
+          </ol>
+        </section>
 
-            <div className={`p-4 rounded-xl border ${t.panelBg} ${t.border}`}>
-              <span className={`font-bold block mb-1.5 font-sans ${t.text}`}>JSON Validation FAQ:</span>
-              <p><strong>Q: Is my pasted data sent to a cloud database?</strong></p>
-              <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-1">A: Absolutely not. This formatter operates 100% in-browser. The code runs inside your local browser memory sandbox, meaning no third-party server ever reads your secret development keys or user payload.</p>
+        {/* Section 3: JSON Formatting Example */}
+        <section className={`p-6 sm:p-8 rounded-2xl border ${t.card} ${t.border} space-y-5`}>
+          <h2 className={`text-xl font-bold tracking-tight flex items-center gap-2.5 ${t.text}`}>
+            <FileText className="w-5 h-5 text-indigo-500 shrink-0" />
+            <span>JSON Formatting Example</span>
+          </h2>
+          <p className="text-sm leading-relaxed">
+            Here is a practical example showing how raw, minified input is transformed into clean, readable JSON with 2-space indentation:
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-mono">
+            <div className={`p-4 rounded-xl border ${t.inputBg} ${t.border} space-y-2`}>
+              <div className={`text-[11px] font-bold uppercase tracking-wider ${t.textMuted}`}>Input (Minified JSON):</div>
+              <pre className={`p-3 rounded-lg overflow-x-auto ${t.canvasBg} text-slate-300`}>
+                {`{"name":"Ava","skills":["JavaScript","React"],"active":true}`}
+              </pre>
+            </div>
+            <div className={`p-4 rounded-xl border ${t.inputBg} ${t.border} space-y-2`}>
+              <div className={`text-[11px] font-bold uppercase tracking-wider text-emerald-400`}>Output (Beautified JSON):</div>
+              <pre className={`p-3 rounded-lg overflow-x-auto ${t.canvasBg} text-emerald-300`}>
+{`{
+  "name": "Ava",
+  "skills": [
+    "JavaScript",
+    "React"
+  ],
+  "active": true
+}`}
+              </pre>
             </div>
           </div>
-        </div>
-      </div>
+          <p className="text-xs leading-relaxed text-slate-400">
+            Notice how proper indentation immediately makes arrays and primitive values distinguishable while preserving strict RFC 8259 syntax compliance.
+          </p>
+        </section>
+
+        {/* Section 4: JSON Formatter vs JSON Minifier */}
+        <section className={`p-6 sm:p-8 rounded-2xl border ${t.card} ${t.border} space-y-4`}>
+          <h2 className={`text-xl font-bold tracking-tight flex items-center gap-2.5 ${t.text}`}>
+            <ArrowLeftRight className="w-5 h-5 text-indigo-500 shrink-0" />
+            <span>JSON Formatter vs JSON Minifier</span>
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
+            <div className={`p-4 rounded-xl border ${t.panelBg} ${t.border} space-y-2`}>
+              <h3 className={`font-bold ${t.text}`}>JSON Formatter / Beautifier</h3>
+              <p className="text-xs leading-relaxed text-slate-400">
+                Adds indentation, consistent spacing, and line breaks. Its goal is <strong>human readability</strong> during debugging, code review, API development, and data analysis.
+              </p>
+            </div>
+            <div className={`p-4 rounded-xl border ${t.panelBg} ${t.border} space-y-2`}>
+              <h3 className={`font-bold ${t.text}`}>JSON Minifier</h3>
+              <p className="text-xs leading-relaxed text-slate-400">
+                Strips all non-essential whitespace, carriage returns, and newlines. Its goal is <strong>compact payload size</strong> to optimize network throughput and reduce HTTP payload weight in production systems.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* Section 5: JSON Validation */}
+        <section className={`p-6 sm:p-8 rounded-2xl border ${t.card} ${t.border} space-y-4`}>
+          <h2 className={`text-xl font-bold tracking-tight flex items-center gap-2.5 ${t.text}`}>
+            <AlertCircle className="w-5 h-5 text-amber-500 shrink-0" />
+            <span>JSON Validation & Syntax Rules</span>
+          </h2>
+          <p className="text-sm leading-relaxed">
+            Valid JSON must strictly conform to the <strong>RFC 8259</strong> standard. Unlike flexible JavaScript objects, JSON requires strict syntax. If your payload is invalid, our tool identifies the exact line and column number. Common syntax errors include:
+          </p>
+          <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+            <li className={`p-3 rounded-lg border ${t.inputBg} ${t.border}`}>
+              <strong className={`block mb-1 ${t.text}`}>Missing Double Quotes</strong>
+              <span className="text-slate-400">All object keys and string values must use double quotes (<code className="text-indigo-300">"key": "value"</code>). Single quotes (<code className="text-pink-400">'key'</code>) are invalid.</span>
+            </li>
+            <li className={`p-3 rounded-lg border ${t.inputBg} ${t.border}`}>
+              <strong className={`block mb-1 ${t.text}`}>Trailing Commas</strong>
+              <span className="text-slate-400">JSON does not allow a comma after the final item in an object or array (e.g., <code className="text-pink-400">[1, 2,]</code> will fail).</span>
+            </li>
+            <li className={`p-3 rounded-lg border ${t.inputBg} ${t.border}`}>
+              <strong className={`block mb-1 ${t.text}`}>Unmatched Braces or Brackets</strong>
+              <span className="text-slate-400">Every opening curly brace <code className="text-indigo-300">{'{'}</code> and square bracket <code className="text-indigo-300">[</code> must have a corresponding closing partner.</span>
+            </li>
+            <li className={`p-3 rounded-lg border ${t.inputBg} ${t.border}`}>
+              <strong className={`block mb-1 ${t.text}`}>Invalid Escape Characters</strong>
+              <span className="text-slate-400">Special characters inside string values must be properly escaped (e.g., <code className="text-indigo-300">\"</code>, <code className="text-indigo-300">\\</code>, <code className="text-indigo-300">\n</code>, <code className="text-indigo-300">\t</code>).</span>
+            </li>
+          </ul>
+          <p className="text-xs text-slate-400">
+            <em>Note:</em> The OwnFormatters JSON Formatter validates syntax and pinpoints parsing errors. It does not guess or alter your underlying data structure.
+          </p>
+        </section>
+
+        {/* Section 6: Privacy & Client-Side Browser Processing */}
+        <section className={`p-6 sm:p-8 rounded-2xl border ${t.card} ${t.border} space-y-4`}>
+          <h2 className={`text-xl font-bold tracking-tight flex items-center gap-2.5 ${t.text}`}>
+            <ShieldCheck className="w-5 h-5 text-emerald-500 shrink-0" />
+            <span>Privacy & Client-Side Browser Processing</span>
+          </h2>
+          <p className="text-sm leading-relaxed">
+            Your privacy is guaranteed by design. All JSON parsing, formatting, minification, tree inspection, and validation occur <strong>100% locally in your web browser</strong> using client-side JavaScript APIs.
+          </p>
+          <p className="text-sm leading-relaxed text-slate-400">
+            Your data is never transmitted to an external server, logged in access records, or stored in a remote database. You can safely inspect sensitive API responses, private credentials, and production configurations with complete confidence that your payloads never leave your computer.
+          </p>
+        </section>
+
+        {/* Section 7: Frequently Asked Questions */}
+        <section className={`p-6 sm:p-8 rounded-2xl border ${t.card} ${t.border} space-y-6`}>
+          <h2 className={`text-xl font-bold tracking-tight flex items-center gap-2.5 ${t.text}`}>
+            <HelpCircle className="w-5 h-5 text-indigo-500 shrink-0" />
+            <span>Frequently Asked Questions</span>
+          </h2>
+          
+          <div className="space-y-3">
+            {[
+              {
+                q: "What does a JSON formatter do?",
+                a: "A JSON formatter parses unformatted, messy, or minified JSON strings and reorganizes them with consistent indentation (such as 2 spaces, 4 spaces, or tabs) and line breaks, making complex data structures easy for developers to read, inspect, and debug."
+              },
+              {
+                q: "Can this tool format minified JSON?",
+                a: "Yes. You can paste single-line or heavily minified JSON into the editor and click 'Beautify & Validate' to instantly expand it into human-readable formatted JSON with proper indentation."
+              },
+              {
+                q: "Does the formatter validate JSON?",
+                a: "Yes. The formatter checks your input against standard RFC 8259 JSON syntax rules. If your JSON has errors—such as missing quotes, trailing commas, or unescaped characters—the tool highlights the issue and points to the specific line and column number. It reports errors accurately without silently altering your source data."
+              },
+              {
+                q: "What is the difference between formatting and minifying JSON?",
+                a: "Formatting (or beautifying / pretty printing) adds whitespace, indentation, and newlines to maximize human readability. Minifying removes all unnecessary whitespace, comments, and line breaks to produce the smallest possible payload size for fast network transmission."
+              },
+              {
+                q: "Is my JSON uploaded to a server?",
+                a: "No. All JSON formatting, validation, minification, and tree inspection happen entirely client-side inside your web browser. Your data is never uploaded, transmitted, or logged to OwnFormatters servers."
+              }
+            ].map((faq, idx) => (
+              <div key={idx} className={`border rounded-xl overflow-hidden ${t.panelBg} ${t.border}`}>
+                <button
+                  onClick={() => toggleFaq(idx)}
+                  className={`w-full text-left p-4 font-semibold text-sm flex items-center justify-between gap-4 transition-colors ${t.text}`}
+                  aria-expanded={!!openFaqs[idx]}
+                >
+                  <span>{faq.q}</span>
+                  {openFaqs[idx] ? (
+                    <ChevronUp className="w-4 h-4 text-indigo-400 shrink-0" />
+                  ) : (
+                    <ChevronDown className="w-4 h-4 text-slate-500 shrink-0" />
+                  )}
+                </button>
+                {openFaqs[idx] && (
+                  <div className={`px-4 pb-4 pt-1 text-xs leading-relaxed border-t ${t.border} ${isLight ? 'text-slate-600' : 'text-slate-400'}`}>
+                    <p>{faq.a}</p>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* Section 8: Related Developer Tools */}
+        <section className={`p-6 sm:p-8 rounded-2xl border ${t.card} ${t.border} space-y-5`}>
+          <h2 className={`text-xl font-bold tracking-tight flex items-center gap-2.5 ${t.text}`}>
+            <Compass className="w-5 h-5 text-indigo-500 shrink-0" />
+            <span>Related Developer Tools</span>
+          </h2>
+          <p className="text-sm leading-relaxed text-slate-400">
+            Explore companion utilities designed for structured data transformation, schema validation, and conversion:
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 text-xs">
+            <a
+              href="/yaml-formatter"
+              onClick={(e) => handleInternalNav(e, '/yaml-formatter')}
+              className={`p-3.5 rounded-xl border flex items-center justify-between group transition-all ${t.panelBg} ${t.border} hover:border-indigo-500`}
+            >
+              <div>
+                <strong className={`block ${t.text} group-hover:text-indigo-400 transition-colors`}>Convert JSON to YAML</strong>
+                <span className="text-[11px] text-slate-500">Transform JSON into clean YAML configs</span>
+              </div>
+              <ArrowRight className="w-4 h-4 text-slate-500 group-hover:text-indigo-400 transition-colors" />
+            </a>
+            <a
+              href="/csv-to-json"
+              onClick={(e) => handleInternalNav(e, '/csv-to-json')}
+              className={`p-3.5 rounded-xl border flex items-center justify-between group transition-all ${t.panelBg} ${t.border} hover:border-indigo-500`}
+            >
+              <div>
+                <strong className={`block ${t.text} group-hover:text-indigo-400 transition-colors`}>Convert CSV to JSON</strong>
+                <span className="text-[11px] text-slate-500">Parse tabular spreadsheet data to JSON</span>
+              </div>
+              <ArrowRight className="w-4 h-4 text-slate-500 group-hover:text-indigo-400 transition-colors" />
+            </a>
+            <a
+              href="/json-to-code"
+              onClick={(e) => handleInternalNav(e, '/json-to-code')}
+              className={`p-3.5 rounded-xl border flex items-center justify-between group transition-all ${t.panelBg} ${t.border} hover:border-indigo-500`}
+            >
+              <div>
+                <strong className={`block ${t.text} group-hover:text-indigo-400 transition-colors`}>JSON to Code Generator</strong>
+                <span className="text-[11px] text-slate-500">TypeScript, Go, Rust, Java & C# models</span>
+              </div>
+              <ArrowRight className="w-4 h-4 text-slate-500 group-hover:text-indigo-400 transition-colors" />
+            </a>
+            <a
+              href="/base64-encoder-decoder"
+              onClick={(e) => handleInternalNav(e, '/base64-encoder-decoder')}
+              className={`p-3.5 rounded-xl border flex items-center justify-between group transition-all ${t.panelBg} ${t.border} hover:border-indigo-500`}
+            >
+              <div>
+                <strong className={`block ${t.text} group-hover:text-indigo-400 transition-colors`}>Base64 Encoder / Decoder</strong>
+                <span className="text-[11px] text-slate-500">Encode and decode payloads in-browser</span>
+              </div>
+              <ArrowRight className="w-4 h-4 text-slate-500 group-hover:text-indigo-400 transition-colors" />
+            </a>
+            <a
+              href="/json-schema-generator"
+              onClick={(e) => handleInternalNav(e, '/json-schema-generator')}
+              className={`p-3.5 rounded-xl border flex items-center justify-between group transition-all ${t.panelBg} ${t.border} hover:border-indigo-500`}
+            >
+              <div>
+                <strong className={`block ${t.text} group-hover:text-indigo-400 transition-colors`}>JSON Schema Generator</strong>
+                <span className="text-[11px] text-slate-500">Draft-07 schema creation & validation</span>
+              </div>
+              <ArrowRight className="w-4 h-4 text-slate-500 group-hover:text-indigo-400 transition-colors" />
+            </a>
+            <a
+              href="/learn-json"
+              onClick={(e) => handleInternalNav(e, '/learn-json')}
+              className={`p-3.5 rounded-xl border flex items-center justify-between group transition-all ${t.panelBg} ${t.border} hover:border-indigo-500`}
+            >
+              <div>
+                <strong className={`block ${t.text} group-hover:text-indigo-400 transition-colors flex items-center gap-1`}>
+                  <BookOpen className="w-3.5 h-3.5 text-teal-400" />
+                  Learn JSON Syntax & RFC Rules
+                </strong>
+                <span className="text-[11px] text-slate-500">Read our comprehensive JSON developer guide</span>
+              </div>
+              <ArrowRight className="w-4 h-4 text-slate-500 group-hover:text-indigo-400 transition-colors" />
+            </a>
+          </div>
+        </section>
+
+      </article>
 
     </div>
   );

@@ -94,8 +94,8 @@ import { ToolId, ToolDefinition } from './types';
 const TOOLS_LIST: ToolDefinition[] = [
   {
     id: 'json',
-    name: 'JSON Formatter & Validator',
-    description: 'Beautify, minify, inspect, and validate raw JSON trees with syntax error marking.',
+    name: 'Free Online JSON Formatter & Beautifier',
+    description: 'Format messy or minified JSON into readable structured data directly in your browser. Beautify with your preferred indentation, validate JSON syntax, minify the result, and copy or download the formatted JSON.',
     category: 'formatter',
     icon: 'Braces'
   },
@@ -122,8 +122,8 @@ const TOOLS_LIST: ToolDefinition[] = [
   },
   {
     id: 'yaml',
-    name: 'YAML <-> JSON Converter',
-    description: 'Bi-directional real-time YAML and JSON converter with nested object support.',
+    name: 'YAML Formatter & Converter',
+    description: 'Format and validate YAML directly in your browser, or convert between YAML and JSON. Clean indentation, syntax verification, and instant output copying.',
     category: 'formatter',
     icon: 'FileText'
   },
@@ -290,8 +290,8 @@ const TOOLS_LIST: ToolDefinition[] = [
   },
   {
     id: 'cron',
-    name: 'Cron Expression Parser & Builder',
-    description: 'Parse standard cron expressions into human language with upcoming execution schedules.',
+    name: 'Cron Expression Parser & Explainer',
+    description: 'Enter a standard 5-field cron expression to see what it means, validate each field and calculate upcoming execution times. OwnFormatters breaks down minute, hour, day, month and weekday values into a readable schedule.',
     category: 'utility',
     icon: 'Clock'
   },
@@ -383,6 +383,7 @@ const PATH_TO_TOOL_MAP: Record<string, ToolId> = {
   '/number-base-converter': 'base',
   '/binary-converter': 'base',
   '/hex-converter': 'base',
+  '/cron-expression-parser': 'cron',
   '/cron-parser': 'cron',
   '/cron-tester': 'cron',
   '/cron-expression-descriptor': 'cron',
@@ -411,7 +412,7 @@ const TOOL_TO_PATH_MAP: Record<ToolId, string> = {
   jsonpath: '/jsonpath-tester',
   jsontocode: '/json-to-code',
   education: '/learn-json',
-  yaml: '/yaml-converter',
+  yaml: '/yaml-formatter',
   xml: '/xml-formatter',
   sql: '/sql-formatter',
   minify: '/code-minifier',
@@ -423,9 +424,9 @@ const TOOL_TO_PATH_MAP: Record<ToolId, string> = {
   docker: '/docker-compose-validator',
   k8s: '/k8s-yaml-validator',
   nginx: '/nginx-config-formatter',
-  base64: '/base64-encoder',
-  url: '/url-encoder',
-  html: '/base64-encoder', // Fallback
+  base64: '/base64-encoder-decoder',
+  url: '/url-encoder-decoder',
+  html: '/base64-encoder-decoder', // Fallback
   jwt: '/jwt-debugger',
   timestamp: '/timestamp-converter',
   text: '/text-utility',
@@ -433,7 +434,7 @@ const TOOL_TO_PATH_MAP: Record<ToolId, string> = {
   uuid: '/uuid-generator',
   qrcode: '/qrcode-generator',
   markdown: '/markdown-editor',
-  csv: '/csv-converter',
+  csv: '/csv-to-json',
   color: '/color-converter',
   base: '/number-base-converter',
   cron: '/cron-parser',
@@ -837,6 +838,13 @@ export default function App() {
       if (validTool) {
         setActiveTool(validTool);
         setActiveSelectionSource('normal');
+
+        // Canonical URL normalization for alias routes (e.g., /json-beautifier -> /json-formatter)
+        const canonicalTarget = TOOL_TO_PATH_MAP[validTool] || '/';
+        const fullCanonical = BASE_PATH + (canonicalTarget === '/home' ? '/' : canonicalTarget);
+        if (window.location.pathname !== fullCanonical && searchPath !== canonicalTarget) {
+          window.history.replaceState(null, '', fullCanonical);
+        }
       } else {
         // Unknown route -> render home without redirecting
         setActiveTool('home');
@@ -865,12 +873,14 @@ export default function App() {
     let canonicalPath = targetPath || '/';
     if (canonicalPath === '/home') canonicalPath = '/';
     
-    // Dynamically detect production domain with fallback to ownformatters.com
+    // Explicitly recognized production domains for OwnFormatters
     let siteOrigin = 'https://ownformatters.com';
-    if (typeof window !== 'undefined' && window.location.origin) {
-      const origin = window.location.origin;
-      if (!origin.includes('localhost') && !origin.includes('run.app') && !origin.includes('127.0.0.1')) {
-        siteOrigin = origin;
+    if (typeof window !== 'undefined' && window.location.hostname) {
+      const hostname = window.location.hostname.toLowerCase();
+      if (hostname === 'ownformatters.com' || hostname === 'www.ownformatters.com') {
+        siteOrigin = 'https://ownformatters.com';
+      } else {
+        siteOrigin = window.location.origin;
       }
     }
     const canonicalUrl = `${siteOrigin}${canonicalPath}`;
@@ -887,7 +897,16 @@ export default function App() {
     let title = "OwnFormatters - Free Online Developer Tools Suite | Home Dashboard";
     let description = "All-in-one free offline developer utilities dashboard. Formatters, encoders, network testers, security checksums, custom converters.";
 
-    if (activeTool === 'education') {
+    if (activeTool === 'json') {
+      title = "Free JSON Formatter & Beautifier Online | OwnFormatters";
+      description = "Format, beautify, validate and minify JSON instantly with the free OwnFormatters JSON Formatter. Choose indentation, fix readability and copy or download the result.";
+    } else if (activeTool === 'yaml') {
+      title = "YAML Formatter & YAML to JSON Converter | OwnFormatters";
+      description = "Format and validate YAML, convert YAML to JSON or JSON to YAML, and copy or download clean output instantly with OwnFormatters.";
+    } else if (activeTool === 'cron') {
+      title = "Cron Expression Parser & Explainer Online | OwnFormatters";
+      description = "Parse and explain cron expressions instantly. Understand each cron field, validate schedules, view human-readable meanings and calculate upcoming execution times.";
+    } else if (activeTool === 'education') {
       const topicName = educationTopic.toUpperCase();
       title = `Mastering ${topicName} - Complete Developer Handbook & FAQs | OwnFormatters`;
       description = `Learn about ${topicName} specifications, best practices, implementation snippets, and frequently asked questions in our comprehensive developer guide.`;
@@ -917,22 +936,34 @@ export default function App() {
     let ogDesc = document.querySelector('meta[property="og:description"]');
     if (ogDesc) ogDesc.setAttribute('content', description);
 
-    // JSON-LD Structured Data Schema for Search Crawlers
-    let jsonLdScript = document.querySelector('script[type="application/ld+json"]');
+    // Twitter Card tags
+    let twTitle = document.querySelector('meta[name="twitter:title"]');
+    if (twTitle) twTitle.setAttribute('content', title);
+    let twDesc = document.querySelector('meta[name="twitter:description"]');
+    if (twDesc) twDesc.setAttribute('content', description);
+
+    // JSON-LD Structured Data Schema for WebApplication
+    let jsonLdScript = document.getElementById('schema-webapp') as HTMLScriptElement | null;
     if (!jsonLdScript) {
       jsonLdScript = document.createElement('script');
       jsonLdScript.setAttribute('type', 'application/ld+json');
+      jsonLdScript.setAttribute('id', 'schema-webapp');
       document.head.appendChild(jsonLdScript);
     }
     jsonLdScript.textContent = JSON.stringify({
       "@context": "https://schema.org",
       "@type": "WebApplication",
-      "name": title,
+      "name": activeTool === 'json' ? "Free Online JSON Formatter & Beautifier" : activeTool === 'yaml' ? "YAML Formatter & YAML to JSON Converter" : activeTool === 'cron' ? "Cron Expression Parser & Explainer" : title,
       "url": canonicalUrl,
       "description": description,
       "applicationCategory": "DeveloperApplication",
       "operatingSystem": "All",
-      "browserRequirements": "Requires JavaScript"
+      "browserRequirements": "Requires JavaScript",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      }
     });
 
     if (activeTool !== 'home') {
@@ -1176,19 +1207,35 @@ export default function App() {
       <section className={`relative pt-10 pb-8 px-4 lg:px-6 overflow-hidden border-b ${theme.border} w-full ${theme.heroBg || ''}`}>
         <div className="w-full flex flex-col md:flex-row md:items-center md:justify-between gap-6">
           <div className="space-y-3 max-w-3xl">
-            <h1 className={`text-2xl md:text-4xl font-black tracking-tight leading-tight ${themeKey === 'light' ? 'text-slate-800' : 'text-white'}`}>
-              <button 
-                onClick={() => {
-                  navigateToTool('home');
-                  window.scrollTo({ top: 0, behavior: 'smooth' });
-                }}
-                className="hover:underline cursor-pointer text-left inline-block focus:outline-none"
-                title="Go to OwnFormatters Home"
-              >
-                OwnFormatters
-              </button>{' '}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 via-violet-500 to-indigo-600 dark:from-indigo-400 dark:via-violet-300 dark:to-indigo-400">Developer Utility Suite</span>
-            </h1>
+            {activeTool === 'home' ? (
+              <h1 className={`text-2xl md:text-4xl font-black tracking-tight leading-tight ${themeKey === 'light' ? 'text-slate-800' : 'text-white'}`}>
+                <button 
+                  onClick={() => {
+                    navigateToTool('home');
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                  }}
+                  className="hover:underline cursor-pointer text-left inline-block focus:outline-none"
+                  title="Go to OwnFormatters Home"
+                >
+                  OwnFormatters
+                </button>{' '}
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 via-violet-500 to-indigo-600 dark:from-indigo-400 dark:via-violet-300 dark:to-indigo-400">Developer Utility Suite</span>
+              </h1>
+            ) : (
+              <div className={`text-2xl md:text-4xl font-black tracking-tight leading-tight ${themeKey === 'light' ? 'text-slate-800' : 'text-white'}`}>
+                <button 
+                  onClick={() => {
+                    navigateToTool('home');
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                  }}
+                  className="hover:underline cursor-pointer text-left inline-block focus:outline-none"
+                  title="Go to OwnFormatters Home"
+                >
+                  OwnFormatters
+                </button>{' '}
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 via-violet-500 to-indigo-600 dark:from-indigo-400 dark:via-violet-300 dark:to-indigo-400">Developer Utility Suite</span>
+              </div>
+            )}
             <p className={`text-xs md:text-sm leading-relaxed max-w-2xl ${theme.textMuted}`}>
               A comprehensive offline development workbench providing secure formatters, syntax validators, cryptographic hash generators, custom token decoders, and network testbeds. Zero cloud footprints.
             </p>
@@ -1501,18 +1548,56 @@ export default function App() {
           {activeTool !== 'home' && !['privacy', 'terms', 'about', 'education'].includes(activeTool) && (
             <div className={`pb-3 border-b ${theme.border} flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3`}>
               <div>
-                <h2 className={`text-xl font-extrabold tracking-tight flex items-center gap-2 ${themeKey === 'light' ? 'text-slate-800' : 'text-white'}`}>
-                  {getToolIcon(TOOLS_LIST.find(t => t.id === activeTool)?.icon || 'Code')}
-                  <span>{TOOLS_LIST.find(t => t.id === activeTool)?.name}</span>
-                  <button
-                    onClick={() => toggleFavorite(activeTool)}
-                    className="p-1 rounded-lg hover:bg-slate-800/40 text-slate-500 hover:text-amber-500 transition-colors cursor-pointer"
-                    title={favorites.includes(activeTool) ? "Remove from Favorite Tools" : "Add to Favorite Tools"}
-                  >
-                    <Star className={`w-4 h-4 ${favorites.includes(activeTool) ? 'fill-amber-400 text-amber-400' : ''}`} />
-                  </button>
-                </h2>
-                <p className={`text-xs mt-1 max-w-lg leading-relaxed ${theme.textMuted}`}>
+                {activeTool === 'json' ? (
+                  <h1 className={`text-xl sm:text-2xl font-black tracking-tight flex items-center gap-2 ${themeKey === 'light' ? 'text-slate-800' : 'text-white'}`}>
+                    {getToolIcon(TOOLS_LIST.find(t => t.id === activeTool)?.icon || 'Code')}
+                    <span>Free Online JSON Formatter & Beautifier</span>
+                    <button
+                      onClick={() => toggleFavorite(activeTool)}
+                      className="p-1 rounded-lg hover:bg-slate-800/40 text-slate-500 hover:text-amber-500 transition-colors cursor-pointer"
+                      title={favorites.includes(activeTool) ? "Remove from Favorite Tools" : "Add to Favorite Tools"}
+                    >
+                      <Star className={`w-4 h-4 ${favorites.includes(activeTool) ? 'fill-amber-400 text-amber-400' : ''}`} />
+                    </button>
+                  </h1>
+                ) : activeTool === 'yaml' ? (
+                  <h1 className={`text-xl sm:text-2xl font-black tracking-tight flex items-center gap-2 ${themeKey === 'light' ? 'text-slate-800' : 'text-white'}`}>
+                    {getToolIcon(TOOLS_LIST.find(t => t.id === activeTool)?.icon || 'FileText')}
+                    <span>YAML Formatter & YAML to JSON Converter</span>
+                    <button
+                      onClick={() => toggleFavorite(activeTool)}
+                      className="p-1 rounded-lg hover:bg-slate-800/40 text-slate-500 hover:text-amber-500 transition-colors cursor-pointer"
+                      title={favorites.includes(activeTool) ? "Remove from Favorite Tools" : "Add to Favorite Tools"}
+                    >
+                      <Star className={`w-4 h-4 ${favorites.includes(activeTool) ? 'fill-amber-400 text-amber-400' : ''}`} />
+                    </button>
+                  </h1>
+                ) : activeTool === 'cron' ? (
+                  <h1 className={`text-xl sm:text-2xl font-black tracking-tight flex items-center gap-2 ${themeKey === 'light' ? 'text-slate-800' : 'text-white'}`}>
+                    {getToolIcon(TOOLS_LIST.find(t => t.id === activeTool)?.icon || 'Clock')}
+                    <span>Cron Expression Parser & Explainer</span>
+                    <button
+                      onClick={() => toggleFavorite(activeTool)}
+                      className="p-1 rounded-lg hover:bg-slate-800/40 text-slate-500 hover:text-amber-500 transition-colors cursor-pointer"
+                      title={favorites.includes(activeTool) ? "Remove from Favorite Tools" : "Add to Favorite Tools"}
+                    >
+                      <Star className={`w-4 h-4 ${favorites.includes(activeTool) ? 'fill-amber-400 text-amber-400' : ''}`} />
+                    </button>
+                  </h1>
+                ) : (
+                  <h2 className={`text-xl font-extrabold tracking-tight flex items-center gap-2 ${themeKey === 'light' ? 'text-slate-800' : 'text-white'}`}>
+                    {getToolIcon(TOOLS_LIST.find(t => t.id === activeTool)?.icon || 'Code')}
+                    <span>{TOOLS_LIST.find(t => t.id === activeTool)?.name}</span>
+                    <button
+                      onClick={() => toggleFavorite(activeTool)}
+                      className="p-1 rounded-lg hover:bg-slate-800/40 text-slate-500 hover:text-amber-500 transition-colors cursor-pointer"
+                      title={favorites.includes(activeTool) ? "Remove from Favorite Tools" : "Add to Favorite Tools"}
+                    >
+                      <Star className={`w-4 h-4 ${favorites.includes(activeTool) ? 'fill-amber-400 text-amber-400' : ''}`} />
+                    </button>
+                  </h2>
+                )}
+                <p className={`text-xs sm:text-sm mt-1.5 max-w-2xl leading-relaxed ${theme.textMuted}`}>
                   {TOOLS_LIST.find(t => t.id === activeTool)?.description}
                 </p>
               </div>
@@ -1541,8 +1626,8 @@ export default function App() {
             
             <div className="flex-1 min-w-0 w-full transition-all duration-350 space-y-6">
               
-              {/* Dynamic Educational SEO Handbook Link Banner - Renders for each and every tool automatically */}
-              {activeTool !== 'home' && !['privacy', 'terms', 'about', 'education'].includes(activeTool) && (
+              {/* Dynamic Educational SEO Handbook Link Banner - Renders for each tool except json, yaml & cron which have their own content */}
+              {activeTool !== 'home' && activeTool !== 'json' && activeTool !== 'yaml' && activeTool !== 'cron' && !['privacy', 'terms', 'about', 'education'].includes(activeTool) && (
                 <div className={`p-4 rounded-xl border flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 transition-all duration-300 ${
                   themeKey === 'light' 
                     ? 'bg-indigo-50/50 border-indigo-100 text-slate-800 shadow-sm' 
@@ -1641,8 +1726,10 @@ export default function App() {
                 )}
               </Suspense>
 
-              {/* Dynamic Rich Developer Guide, Technical Specifications & FAQs for Google AdSense & Crawlers */}
-              <ToolDocumentationSection toolId={activeTool} theme={theme} themeKey={themeKey} />
+              {/* Dynamic Rich Developer Guide, Technical Specifications & FAQs for Google AdSense & Crawlers (except json, yaml & cron which have dedicated rich components) */}
+              {activeTool !== 'json' && activeTool !== 'yaml' && activeTool !== 'cron' && (
+                <ToolDocumentationSection toolId={activeTool} theme={theme} themeKey={themeKey} />
+              )}
             </div>
 
           </div>

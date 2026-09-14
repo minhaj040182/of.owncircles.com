@@ -12,18 +12,34 @@ Options -Indexes
   RewriteCond %{REQUEST_FILENAME} -f
   RewriteRule ^ - [L]
 
-  # 2. Serve physical route directory index.html without 301 trailing slash redirect
+  # 2. Permanent 301 Redirects for Alias URLs to Single Canonical Routes
+  RewriteRule ^json-beautifier/?$ /json-formatter [R=301,L]
+  RewriteRule ^json-validator/?$ /json-formatter [R=301,L]
+  RewriteRule ^cron-expression-parser/?$ /cron-parser [R=301,L]
+  RewriteRule ^cron-tester/?$ /cron-parser [R=301,L]
+  RewriteRule ^cron-expression-descriptor/?$ /cron-parser [R=301,L]
+  RewriteRule ^yaml-converter/?$ /yaml-formatter [R=301,L]
+  RewriteRule ^yaml-to-json/?$ /yaml-formatter [R=301,L]
+  RewriteRule ^json-to-yaml/?$ /yaml-formatter [R=301,L]
+  RewriteRule ^base64-encoder/?$ /base64-encoder-decoder [R=301,L]
+  RewriteRule ^base64-decoder/?$ /base64-encoder-decoder [R=301,L]
+  RewriteRule ^base64-decode/?$ /base64-encoder-decoder [R=301,L]
+  RewriteRule ^base64-encode/?$ /base64-encoder-decoder [R=301,L]
+  RewriteRule ^csv-converter/?$ /csv-to-json [R=301,L]
+  RewriteRule ^json-to-csv/?$ /csv-to-json [R=301,L]
+  RewriteRule ^csv-json-converter/?$ /csv-to-json [R=301,L]
+
+  # 3. Serve physical route directory index.html without trailing slash
   RewriteCond %{DOCUMENT_ROOT}/$1/index.html -f
   RewriteRule ^(.*)/?$ /$1/index.html [L]
 
-  # 3. Serve physical route.html file if present
+  # 4. Serve physical route.html file if present
   RewriteCond %{DOCUMENT_ROOT}/$1.html -f
   RewriteRule ^(.*)$ /$1.html [L]
 
-  # 4. SPA Fallback
+  # 5. SPA Fallback
   RewriteRule ^index\.html$ - [L]
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_FILENAME} !-d
   RewriteRule . /index.html [L]
 </IfModule>
-

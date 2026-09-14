@@ -393,7 +393,7 @@ export const ToolDocumentationSection: React.FC<ToolDocumentationSectionProps> =
             { name: 'JSON to Code Types', path: '/json-to-code', desc: 'Type Struct Generator' },
             { name: 'JSON Formatter', path: '/json-formatter', desc: 'RFC 8259 Validator' },
             { name: 'JWT Debugger', path: '/jwt-debugger', desc: 'Token Claims Inspector' },
-            { name: 'YAML Converter', path: '/yaml-converter', desc: 'K8s & Compose Formatter' },
+            { name: 'YAML Formatter', path: '/yaml-formatter', desc: 'Format & Convert YAML' },
             { name: 'Base64 Tool', path: '/base64-encoder', desc: 'RFC 4648 Encoder/Decoder' },
             { name: 'SQL Beautifier', path: '/sql-formatter', desc: 'Multi-Dialect Pretty Printer' },
             { name: 'Diff Checker', path: '/diff-checker', desc: 'Myers Line-by-Line Diff' },

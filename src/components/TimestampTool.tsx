@@ -243,6 +243,24 @@ export default function TimestampTool({ theme }: TimestampToolProps) {
         </div>
       </div>
 
+      {/* Contextual link to Cron Expression Parser */}
+      <div className={`p-4 rounded-xl border flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs ${
+        isLight ? 'bg-indigo-50/50 border-indigo-100 text-slate-700' : 'bg-indigo-950/20 border-indigo-900/40 text-slate-300'
+      }`}>
+        <div className="flex items-center gap-2.5">
+          <Clock className="w-4 h-4 text-indigo-400 shrink-0" />
+          <span>
+            Need to schedule recurring time-based jobs or validate automated tasks? Use our <strong>Cron Expression Parser & Explainer</strong> to break down schedules and calculate upcoming execution times.
+          </span>
+        </div>
+        <a
+          href="/cron-parser"
+          className="text-xs font-bold text-indigo-600 hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300 hover:underline flex items-center gap-1 whitespace-nowrap shrink-0"
+        >
+          Open Cron Parser →
+        </a>
+      </div>
+
     </div>
   );
 }
