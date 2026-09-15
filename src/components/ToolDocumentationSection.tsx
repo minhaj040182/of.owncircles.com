@@ -100,14 +100,20 @@ export const ToolDocumentationSection: React.FC<ToolDocumentationSectionProps> =
       ]
     };
 
-    let faqScript = document.querySelector('script[data-schema="faq-page"]');
-    if (!faqScript) {
-      faqScript = document.createElement('script');
-      faqScript.setAttribute('type', 'application/ld+json');
-      faqScript.setAttribute('data-schema', 'faq-page');
-      document.head.appendChild(faqScript);
+    // Inject FAQPage Schema (Omitted for tools such as csv, cron, and base64 where FAQPage rich snippets are omitted or handled via WebApplication schema)
+    if (toolId !== 'csv' && toolId !== 'cron' && toolId !== 'base64') {
+      let faqScript = document.querySelector('script[data-schema="faq-page"]');
+      if (!faqScript) {
+        faqScript = document.createElement('script');
+        faqScript.setAttribute('type', 'application/ld+json');
+        faqScript.setAttribute('data-schema', 'faq-page');
+        document.head.appendChild(faqScript);
+      }
+      faqScript.textContent = JSON.stringify(faqSchema);
+    } else {
+      const existingFaq = document.querySelector('script[data-schema="faq-page"]');
+      if (existingFaq) existingFaq.remove();
     }
-    faqScript.textContent = JSON.stringify(faqSchema);
 
     let articleScript = document.querySelector('script[data-schema="tech-article"]');
     if (!articleScript) {
@@ -394,7 +400,7 @@ export const ToolDocumentationSection: React.FC<ToolDocumentationSectionProps> =
             { name: 'JSON Formatter', path: '/json-formatter', desc: 'RFC 8259 Validator' },
             { name: 'JWT Debugger', path: '/jwt-debugger', desc: 'Token Claims Inspector' },
             { name: 'YAML Formatter', path: '/yaml-formatter', desc: 'Format & Convert YAML' },
-            { name: 'Base64 Tool', path: '/base64-encoder', desc: 'RFC 4648 Encoder/Decoder' },
+            { name: 'Base64 Tool', path: '/base64-encoder-decoder', desc: 'RFC 4648 Encoder/Decoder' },
             { name: 'SQL Beautifier', path: '/sql-formatter', desc: 'Multi-Dialect Pretty Printer' },
             { name: 'Diff Checker', path: '/diff-checker', desc: 'Myers Line-by-Line Diff' },
             { name: 'UUID v4/v7', path: '/uuid-generator', desc: 'Cryptographic ID Generator' }

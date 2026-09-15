@@ -353,8 +353,8 @@ LIMIT 50;`,
   },
 
   base64: {
-    title: "Base64 Encoder & Decoder (RFC 4648)",
-    shortDesc: "Encode text, binary data, or credentials into Base64 / Base64Url format and decode Base64 strings safely.",
+    title: "Base64 Encoder & Decoder",
+    shortDesc: "Encode text to Base64 or decode Base64 back to readable text directly in your browser with full UTF-8 Unicode support.",
     definition: "Base64 is a binary-to-text encoding scheme defined by RFC 4648 that represents binary data in an ASCII string format by translating it into a radix-64 representation. It is widely used across HTTP protocol headers, email MIME attachments, inline data URIs, and cryptographic key representations.",
     overviewDetailed: "Base64 encoding takes every 3 bytes (24 bits) of binary input and splits them into four 6-bit chunks, mapping each chunk to a specific character in a 64-character alphabet (`A-Z`, `a-z`, `0-9`, `+`, `/`). Padding characters (`=`) are appended if the total byte length is not divisible by 3. Base64 is NOT encryption; it provides zero secrecy and exists purely to transmit binary payloads safely across text-only communication channels.",
     deepDiveText: "In web development, Base64 is essential for embedding small images directly into HTML/CSS via data URIs (`data:image/png;base64,...`), transmitting HTTP Basic Authentication headers (`Authorization: Basic <base64>`), and handling URL-safe token parameters using Base64Url alphabet variants (`-` and `_` replacing `+` and `/`).",
@@ -381,11 +381,11 @@ LIMIT 50;`,
     ],
     exampleLabel: "Base64 Encoding Example",
     exampleLang: "text",
-    exampleCode: `// Raw Input:
-OwnFormatters Secure Developer Utility
+    exampleCode: `// Plaintext Input:
+Hello World
 
-// Base64 Encoded Output:
-T3duRm9ybWF0dGVycyBTZWN1cmUgRGV2ZWxvcGVyIFV0aWxpdHk=`,
+// Encoded Base64 Output:
+SGVsbG8gV29ybGQ=`,
     faqs: [
       {
         question: "Is Base64 an encryption algorithm?",
@@ -626,6 +626,74 @@ UTC String: "Sat, 01 Aug 2026 08:00:00 GMT"`,
       {
         question: "How do I get current epoch time in JavaScript?",
         answer: "Use `Math.floor(Date.now() / 1000)` for seconds or `Date.now()` for milliseconds."
+      }
+    ]
+  },
+
+  csv: {
+    title: "CSV to JSON & JSON to CSV Converter",
+    shortDesc: "Convert CSV to JSON and JSON to CSV with RFC-4180 compliance, custom delimiters, automatic type casting, and 100% client-side privacy.",
+    definition: "CSV (Comma-Separated Values) is a ubiquitous tabular data interchange format defined by RFC 4180, while JSON (JavaScript Object Notation) is the lightweight standard for web APIs and application state defined by RFC 8259. A CSV to JSON converter translates flat, row-and-column spreadsheet or database records into structured, array-of-objects JSON documents. Conversely, a JSON to CSV converter flattens arrays of objects into standardized delimited tables suitable for spreadsheets, data warehouses, and bulk reporting.",
+    overviewDetailed: "Tabular data from legacy databases, spreadsheets, financial exports, and data warehouses frequently arrives in CSV or TSV format, whereas modern REST APIs, microservices, and web frontends require structured JSON. Converting accurately between the two formats requires handling subtle syntax nuances: fields containing embedded commas, line breaks inside double-quoted cells, escaped double quotes (`\"\"`), missing headers, and numbers or booleans stored as text strings. OwnFormatters provides a bidirectional converter running completely inside your browser memory with zero network latency and complete privacy.",
+    deepDiveText: "RFC 4180 specifies that fields containing line breaks (CRLF), double quotes, or commas must be enclosed in double quotes. If double quotes are used to enclose fields, a double quote appearing inside a field must be escaped by preceding it with another double quote. When converting CSV to JSON, native types such as integers, floating-point numbers, and booleans (`true`/`false`) can be automatically inferred or preserved as strings. In reverse conversion (JSON to CSV), nested objects or arrays are serialized into escaped JSON string representations to preserve relational data fidelity.",
+    useCases: [
+      "Importing customer, inventory, or analytics spreadsheets into NoSQL databases (MongoDB, Firestore, DynamoDB) as JSON documents.",
+      "Exporting API JSON payloads or query results into CSV for reporting in Excel, Google Sheets, or business intelligence tools.",
+      "Migrating legacy relational database table dumps into modern JSON-based microservices and REST endpoints.",
+      "Converting TSV (tab-separated) log files and analytical datasets into structured JSON arrays for browser-based filtering.",
+      "Preparing test fixtures and mock datasets for frontend automated testing and API payload simulation."
+    ],
+    bestPractices: [
+      "Always quote fields containing commas, tabs, semicolons, double quotes, or newline characters to prevent broken column alignments.",
+      "Escape internal double quotes using two consecutive double quotes (`\"\"`), never a backslash (`\\\"`), to adhere to RFC 4180 standards.",
+      "Verify whether numeric columns represent arithmetic values or identifiers (e.g. ZIP codes, phone numbers) before applying automatic type casting.",
+      "Use consistent line terminators (CRLF or LF) across all rows to avoid empty or phantom trailing records.",
+      "Specify custom delimiters (semicolon or tab) explicitly when handling regional European CSV files that use semicolons."
+    ],
+    troubleshooting: [
+      "Shifted Columns: A cell containing an unquoted comma or delimiter splits into multiple columns. Wrap the entire cell content in double quotes.",
+      "Broken Multiline Fields: If a text field contains newlines, ensure it is enclosed in double quotes so the parser treats it as a single record rather than multiple rows.",
+      "Escaped Quotes Syntax: If quotes appear literally in output, replace backslash escapes (`\\\"`) with RFC 4180 double-quote escapes (`\"\"`).",
+      "Invalid JSON Input: In JSON to CSV mode, ensure your input is a valid JSON array of objects (e.g. `[{\"col\": \"val\"}]`). Single objects are automatically wrapped in an array."
+    ],
+    steps: [
+      { title: "Select Conversion Mode", desc: "Choose 'CSV to JSON' to parse tabular text, or 'JSON to CSV' to export an array of objects to delimited rows." },
+      { title: "Configure Delimiter & Options", desc: "Select comma (,), semicolon (;), or tab (\\t). Enable or disable auto type casting and header row detection." },
+      { title: "Paste or Load Data", desc: "Paste raw CSV or JSON into the input editor, or click 'Load Sample' to test with verified example data." },
+      { title: "Convert & Export", desc: "Click Convert to generate results instantly, then click 'Copy Output' or 'Save File' to download your converted data." }
+    ],
+    exampleLabel: "Bidirectional CSV ⇄ JSON Conversion Example",
+    exampleLang: "text",
+    exampleCode: `// Input CSV:
+id,name,role,active,salary
+101,Alice,Engineer,true,95000
+102,Bob,Manager,true,115000
+
+// Output JSON:
+[
+  { "id": 101, "name": "Alice", "role": "Engineer", "active": true, "salary": 95000 },
+  { "id": 102, "name": "Bob", "role": "Manager", "active": true, "salary": 115000 }
+]`,
+    faqs: [
+      {
+        question: "Does this converter support RFC-4180 compliance?",
+        answer: "Yes. The parser uses an RFC-4180 compliant state machine that correctly parses quoted fields, escaped double quotes (\"\"\"), commas within quotes, and multiline values across CRLF or LF line endings."
+      },
+      {
+        question: "Can I convert JSON to CSV as well as CSV to JSON?",
+        answer: "Yes, the tool is fully bidirectional. Switch to 'JSON to CSV' mode to convert any JSON array of objects into standard delimited CSV with automatic header extraction."
+      },
+      {
+        question: "Can I convert TSV or semicolon-separated files?",
+        answer: "Yes. Use the delimiter selector to switch between Comma (,), Semicolon (;), and Tab (\\t) delimiters for both CSV-to-JSON and JSON-to-CSV operations."
+      },
+      {
+        question: "Are my spreadsheets or JSON files uploaded to a remote server?",
+        answer: "No. All conversion algorithms execute 100% locally inside your browser memory. Your sensitive financial, customer, or proprietary data is never transmitted over the network or stored on any server."
+      },
+      {
+        question: "How does the converter handle numbers and booleans?",
+        answer: "By default, numeric strings ('95000') and booleans ('true'/'false') are automatically cast to native JavaScript types in JSON. You can disable this option to keep all fields as raw strings."
       }
     ]
   },

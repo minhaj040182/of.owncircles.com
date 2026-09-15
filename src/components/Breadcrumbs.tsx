@@ -46,7 +46,7 @@ const CATEGORY_META: Record<string, { label: string; icon: React.ReactNode; repr
     label: 'Encoders & Ciphers', 
     icon: <Binary className="w-3.5 h-3.5" />, 
     representativeToolId: 'base64',
-    path: '/base64-encoder'
+    path: '/base64-encoder-decoder'
   },
   utility: { 
     label: 'Security & String Utils', 

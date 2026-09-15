@@ -52,7 +52,7 @@ const BUILT_IN_PAGES = [
   { path: '/docker-compose-validator', label: 'Docker Compose Validator' },
   { path: '/k8s-yaml-validator', label: 'Kubernetes YAML Validator' },
   { path: '/nginx-config-formatter', label: 'Nginx Config Formatter' },
-  { path: '/base64-encoder', label: 'Base64 & URL Encoder' },
+  { path: '/base64-encoder-decoder', label: 'Base64 Encoder & Decoder' },
   { path: '/url-encoder', label: 'URL Encoder & Decoder' },
   { path: '/jwt-debugger', label: 'JWT Token Debugger' },
   { path: '/timestamp-converter', label: 'Epoch Unix Timestamp Converter' },

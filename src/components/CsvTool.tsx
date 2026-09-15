@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Copy, Check, Trash2, FileSpreadsheet, Sparkles, CheckCircle, AlertCircle, ArrowLeftRight, Download } from 'lucide-react';
+import React, { useState, useRef } from 'react';
+import { Copy, Check, Trash2, FileSpreadsheet, Sparkles, CheckCircle, AlertCircle, ArrowLeftRight, Download, Upload } from 'lucide-react';
 
 const SAMPLE_CSV = `id,name,email,role,active,salary
 101,John Doe,john@ownformatters.com,Engineer,true,95000
@@ -49,18 +49,22 @@ interface CsvToolProps {
     canvasBg: string;
     isDark: boolean;
   };
+  themeKey?: string;
 }
 
-export default function CsvTool({ theme }: CsvToolProps) {
+export default function CsvTool({ theme, themeKey = 'obsidian' }: CsvToolProps) {
   const [activeTab, setActiveTab] = useState<'csv2json' | 'json2csv'>('csv2json');
   const [input, setInput] = useState<string>('');
   const [output, setOutput] = useState<string>('');
   const [delimiter, setDelimiter] = useState<',' | ';' | '\t'>(',');
+  const [parseNumbers, setParseNumbers] = useState<boolean>(true);
   const [status, setStatus] = useState<{ type: 'idle' | 'success' | 'error'; message: string }>({ type: 'idle', message: '' });
   const [copied, setCopied] = useState<boolean>(false);
+  const [isDragging, setIsDragging] = useState<boolean>(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   // RFC-4180 standard compliant CSV Parser
-  const parseCsv = (csvText: string, delim: string): any[] => {
+  const parseCsv = (csvText: string, delim: string, autoCast: boolean): any[] => {
     const rows: string[][] = [];
     let currentRow: string[] = [];
     let currentVal = "";
@@ -110,13 +114,17 @@ export default function CsvTool({ theme }: CsvToolProps) {
         const headerName = headers[c] || `column_${c + 1}`;
         const cellVal = row[c] !== undefined ? row[c].trim() : "";
         
-        // Auto convert strings to true types (numbers / booleans)
-        if (cellVal.toLowerCase() === "true") {
-          obj[headerName] = true;
-        } else if (cellVal.toLowerCase() === "false") {
-          obj[headerName] = false;
-        } else if (cellVal !== "" && !isNaN(cellVal as any)) {
-          obj[headerName] = Number(cellVal);
+        if (autoCast) {
+          // Auto convert strings to true types (numbers / booleans)
+          if (cellVal.toLowerCase() === "true") {
+            obj[headerName] = true;
+          } else if (cellVal.toLowerCase() === "false") {
+            obj[headerName] = false;
+          } else if (cellVal !== "" && !isNaN(cellVal as any)) {
+            obj[headerName] = Number(cellVal);
+          } else {
+            obj[headerName] = cellVal;
+          }
         } else {
           obj[headerName] = cellVal;
         }
@@ -131,12 +139,12 @@ export default function CsvTool({ theme }: CsvToolProps) {
     
     // Collect unique header keys
     const headers = Array.from(
-      new Set(jsonArr.reduce((acc, item) => [...acc, ...Object.keys(item)], []))
+      new Set(jsonArr.reduce((acc, item) => [...acc, ...Object.keys(item || {})], []))
     ) as string[];
 
     const escapeCell = (val: any) => {
       if (val === null || val === undefined) return "";
-      let str = String(val);
+      let str = typeof val === 'object' ? JSON.stringify(val) : String(val);
       if (str.includes(delim) || str.includes('"') || str.includes("\n") || str.includes("\r")) {
         str = '"' + str.replace(/"/g, '""') + '"';
       }
@@ -147,7 +155,7 @@ export default function CsvTool({ theme }: CsvToolProps) {
     csvRows.push(headers.map(escapeCell).join(delim));
 
     jsonArr.forEach(item => {
-      const row = headers.map(header => escapeCell(item[header]));
+      const row = headers.map(header => escapeCell(item ? item[header] : ""));
       csvRows.push(row.join(delim));
     });
 
@@ -162,7 +170,7 @@ export default function CsvTool({ theme }: CsvToolProps) {
 
     try {
       if (activeTab === 'csv2json') {
-        const parsed = parseCsv(input, delimiter);
+        const parsed = parseCsv(input, delimiter, parseNumbers);
         setOutput(JSON.stringify(parsed, null, 2));
         setStatus({ type: 'success', message: `Parsed CSV (${parsed.length} rows) successfully converted to JSON!` });
       } else {
@@ -176,7 +184,7 @@ export default function CsvTool({ theme }: CsvToolProps) {
         const arrayToConvert = Array.isArray(parsedJson) ? parsedJson : [parsedJson];
         const csvStr = convertJsonToCsv(arrayToConvert, delimiter);
         setOutput(csvStr);
-        setStatus({ type: 'success', message: `JSON successfully converted to CSV!` });
+        setStatus({ type: 'success', message: `JSON (${arrayToConvert.length} items) successfully converted to CSV!` });
       }
     } catch (err: any) {
       setOutput('');
@@ -233,6 +241,42 @@ export default function CsvTool({ theme }: CsvToolProps) {
       setOutput('');
       setStatus({ type: 'idle', message: '' });
     }
+  };
+
+  const handleFileUpload = (file: File) => {
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const content = e.target?.result as string;
+      if (typeof content === 'string') {
+        setInput(content);
+        setStatus({ type: 'idle', message: '' });
+        // Auto-detect direction if file extension suggests it
+        if (file.name.endsWith('.json') && activeTab !== 'json2csv') {
+          setActiveTab('json2csv');
+        } else if ((file.name.endsWith('.csv') || file.name.endsWith('.tsv')) && activeTab !== 'csv2json') {
+          setActiveTab('csv2json');
+        }
+      }
+    };
+    reader.readAsText(file);
+  };
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(false);
+    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+      handleFileUpload(e.dataTransfer.files[0]);
+    }
+  };
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = () => {
+    setIsDragging(false);
   };
 
   // Theme support
@@ -301,6 +345,18 @@ export default function CsvTool({ theme }: CsvToolProps) {
             </select>
           </div>
 
+          {activeTab === 'csv2json' && (
+            <label className="flex items-center gap-1.5 text-xs cursor-pointer select-none">
+              <input
+                type="checkbox"
+                checked={parseNumbers}
+                onChange={(e) => setParseNumbers(e.target.checked)}
+                className="w-3.5 h-3.5 rounded accent-indigo-600"
+              />
+              <span className={isLight ? 'text-slate-700' : 'text-slate-300'}>Auto-parse numbers &amp; booleans</span>
+            </label>
+          )}
+
           <button
             onClick={handleLoadSample}
             className={`text-xs font-bold px-3 py-1.5 rounded-lg border transition-all cursor-pointer ${
@@ -317,18 +373,53 @@ export default function CsvTool({ theme }: CsvToolProps) {
       {/* Editor Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Input area */}
-        <div className={`flex flex-col h-[380px] border rounded-xl overflow-hidden ${inputBgClass} ${borderClass}`}>
+        <div 
+          onDrop={handleDrop}
+          onDragOver={handleDragOver}
+          onDragLeave={handleDragLeave}
+          className={`flex flex-col h-[380px] border rounded-xl overflow-hidden ${inputBgClass} ${borderClass} ${
+            isDragging ? 'ring-2 ring-indigo-500 border-indigo-500' : ''
+          }`}
+        >
           <div className={`px-4 py-3 border-b flex items-center justify-between ${panelBgClass} ${borderClass}`}>
             <span className={`text-xs font-semibold font-mono ${isLight ? 'text-slate-800' : 'text-slate-300'}`}>
               {activeTab === 'csv2json' ? 'Raw CSV Data' : 'Raw JSON Array'}
             </span>
-            <button
-              onClick={handleClear}
-              className={`${isLight ? 'text-slate-500 hover:text-red-650' : 'text-slate-400 hover:text-pink-400'} p-1 rounded transition-colors cursor-pointer`}
-              title="Clear Input" aria-label="Clear Input"
-            >
-              <Trash2 className="w-4 h-4" />
-            </button>
+            <div className="flex items-center gap-1">
+              <input
+                type="file"
+                ref={fileInputRef}
+                onChange={(e) => {
+                  if (e.target.files && e.target.files[0]) {
+                    handleFileUpload(e.target.files[0]);
+                  }
+                }}
+                accept=".csv,.json,.tsv,.txt"
+                className="hidden"
+                id="csv-file-upload-input"
+              />
+              <button
+                onClick={() => fileInputRef.current?.click()}
+                className={`px-2 py-1 rounded-lg text-xs font-semibold transition-all flex items-center gap-1 font-sans border cursor-pointer ${
+                  isLight 
+                    ? 'bg-white hover:bg-slate-50 border-slate-200 text-slate-700' 
+                    : 'bg-slate-950 hover:bg-slate-900 border-slate-800 text-slate-300 hover:text-white'
+                }`}
+                title="Upload file (.csv, .json, .tsv, .txt)"
+                aria-label="Upload File"
+              >
+                <Upload className="w-3 h-3" />
+                Upload
+              </button>
+              <button
+                onClick={handleClear}
+                className={`${isLight ? 'text-slate-500 hover:text-red-650' : 'text-slate-400 hover:text-pink-400'} p-1.5 rounded transition-colors cursor-pointer`}
+                title="Clear Input" 
+                aria-label="Clear Input"
+              >
+                <Trash2 className="w-4 h-4" />
+              </button>
+            </div>
           </div>
           <textarea
             className={`flex-1 w-full p-4 font-mono text-sm leading-relaxed focus:outline-none resize-none bg-transparent ${textClass} ${
@@ -336,14 +427,15 @@ export default function CsvTool({ theme }: CsvToolProps) {
             }`}
             placeholder={
               activeTab === 'csv2json' 
-                ? "id,name,value\n1,Alpha,100\n2,Beta,200"
-                : "[\n  {\n    \"id\": 1,\n    \"name\": \"Alpha\",\n    \"value\": 100\n  }\n]"
+                ? "id,name,value\n1,Alpha,100\n2,Beta,200\n\n(or drag and drop a .csv file here)"
+                : "[\n  {\n    \"id\": 1,\n    \"name\": \"Alpha\",\n    \"value\": 100\n  }\n]\n\n(or drag and drop a .json file here)"
             }
             value={input}
             onChange={(e) => setInput(e.target.value)}
           />
-          <div className={`px-4 py-2 border-t text-[11px] font-mono ${panelBgClass} ${borderMutedClass} ${textMutedClass}`}>
+          <div className={`px-4 py-2 border-t text-[11px] font-mono ${panelBgClass} ${borderMutedClass} ${textMutedClass} flex items-center justify-between`}>
             <span>Length: {input.length} chars</span>
+            <span className="hidden sm:inline text-[10px] opacity-75">Drag &amp; drop supported</span>
           </div>
         </div>
 

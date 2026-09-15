@@ -52,6 +52,7 @@ const DockerTool = lazy(() => import('./components/DockerTool'));
 const K8sTool = lazy(() => import('./components/K8sTool'));
 const NginxTool = lazy(() => import('./components/NginxTool'));
 const EncoderTool = lazy(() => import('./components/EncoderTool'));
+const Base64Tool = lazy(() => import('./components/Base64Tool'));
 const JwtTool = lazy(() => import('./components/JwtTool'));
 const SqlTool = lazy(() => import('./components/SqlTool'));
 const XmlTool = lazy(() => import('./components/XmlTool'));
@@ -213,8 +214,8 @@ const TOOLS_LIST: ToolDefinition[] = [
   },
   {
     id: 'base64',
-    name: 'Base64 & URL Encoder',
-    description: 'Robust, UTF-8 secure encoder and decoder for Base64 and Percent-Encoded strings.',
+    name: 'Base64 Encoder & Decoder',
+    description: 'Encode text to Base64 or decode Base64 back to readable text directly in your browser with full UTF-8 Unicode support.',
     category: 'encoder',
     icon: 'Terminal'
   },
@@ -269,8 +270,8 @@ const TOOLS_LIST: ToolDefinition[] = [
   },
   {
     id: 'csv',
-    name: 'CSV <-> JSON Converter',
-    description: 'Convert CSV data to JSON and vice-versa with custom delimiters and RFC-4180 parsing.',
+    name: 'CSV to JSON Converter',
+    description: 'Convert CSV to JSON and JSON to CSV instantly. Custom delimiters, RFC 4180 parsing, quoted fields, and private client-side processing.',
     category: 'formatter',
     icon: 'FileSpreadsheet'
   },
@@ -349,6 +350,7 @@ const PATH_TO_TOOL_MAP: Record<string, ToolId> = {
   '/kubernetes-validator': 'k8s',
   '/nginx-config-formatter': 'nginx',
   '/nginx-formatter': 'nginx',
+  '/base64': 'base64',
   '/base64-encoder': 'base64',
   '/base64-decoder': 'base64',
   '/base64-encoder-decoder': 'base64',
@@ -906,6 +908,12 @@ export default function App() {
     } else if (activeTool === 'cron') {
       title = "Cron Expression Parser & Explainer Online | OwnFormatters";
       description = "Parse and explain cron expressions instantly. Understand each cron field, validate schedules, view human-readable meanings and calculate upcoming execution times.";
+    } else if (activeTool === 'csv') {
+      title = "CSV to JSON & JSON to CSV Converter | OwnFormatters";
+      description = "Convert CSV to JSON and JSON to CSV instantly. RFC 4180 compliance, custom delimiters, quoted field parsing, and 100% private client-side processing.";
+    } else if (activeTool === 'base64') {
+      title = "Base64 Encoder & Decoder Online | OwnFormatters";
+      description = "Encode text to Base64 or decode Base64 back to readable text directly in your browser. Copy the result instantly with the free OwnFormatters Base64 tool.";
     } else if (activeTool === 'education') {
       const topicName = educationTopic.toUpperCase();
       title = `Mastering ${topicName} - Complete Developer Handbook & FAQs | OwnFormatters`;
@@ -953,7 +961,17 @@ export default function App() {
     jsonLdScript.textContent = JSON.stringify({
       "@context": "https://schema.org",
       "@type": "WebApplication",
-      "name": activeTool === 'json' ? "Free Online JSON Formatter & Beautifier" : activeTool === 'yaml' ? "YAML Formatter & YAML to JSON Converter" : activeTool === 'cron' ? "Cron Expression Parser & Explainer" : title,
+      "name": activeTool === 'json' 
+        ? "Free Online JSON Formatter & Beautifier" 
+        : activeTool === 'yaml' 
+        ? "YAML Formatter & YAML to JSON Converter" 
+        : activeTool === 'cron' 
+        ? "Cron Expression Parser & Explainer" 
+        : activeTool === 'csv'
+        ? "CSV to JSON & JSON to CSV Converter"
+        : activeTool === 'base64'
+        ? "Base64 Encoder & Decoder"
+        : title,
       "url": canonicalUrl,
       "description": description,
       "applicationCategory": "DeveloperApplication",
@@ -1584,6 +1602,30 @@ export default function App() {
                       <Star className={`w-4 h-4 ${favorites.includes(activeTool) ? 'fill-amber-400 text-amber-400' : ''}`} />
                     </button>
                   </h1>
+                ) : activeTool === 'csv' ? (
+                  <h1 className={`text-xl sm:text-2xl font-black tracking-tight flex items-center gap-2 ${themeKey === 'light' ? 'text-slate-800' : 'text-white'}`}>
+                    {getToolIcon(TOOLS_LIST.find(t => t.id === activeTool)?.icon || 'FileSpreadsheet')}
+                    <span>CSV to JSON & JSON to CSV Converter</span>
+                    <button
+                      onClick={() => toggleFavorite(activeTool)}
+                      className="p-1 rounded-lg hover:bg-slate-800/40 text-slate-500 hover:text-amber-500 transition-colors cursor-pointer"
+                      title={favorites.includes(activeTool) ? "Remove from Favorite Tools" : "Add to Favorite Tools"}
+                    >
+                      <Star className={`w-4 h-4 ${favorites.includes(activeTool) ? 'fill-amber-400 text-amber-400' : ''}`} />
+                    </button>
+                  </h1>
+                ) : activeTool === 'base64' ? (
+                  <h1 className={`text-xl sm:text-2xl font-black tracking-tight flex items-center gap-2 ${themeKey === 'light' ? 'text-slate-800' : 'text-white'}`}>
+                    {getToolIcon(TOOLS_LIST.find(t => t.id === activeTool)?.icon || 'Terminal')}
+                    <span>Base64 Encoder & Decoder</span>
+                    <button
+                      onClick={() => toggleFavorite(activeTool)}
+                      className="p-1 rounded-lg hover:bg-slate-800/40 text-slate-500 hover:text-amber-500 transition-colors cursor-pointer"
+                      title={favorites.includes(activeTool) ? "Remove from Favorite Tools" : "Add to Favorite Tools"}
+                    >
+                      <Star className={`w-4 h-4 ${favorites.includes(activeTool) ? 'fill-amber-400 text-amber-400' : ''}`} />
+                    </button>
+                  </h1>
                 ) : (
                   <h2 className={`text-xl font-extrabold tracking-tight flex items-center gap-2 ${themeKey === 'light' ? 'text-slate-800' : 'text-white'}`}>
                     {getToolIcon(TOOLS_LIST.find(t => t.id === activeTool)?.icon || 'Code')}
@@ -1688,7 +1730,7 @@ export default function App() {
                 {activeTool === 'docker' && <DockerTool theme={theme} />}
                 {activeTool === 'k8s' && <K8sTool theme={theme} />}
                 {activeTool === 'nginx' && <NginxTool theme={theme} />}
-                {activeTool === 'base64' && <EncoderTool theme={theme} />}
+                {activeTool === 'base64' && <Base64Tool theme={theme} themeKey={themeKey} />}
                 {activeTool === 'url' && <EncoderTool theme={theme} />}
                 {activeTool === 'jwt' && <JwtTool theme={theme} />}
                 {activeTool === 'timestamp' && <TimestampTool theme={theme} />}
@@ -1699,7 +1741,7 @@ export default function App() {
                 {activeTool === 'markdown' && <MarkdownTool theme={theme} />}
                 
                 {/* Missing Tools Components */}
-                {activeTool === 'csv' && <CsvTool theme={theme} />}
+                {activeTool === 'csv' && <CsvTool theme={theme} themeKey={themeKey} />}
                 {activeTool === 'color' && <ColorTool theme={theme} />}
                 {activeTool === 'base' && <NumberBaseTool theme={theme} />}
                 {activeTool === 'cron' && <CronTool theme={theme} />}
@@ -1726,8 +1768,8 @@ export default function App() {
                 )}
               </Suspense>
 
-              {/* Dynamic Rich Developer Guide, Technical Specifications & FAQs for Google AdSense & Crawlers (except json, yaml & cron which have dedicated rich components) */}
-              {activeTool !== 'json' && activeTool !== 'yaml' && activeTool !== 'cron' && (
+              {/* Dynamic Rich Developer Guide, Technical Specifications & FAQs for Google AdSense & Crawlers (except json, yaml, cron & base64 which have dedicated rich components) */}
+              {activeTool !== 'json' && activeTool !== 'yaml' && activeTool !== 'cron' && activeTool !== 'base64' && (
                 <ToolDocumentationSection toolId={activeTool} theme={theme} themeKey={themeKey} />
               )}
             </div>
