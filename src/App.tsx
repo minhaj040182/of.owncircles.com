@@ -452,24 +452,19 @@ const TOOL_TO_PATH_MAP: Record<ToolId, string> = {
   indexnow_key: '/613e87bbb04e45cfa9f488bc6056e990.txt',
 };
 
-// Global ads feature flag for AdSense sandboxing and SEO reviews
-const SHOW_ADS = true;
-
-// Real active ad scripts for high-converting premium ad inventory
-function RealAdSlot({ position, activeTool, themeKey }: { position: 'top' | 'right'; activeTool?: string; themeKey?: string }) {
+// Restored top leaderboard banner advertisement (728x90) - Only Adsterra format restored
+function TopBannerAd({ themeKey }: { themeKey?: string }) {
   const containerRef = React.useRef<HTMLDivElement>(null);
   const [reloadKey, setReloadKey] = React.useState(0);
 
   useEffect(() => {
-    if (!SHOW_ADS) return;
     const interval = setInterval(() => {
       setReloadKey(prev => prev + 1);
-    }, 70000); // Auto reload after 70 seconds
+    }, 90000); // Periodic gentle refresh
     return () => clearInterval(interval);
   }, []);
 
   useEffect(() => {
-    if (!SHOW_ADS) return;
     if (!containerRef.current) return;
     containerRef.current.innerHTML = '';
 
@@ -477,92 +472,54 @@ function RealAdSlot({ position, activeTool, themeKey }: { position: 'top' | 'rig
     iframe.style.border = 'none';
     iframe.style.overflow = 'hidden';
     iframe.style.background = 'transparent';
-
-    if (position === 'top') {
-      // Horizontal ad (728x90) after the title bar
-      iframe.width = '728';
-      iframe.height = '90';
-      const htmlContent = `
-        <!DOCTYPE html>
-        <html>
-          <head>
-            <meta charset="UTF-8">
-            <meta name="keywords" content="software, programming, education, apps, coding, developer tools, web development">
-            <meta name="category" content="Software Development">
-            <style>
-              body { margin: 0; padding: 0; display: flex; justify-content: center; align-items: center; background: transparent; overflow: hidden; }
-            </style>
-          </head>
-          <body>
-            <script type="text/javascript">
-              atOptions = {
-                'key' : '0af48a35b1ed7ba39bf569c91661e9c3',
-                'format' : 'iframe',
-                'height' : 90,
-                'width' : 728,
-                'params' : {}
-              };
-            </script>
-            <script type="text/javascript" src="https://www.highperformanceformat.com/0af48a35b1ed7ba39bf569c91661e9c3/invoke.js"></script>
-          </body>
-        </html>
-      `;
-      iframe.srcdoc = htmlContent;
-    } else {
-      // Vertical ad (160x600) in the right panel (160px width)
-      iframe.width = '160';
-      iframe.height = '600';
-      
-      const htmlContent = `
-        <!DOCTYPE html>
-        <html>
-          <head>
-            <meta charset="UTF-8">
-            <meta name="keywords" content="software, programming, education, apps, coding, developer tools, web development">
-            <meta name="category" content="Software Development">
-            <style>
-              body { margin: 0; padding: 0; display: flex; justify-content: center; align-items: center; background: transparent; overflow: hidden; }
-            </style>
-          </head>
-          <body>
-            <script type="text/javascript">
-              atOptions = {
-                'key' : '15ada0752e5c49998faddcd5796d91e3',
-                'format' : 'iframe',
-                'height' : 600,
-                'width' : 160,
-                'params' : {}
-              };
-            </script>
-            <script type="text/javascript" src="https://www.highperformanceformat.com/15ada0752e5c49998faddcd5796d91e3/invoke.js"></script>
-          </body>
-        </html>
-      `;
-      iframe.srcdoc = htmlContent;
-    }
-
+    iframe.width = '728';
+    iframe.height = '90';
+    iframe.title = 'Advertisement';
+    const htmlContent = `
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <meta charset="UTF-8">
+          <meta name="keywords" content="software, programming, education, apps, coding, developer tools, web development">
+          <meta name="category" content="Software Development">
+          <style>
+            body { margin: 0; padding: 0; display: flex; justify-content: center; align-items: center; background: transparent; overflow: hidden; }
+          </style>
+        </head>
+        <body>
+          <script type="text/javascript">
+            atOptions = {
+              'key' : '0af48a35b1ed7ba39bf569c91661e9c3',
+              'format' : 'iframe',
+              'height' : 90,
+              'width' : 728,
+              'params' : {}
+            };
+          </script>
+          <script type="text/javascript" src="https://www.highperformanceformat.com/0af48a35b1ed7ba39bf569c91661e9c3/invoke.js"></script>
+        </body>
+      </html>
+    `;
+    iframe.srcdoc = htmlContent;
     containerRef.current.appendChild(iframe);
-  }, [position, activeTool, reloadKey]);
+  }, [reloadKey]);
 
-  if (!SHOW_ADS) {
-    return null;
-  }
-
-  if (position === 'top') {
-    return (
-      <div className={`sticky top-[58px] md:top-[61px] z-30 flex flex-col items-center justify-center my-0 py-2 w-full px-0 overflow-x-auto backdrop-blur-md transition-all shadow-md ${
-        themeKey === 'light' 
-          ? 'bg-slate-100/90 border-y border-slate-200/80' 
-          : 'bg-slate-950/90 border-y border-slate-900/80'
-      }`}>
-        <div className="p-1 bg-slate-950/60 border border-slate-900 rounded-xl overflow-hidden shadow-xl max-w-full">
-          <div ref={containerRef} className="w-[728px] h-[90px] flex items-center justify-center bg-[#02050b]" />
+  return (
+    <div className={`sticky top-[58px] md:top-[61px] z-30 flex flex-col items-center justify-center my-0 py-1.5 w-full px-0 backdrop-blur-md transition-all shadow-md ${
+      themeKey === 'light' 
+        ? 'bg-slate-100/90 border-y border-slate-200/80' 
+        : 'bg-slate-950/90 border-y border-slate-900/80'
+    }`}>
+      <span className="text-[10px] tracking-wider uppercase text-slate-500 mb-0.5 select-none font-medium">Advertisement</span>
+      <div className="w-full overflow-x-auto no-scrollbar flex justify-center py-0.5">
+        <div className="scale-[0.44] sm:scale-[0.65] md:scale-100 origin-center -my-[25px] sm:-my-[15px] md:my-0">
+          <div className="p-1 bg-slate-950/60 border border-slate-900 rounded-xl overflow-hidden shadow-xl max-w-full">
+            <div ref={containerRef} className="w-[728px] h-[90px] flex items-center justify-center bg-[#02050b]" />
+          </div>
         </div>
       </div>
-    );
-  }
-
-  return null;
+    </div>
+  );
 }
 
 const THEMES = {
@@ -1661,7 +1618,7 @@ export default function App() {
           )}
 
           {/* DYNAMIC TOP ADVERTISEMENT DISPLAYED AFTER THE ACTIVE TOOL'S TITLE */}
-          {SHOW_ADS && <RealAdSlot position="top" activeTool={activeTool} themeKey={themeKey} />}
+          <TopBannerAd themeKey={themeKey} />
 
           {/* Interactive Workspace Components and Right Ad Panel side-by-side with exact same starting height */}
           <div className="flex flex-col lg:flex-row gap-6 items-start">

@@ -680,8 +680,8 @@ CANONICAL_ROUTES.forEach((route) => {
 
   if (fallbackHtml) {
     customizedHtml = customizedHtml.replace(
-      /<div id="root">[\s\S]*?<\/div>\s*<\/body>/,
-      `<div id="root">${fallbackHtml}</div>\n  </body>`
+      /<div id="root">[\s\S]*?<\/div>(\s*(?:<script[\s\S]*?<\/script>\s*)*<\/body>)/,
+      `<div id="root">${fallbackHtml}</div>$1`
     );
   }
 
@@ -907,8 +907,8 @@ Object.entries(ALIAS_REDIRECT_MAP).forEach(([alias, target]) => {
     .replace(/<title>[^<]*<\/title>/, `<title>Redirecting to ${targetTitle}</title>`)
     .replace(/<head>/, `<head>\n    <meta http-equiv="refresh" content="0;url=/${target}">\n    <script>window.location.replace("/${target}");</script>`)
     .replace(
-      /<div id="root">[\s\S]*?<\/div>\s*<\/body>/,
-      `<div id="root"><p style="padding:40px;font-family:sans-serif;color:#cbd5e1;">Redirecting to <a href="/${target}" style="color:#38bdf8;">/${target}</a>...</p></div>\n  </body>`
+      /<div id="root">[\s\S]*?<\/div>(\s*(?:<script[\s\S]*?<\/script>\s*)*<\/body>)/,
+      `<div id="root"><p style="padding:40px;font-family:sans-serif;color:#cbd5e1;">Redirecting to <a href="/${target}" style="color:#38bdf8;">/${target}</a>...</p></div>$1`
     );
 
   fs.writeFileSync(path.join(aliasDir, 'index.html'), redirectHtml, 'utf8');
