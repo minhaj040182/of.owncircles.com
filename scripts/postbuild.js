@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { EDUCATION_DATA, getEducationTopic } from '../src/data/educationContent.ts';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -644,26 +645,138 @@ CANONICAL_ROUTES.forEach((route) => {
         <p>© 2026 OwnFormatters Core Engineering Team. Published with zero-egress client-side privacy guarantees.</p>
       </footer>
     </div>`;
+  } else if (route.startsWith('learn-')) {
+    const topicKey = route.replace(/^learn-/, '');
+    const cleanName = topicKey.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+    const topic = EDUCATION_DATA[topicKey] || getEducationTopic(topicKey, cleanName, 'Developer Utility');
+    
+    fallbackHtml = `<div id="static-fallback" style="padding:40px 20px;max-width:960px;margin:0 auto;font-family:system-ui,-apple-system,sans-serif;color:#cbd5e1;line-height:1.7;">
+        <nav aria-label="Breadcrumb" style="margin-bottom:16px;font-size:13px;color:#94a3b8;">
+          <a href="/" style="color:#818cf8;text-decoration:none;">Home</a> &gt; <a href="/${topicKey === 'base64' ? 'base64-encoder-decoder' : topicKey === 'cron' ? 'cron-parser' : topicKey === 'yaml' ? 'yaml-formatter' : topicKey === 'json' ? 'json-formatter' : topicKey}" style="color:#818cf8;text-decoration:none;">${topic.title} Tool</a> &gt; <span style="color:#e2e8f0;font-weight:600;">Technical Handbook</span>
+        </nav>
+        <header style="border-bottom:1px solid #334155;padding-bottom:20px;margin-bottom:28px;">
+          <h1 style="color:#f8fafc;font-size:30px;font-weight:800;margin:0 0 12px 0;letter-spacing:-0.01em;">${topic.title} – Complete Developer Guide &amp; Reference</h1>
+          <p style="font-size:15px;color:#94a3b8;margin:0;line-height:1.6;">${topic.shortDesc}</p>
+        </header>
+
+        <section style="background:#0f172a;border:1px solid #334155;border-radius:12px;padding:24px;margin-bottom:32px;">
+          <h2 style="color:#38bdf8;font-size:18px;font-weight:700;margin:0 0 10px 0;">Definition &amp; Core Standards</h2>
+          <p style="font-size:14px;color:#cbd5e1;margin:0 0 16px 0;">${topic.definition}</p>
+          <p style="font-size:14px;color:#cbd5e1;margin:0;">${topic.overviewDetailed}</p>
+        </section>
+
+        ${topic.deepDiveText ? `
+        <section style="margin-bottom:32px;">
+          <h2 style="color:#f8fafc;font-size:20px;font-weight:700;margin:0 0 12px 0;">Technical Deep Dive</h2>
+          <p style="font-size:14px;color:#cbd5e1;margin:0;">${topic.deepDiveText}</p>
+        </section>` : ''}
+
+        ${topic.useCases && topic.useCases.length > 0 ? `
+        <section style="margin-bottom:32px;">
+          <h2 style="color:#f8fafc;font-size:20px;font-weight:700;margin:0 0 12px 0;">Key Production Use Cases</h2>
+          <ul style="padding-left:20px;font-size:14px;color:#cbd5e1;margin:0;">
+            ${topic.useCases.map(uc => `<li style="margin-bottom:8px;">${uc}</li>`).join('')}
+          </ul>
+        </section>` : ''}
+
+        ${topic.bestPractices && topic.bestPractices.length > 0 ? `
+        <section style="margin-bottom:32px;">
+          <h2 style="color:#f8fafc;font-size:20px;font-weight:700;margin:0 0 12px 0;">Engineering Best Practices</h2>
+          <ul style="padding-left:20px;font-size:14px;color:#cbd5e1;margin:0;">
+            ${topic.bestPractices.map(bp => `<li style="margin-bottom:8px;">${bp}</li>`).join('')}
+          </ul>
+        </section>` : ''}
+
+        ${topic.steps && topic.steps.length > 0 ? `
+        <section style="margin-bottom:32px;">
+          <h2 style="color:#f8fafc;font-size:20px;font-weight:700;margin:0 0 12px 0;">Implementation &amp; Usage Steps</h2>
+          <ol style="padding-left:20px;font-size:14px;color:#cbd5e1;margin:0;">
+            ${topic.steps.map(s => `<li style="margin-bottom:8px;"><strong>${s.title}:</strong> ${s.desc}</li>`).join('')}
+          </ol>
+        </section>` : ''}
+
+        ${topic.exampleCode ? `
+        <section style="margin-bottom:32px;">
+          <h2 style="color:#f8fafc;font-size:20px;font-weight:700;margin:0 0 12px 0;">${topic.exampleLabel || 'Code Example'}</h2>
+          <pre style="background:#020617;border:1px solid #334155;padding:16px;border-radius:8px;font-family:monospace;font-size:13px;color:#38bdf8;overflow-x:auto;">${topic.exampleCode}</pre>
+        </section>` : ''}
+
+        ${topic.faqs && topic.faqs.length > 0 ? `
+        <section style="margin-bottom:32px;">
+          <h2 style="color:#f8fafc;font-size:20px;font-weight:700;margin:0 0 16px 0;">Frequently Asked Questions</h2>
+          ${topic.faqs.map(faq => `
+            <div style="margin-bottom:16px;">
+              <h3 style="color:#e2e8f0;font-size:16px;font-weight:600;margin:0 0 4px 0;">${faq.question}</h3>
+              <p style="font-size:13px;color:#94a3b8;margin:0;">${faq.answer}</p>
+            </div>
+          `).join('')}
+        </section>` : ''}
+
+        <footer style="border-top:1px solid #334155;padding-top:20px;color:#64748b;font-size:13px;">
+          <p>© 2026 OwnFormatters Core Engineering Team. 100% offline client-side execution with zero-egress data privacy.</p>
+        </footer>
+      </div>`;
   } else {
-    fallbackHtml = `<div id="static-fallback" style="padding:40px 20px;max-width:900px;margin:0 auto;font-family:system-ui,-apple-system,sans-serif;color:#cbd5e1;line-height:1.7;">
+    const cleanToolName = route.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+    const toolTopic = EDUCATION_DATA[route] || getEducationTopic(route, cleanToolName, 'Developer Tool');
+    
+    fallbackHtml = `<div id="static-fallback" style="padding:40px 20px;max-width:1000px;margin:0 auto;font-family:system-ui,-apple-system,sans-serif;color:#cbd5e1;line-height:1.7;">
+        <nav aria-label="Breadcrumb" style="margin-bottom:16px;font-size:13px;color:#94a3b8;">
+          <a href="/" style="color:#818cf8;text-decoration:none;">Home</a> &gt; <span style="color:#e2e8f0;font-weight:600;">${routeTitle.split('|')[0].trim()}</span>
+        </nav>
         <header style="border-bottom:1px solid #334155;padding-bottom:20px;margin-bottom:24px;">
           <h1 style="color:#f8fafc;font-size:28px;font-weight:800;margin:0 0 12px 0;">${routeTitle}</h1>
-          <p style="font-size:15px;color:#94a3b8;margin:0;">${routeDesc}</p>
+          <p style="font-size:15px;color:#94a3b8;margin:0 0 16px 0;">${routeDesc}</p>
+          <div style="display:flex;gap:12px;flex-wrap:wrap;">
+            <span style="display:inline-flex;align-items:center;padding:6px 12px;background:#1e293b;border:1px solid #475569;border-radius:6px;font-size:12px;font-family:monospace;color:#38bdf8;">✓ 100% In-Browser Execution</span>
+            <span style="display:inline-flex;align-items:center;padding:6px 12px;background:#1e293b;border:1px solid #475569;border-radius:6px;font-size:12px;font-family:monospace;color:#34d399;">✓ Zero Server Logging</span>
+            <span style="display:inline-flex;align-items:center;padding:6px 12px;background:#1e293b;border:1px solid #475569;border-radius:6px;font-size:12px;font-family:monospace;color:#38bdf8;">✓ W3C &amp; RFC Standards Compliant</span>
+          </div>
         </header>
-        <section style="margin-bottom:32px;">
-          <h2 style="color:#38bdf8;font-size:20px;font-weight:700;">Technical Overview & Standards Compliance</h2>
-          <p>OwnFormatters provides enterprise-grade, browser-based developer utilities designed to eliminate data privacy risks. When working with sensitive payloads, tokens, database configurations, and source code, traditional online utilities send raw text over public networks to remote servers. OwnFormatters runs 100% locally in your browser memory thread.</p>
+
+        <section style="background:#0f172a;border:1px solid #334155;border-radius:12px;padding:24px;margin-bottom:32px;">
+          <h2 style="color:#38bdf8;font-size:18px;font-weight:700;margin:0 0 10px 0;">Technical Overview &amp; Architecture</h2>
+          <p style="font-size:14px;color:#cbd5e1;margin:0 0 14px 0;">${toolTopic.definition}</p>
+          <p style="font-size:14px;color:#cbd5e1;margin:0;">${toolTopic.overviewDetailed}</p>
         </section>
+
+        ${toolTopic.useCases && toolTopic.useCases.length > 0 ? `
         <section style="margin-bottom:32px;">
-          <h2 style="color:#38bdf8;font-size:20px;font-weight:700;">Developer Guidelines & Best Practices</h2>
-          <ul style="padding-left:20px;color:#cbd5e1;">
-            <li>Verify syntax against international standards (RFC 8259, RFC 7519, RFC 4122, W3C specifications) before deploying.</li>
-            <li>Maintain zero server logging: all data is isolated within client-side WebWorkers.</li>
-            <li>Use offline PWA capabilities to format, validate, and convert payloads without internet connectivity.</li>
+          <h2 style="color:#f8fafc;font-size:20px;font-weight:700;margin:0 0 12px 0;">Production Use Cases</h2>
+          <ul style="padding-left:20px;font-size:14px;color:#cbd5e1;margin:0;">
+            ${toolTopic.useCases.map(uc => `<li style="margin-bottom:8px;">${uc}</li>`).join('')}
           </ul>
-        </section>
+        </section>` : ''}
+
+        ${toolTopic.bestPractices && toolTopic.bestPractices.length > 0 ? `
+        <section style="margin-bottom:32px;">
+          <h2 style="color:#f8fafc;font-size:20px;font-weight:700;margin:0 0 12px 0;">Engineering Best Practices</h2>
+          <ul style="padding-left:20px;font-size:14px;color:#cbd5e1;margin:0;">
+            ${toolTopic.bestPractices.map(bp => `<li style="margin-bottom:8px;">${bp}</li>`).join('')}
+          </ul>
+        </section>` : ''}
+
+        ${toolTopic.steps && toolTopic.steps.length > 0 ? `
+        <section style="margin-bottom:32px;">
+          <h2 style="color:#f8fafc;font-size:20px;font-weight:700;margin:0 0 12px 0;">Step-by-Step Tool Workflow</h2>
+          <ol style="padding-left:20px;font-size:14px;color:#cbd5e1;margin:0;">
+            ${toolTopic.steps.map(s => `<li style="margin-bottom:8px;"><strong>${s.title}:</strong> ${s.desc}</li>`).join('')}
+          </ol>
+        </section>` : ''}
+
+        ${toolTopic.faqs && toolTopic.faqs.length > 0 ? `
+        <section style="margin-bottom:32px;">
+          <h2 style="color:#f8fafc;font-size:20px;font-weight:700;margin:0 0 16px 0;">Frequently Asked Questions</h2>
+          ${toolTopic.faqs.map(faq => `
+            <div style="margin-bottom:16px;">
+              <h3 style="color:#e2e8f0;font-size:16px;font-weight:600;margin:0 0 4px 0;">${faq.question}</h3>
+              <p style="font-size:13px;color:#94a3b8;margin:0;">${faq.answer}</p>
+            </div>
+          `).join('')}
+        </section>` : ''}
+
         <footer style="border-top:1px solid #334155;padding-top:20px;color:#64748b;font-size:13px;">
-          <p>© 2026 OwnFormatters Core Engineering Team. Published with zero-egress data guarantees.</p>
+          <p>© 2026 OwnFormatters Core Engineering Team. 100% client-side privacy architecture with zero remote server egress.</p>
         </footer>
       </div>`;
   }

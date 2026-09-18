@@ -193,24 +193,3 @@
 .font-scale-largest code {
   font-size: 17px !important;
 }
-
-/* ==========================================================================
-   Monetization Styling: HilltopAds Video Slider Size Optimization
-   Target footprint: ~75% of original 280px rendered height (210px desktop, 160px mobile)
-   Preserves 16:9 aspect ratio, close/mute/play controls, and mobile responsiveness
-   ========================================================================== */
-body > div.rmp-container:has(video.rmp-video),
-body > div.rmp-container[class*="muted"],
-body > div.rmp-container.started {
-  height: 210px !important;
-  max-width: calc(100vw - 16px) !important;
-}
-
-@media (max-width: 640px) {
-  body > div.rmp-container:has(video.rmp-video),
-  body > div.rmp-container[class*="muted"],
-  body > div.rmp-container.started {
-    height: 160px !important;
-    max-width: calc(100vw - 12px) !important;
-  }
-}
