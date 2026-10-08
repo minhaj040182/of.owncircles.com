@@ -114,7 +114,38 @@ const ALIAS_REDIRECT_MAP = {
   'about': 'about-us',
   'indexnow': 'indexnow-submitter',
   'json-to-typescript': 'json-to-code',
-  'json-to-types': 'json-to-code'
+  'json-to-types': 'json-to-code',
+  // Short slugs matching learn-* topic keys redirecting to their canonical tool
+  'json': 'json-formatter',
+  'jsonschema': 'json-schema-generator',
+  'jsonpath': 'jsonpath-tester',
+  'jsontocode': 'json-to-code',
+  'yaml': 'yaml-formatter',
+  'xml': 'xml-formatter',
+  'sql': 'sql-formatter',
+  'minify': 'code-minifier',
+  'api': 'api-tester',
+  'graphql': 'graphql-tester',
+  'openapi': 'openapi-viewer',
+  'webhook': 'webhook-tester',
+  'mockapi': 'mock-api-server',
+  'docker': 'docker-compose-validator',
+  'k8s': 'k8s-yaml-validator',
+  'nginx': 'nginx-config-formatter',
+  'url': 'url-encoder-decoder',
+  'jwt': 'jwt-debugger',
+  'timestamp': 'timestamp-converter',
+  'text': 'text-utility',
+  'hash': 'hash-generator',
+  'uuid': 'uuid-generator',
+  'qrcode': 'qrcode-generator',
+  'markdown': 'markdown-editor',
+  'csv': 'csv-to-json',
+  'color': 'color-converter',
+  'base': 'number-base-converter',
+  'cron': 'cron-parser',
+  'regex': 'regex-tester',
+  'diff': 'text-diff'
 };
 
 const distDir = path.resolve(__dirname, '../dist');
@@ -649,10 +680,11 @@ CANONICAL_ROUTES.forEach((route) => {
     const topicKey = route.replace(/^learn-/, '');
     const cleanName = topicKey.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
     const topic = EDUCATION_DATA[topicKey] || getEducationTopic(topicKey, cleanName, 'Developer Utility');
+    const targetToolSlug = ALIAS_REDIRECT_MAP[topicKey] || (CANONICAL_ROUTES.includes(topicKey) ? topicKey : 'home');
     
     fallbackHtml = `<div id="static-fallback" style="padding:40px 20px;max-width:960px;margin:0 auto;font-family:system-ui,-apple-system,sans-serif;color:#cbd5e1;line-height:1.7;">
         <nav aria-label="Breadcrumb" style="margin-bottom:16px;font-size:13px;color:#94a3b8;">
-          <a href="/" style="color:#818cf8;text-decoration:none;">Home</a> &gt; <a href="/${topicKey === 'base64' ? 'base64-encoder-decoder' : topicKey === 'cron' ? 'cron-parser' : topicKey === 'yaml' ? 'yaml-formatter' : topicKey === 'json' ? 'json-formatter' : topicKey}" style="color:#818cf8;text-decoration:none;">${topic.title} Tool</a> &gt; <span style="color:#e2e8f0;font-weight:600;">Technical Handbook</span>
+          <a href="/" style="color:#818cf8;text-decoration:none;">Home</a> &gt; <a href="/${targetToolSlug}" style="color:#818cf8;text-decoration:none;">${topic.title} Tool</a> &gt; <span style="color:#e2e8f0;font-weight:600;">Technical Handbook</span>
         </nav>
         <header style="border-bottom:1px solid #334155;padding-bottom:20px;margin-bottom:28px;">
           <h1 style="color:#f8fafc;font-size:30px;font-weight:800;margin:0 0 12px 0;letter-spacing:-0.01em;">${topic.title} – Complete Developer Guide &amp; Reference</h1>
